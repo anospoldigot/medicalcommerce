@@ -1,0 +1,12 @@
+{
+    "name": "silehage/rajaongkir",
+    "description": "Rajaongkir Package for Laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mcp",
+            "email": "401xdssh@gmail.com"
+        }
+    ],
+    "require": {}
+}
