@@ -79,6 +79,8 @@ class Rajaongkir
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "GET",
       CURLOPT_HTTPHEADER => $header,
+      CURLOPT_SSL_VERIFYHOST => 0,
+      CURLOPT_SSL_VERIFYPEER => 0,
     ));
 
     $response = curl_exec($curl);
@@ -105,7 +107,7 @@ class Rajaongkir
         } else {
           return json_encode([
             'success' => false,
-            'message' => $data->status->description,
+            'message' => $data->rajaongkir->status->description,
         ]);
       }
     }

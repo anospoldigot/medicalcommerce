@@ -181,7 +181,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        Intervention\Image\ImageServiceProvider::class,
+        App\Providers\ConfigApiProvider::class,
+        Silehage\Rajaongkir\RajaongkirServiceProvider::class,
+        Silehage\Tripay\TripayServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -210,6 +214,9 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Tripay' => Silehage\Tripay\TripayFacade::class,
+        'Rajaongkir' => Silehage\Rajaongkir\RajaongkirFacade::class,
     ])->toArray(),
 
 ];

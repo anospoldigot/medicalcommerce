@@ -53,7 +53,9 @@
             <li class="nav-item"><a class="d-flex align-items-center" href="index.html"><i
                         data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Home">Home</span></a>
             </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+            <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Category</span></a>
+            </li>
+            {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Page Layouts</span><span
                         class="badge badge-light-danger badge-pill ml-auto mr-1">2</span></a>
                 <ul class="menu-content">
@@ -75,13 +77,17 @@
                                 class="menu-item text-truncate" data-i18n="Layout Blank">Layout Blank</span></a>
                     </li>
                 </ul>
-            </li>
-            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+            </li> --}}
+            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Setting</span></a>
                 <ul class="menu-content">
-                    <li class="active"><a class="d-flex align-items-center" href="layout-collapsed-menu.html"><i
+                    <li class="{{ request()->routeIs('setting.web') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('setting.web') }}"><i
                                 data-feather="circle"></i><span class="menu-item text-truncate"
                                 data-i18n="Collapsed Menu">Web</span></a>
+                    </li>
+                    <li class="{{ request()->routeIs('setting.store') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('setting.store') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Toko</span></a>
                     </li>
                 </ul>
             </li>

@@ -23,7 +23,6 @@ class ShippingController extends Controller
 
             $obj = json_decode($json);
 
-
             if ($obj->success == true && count($obj->results) > 0) {
 
                 Cache::forever('provinces', $obj->results);
