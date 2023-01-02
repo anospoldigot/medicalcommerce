@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -106,7 +106,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'weight' => 'required',
+            // 'weight' => 'required',
         ]);
 
 
@@ -116,7 +116,7 @@ class CategoryController extends Controller
             $category = Category::find($id);
             $category->title = $request->title;
             $category->is_front = $request->boolean('is_front');
-            $category->weight = $request->weight;
+            // $category->weight = $request->weight;
             $category->description = $request->description;
 
             $category->save();

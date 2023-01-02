@@ -50,10 +50,14 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="nav-item"><a class="d-flex align-items-center" href="index.html"><i
+            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard') }}"><i
                         data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Home">Home</span></a>
             </li>
-            <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Category</span></a>
+            <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Category</span></a>
+            </li>
+            <li class="{{ request()->routeIs('product.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('product.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Product</span></a>
+            </li>
+            <li class="{{ request()->routeIs('post.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('post.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Artikel / Blog</span></a>
             </li>
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Page Layouts</span><span

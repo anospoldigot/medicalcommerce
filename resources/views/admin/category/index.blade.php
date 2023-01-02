@@ -1,14 +1,11 @@
 @extends('layouts.app')
 
-
 @section('breadcrumb')
 <div class="col-12">
     <h2 class="content-header-title float-left mb-0">Home</h2>
     <div class="breadcrumb-wrapper">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a>
-            </li>
-            <li class="breadcrumb-item">Setting
             </li>
             <li class="breadcrumb-item active">Category
             </li>
@@ -71,26 +68,8 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $('form.create').submit(function(){
-            event.preventDefault();
-            const data = $(this).serialize();
-
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data,
-                dataType: 'json',
-                success: function(res){
-                    alert(JSON.stringify(res));
-                },
-                error: function(err){
-                    alert(JSON.stringify(err));
-                }
-            })
-        })
-
-        $('.table').DataTable({
+<script>
+        const table = $('.table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route("category.index") }}', // memanggil route yang menampilkan data json
@@ -112,5 +91,46 @@
                     },
                 ]
             });
-    </script>
+            
+        $('form.create').submit(function(){
+            event.preventDefault();
+            const data = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data,
+                dataType: 'json',
+                success: function(res){
+                    alert(JSON.stringify(res));
+                },
+                error: function(err){
+                    alert(JSON.stringify(err));
+                }
+            })
+        })
+
+        $(document).on('submit', 'form.edit', function(){
+            event.preventDefault();
+            const data = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data,
+                dataType: 'json',
+                success: function(res){
+                    alert(JSON.stringify(res));
+                    table.ajax.reload();
+                },
+                error: function(err){
+                    alert(JSON.stringify(err));
+                }
+            })
+        })
+
+        
+
+        
+</script>
 @endpush
