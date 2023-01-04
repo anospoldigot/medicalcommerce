@@ -1,4 +1,4 @@
-<button class="btn btn-sm btn-success" title="Edit data" data-toggle="modal" data-target="#editModal{{ $model->id }}">
+<button class="btn btn-sm btn-success" title="Edit Category" data-toggle="modal" data-target="#editModal{{ $model->id }}">
     <i data-feather='edit'></i>
 </button>
 <div class="modal fade" id="editModal{{ $model->id }}" tabindex="-1" aria-labelledby="editModal{{ $model->id }}Label" aria-hidden="true">
@@ -34,7 +34,7 @@
     class="d-inline">
     @csrf
     @method('DELETE')
-    <button class="btn btn-sm btn-danger" title="Hapus Data" type="submit">
+    <button class="btn btn-sm btn-danger" title="Hapus Ctageory" type="submit">
         <i data-feather='trash-2'></i>
     </button>
 </form>

@@ -42,9 +42,6 @@ class SettingWebController extends Controller
         // Cache::forget('shop_config');
         // Cache::forget('admin_config');
 
-        return response([
-            'success' => true,
-            'results' => null
-        ], 200);
+        return redirect()->route('setting.web')->with('success', 'Berhasil mengupdate');
     }
 }

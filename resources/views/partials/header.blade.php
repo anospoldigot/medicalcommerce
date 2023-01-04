@@ -31,7 +31,7 @@
                         href="javascript:void(0);"><i class="mr-50" data-feather="credit-card"></i> Pricing</a><a
                         class="dropdown-item" href="javascript:void(0);"><i class="mr-50"
                             data-feather="help-circle"></i> FAQ</a><a class="dropdown-item"
-                        href="javascript:void(0);"><i class="mr-50" data-feather="power"></i> Logout</a>
+                        href="javascript:void(0);" onclick="logout()"><i class="mr-50" data-feather="power"></i> Logout</a>
                 </div>
             </li>
         </ul>

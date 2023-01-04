@@ -113,6 +113,7 @@ class ProductController extends Controller
             ->where('id', $id)
             ->first();
         
+
         return view('admin.product.show', compact('product'));
     }
     /**

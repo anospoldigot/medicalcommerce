@@ -64,15 +64,16 @@
                     <div class="form-group">
                         <label for="rajaongkir_type">Raja Ongkir Type</label>
                         <select class="form-control" id="rajaongkir_type" name="rajaongkir_type">
-                            <option value="basic">Basic</option>
-                            <option value="starter">Starter</option>
-                            <option value="Pro">Pro</option>
+                            <option value="">==PILIH==</option>
+                            <option value="basic" @selected('basic' == $config->rajaongkir_type)>Basic</option>
+                            <option value="starter" @selected('starter' == $config->rajaongkir_type)>Starter</option>
+                            <option value="pro" @selected('pro' == $config->rajaongkir_type)>Pro</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="rajaongkir_apikey">Raja Ongkir API KEY</label>
                         <input type="text" class="form-control" name="rajaongkir_apikey" id="rajaongkir_apikey"
-                            placeholder="Raja Ongkir API Key">
+                            placeholder="Raja Ongkir API Key" value="{{ $config->rajaongkir_apikey }}">
                     </div>
                     <div class="my-2">
                         <h6>Pengaturan Gudang Pengiriman</h6>
@@ -135,17 +136,17 @@
                     <div class="form-group">
                         <label for="tripay_merchant_code">Tripay Merchant Code</label>
                         <input type="text" class="form-control" name="tripay_merchant_code" id="tripay_merchant_code"
-                            placeholder="Tripay Merchant Code">
+                            placeholder="Tripay Merchant Code" value="{{ $config->tripay_merchant_code }}">
                     </div>
                     <div class="form-group">
                         <label for="tripay_mode">Tripay API KEY</label>
                         <input type="text" class="form-control" name="tripay_mode" id="tripay_mode"
-                            placeholder="Tripay API KEY">
+                            placeholder="Tripay API KEY" value="{{  $config->tripay_mode}}">
                     </div>
                     <div class="form-group">
                         <label for="tripay_private_key">Tripay PRIVATE KEY</label>
                         <input type="text" class="form-control" name="tripay_private_key" id="tripay_private_key"
-                            placeholder="Tripay PRIVATE KEY">
+                            placeholder="Tripay PRIVATE KEY" value="{{ $config->tripay_private_key }}">
                     </div>
                 </div>
             </div>

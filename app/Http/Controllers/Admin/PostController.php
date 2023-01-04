@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
@@ -17,27 +18,46 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = [];
-        if ($request->query('q') == 'listing') {
+        
+        if(request()->ajax()){
+            $posts = [];
+            if ($request->query('q') == 'listing') {
+    
+                $posts = Cache::rememberForever('listing_post', function () {
+                    return Post::listing()->latest()->get();
+                });
+            } elseif ($request->query('q') == 'promote') {
+    
+                $posts = Cache::rememberForever('promote_post', function () {
+                    return Post::promote()->latest()->get();
+                });
+            } else {
+    
+                $posts = Cache::rememberForever('all_post', function () {
+                    return Post::latest()->get();
+                });
+            }
 
-            $posts = Cache::rememberForever('listing_post', function () {
-                return Post::listing()->latest()->get();
-            });
-        } elseif ($request->query('q') == 'promote') {
-
-            $posts = Cache::rememberForever('promote_post', function () {
-                return Post::promote()->latest()->get();
-            });
-        } else {
-
-            $posts = Cache::rememberForever('all_post', function () {
-                return Post::latest()->get();
-            });
+            return DataTables::of(Post::latest()->get())
+                ->addIndexColumn()
+                ->addColumn('action', 'admin.post._action')
+                ->toJson();
         }
 
-        return view('admin.post.index', compact('posts'));
+        return view('admin.post.index');
 
     }
+
+    public function create ()
+    {
+        return view('admin.post.create');
+    }
+
+    public function edit(Post $post)
+    {
+        return view('admin.post.edit', compact('post'));
+    }
+    
     public function getListing()
     {
         return response()->json([
@@ -54,6 +74,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'title' => ['required'],
             'image' => ['required'],
@@ -86,12 +107,29 @@ class PostController extends Controller
             }
         }
 
-        $post->save();
+        try{
+            $post->save();
 
-        return response([
-            'success' => true
-        ], 201);
+            return redirect()->route('post.index')->with('success', 'Berhasil menyimpan artikel');
+            
+        }catch(\Throwable $th){
+
+            return redirect()->route('post.index')->with('error', 'Gagal menyimpan artikel');
+        }
+
     }
+
+
+    public function storeAssets(Post $post)
+    {
+        $path = public_path('/upload/images');
+        if ($file = request()->file('image')) {
+            $filename = Str::random(42) . '.' . $file->extension();
+            $file->move($path, $filename);
+            return url('/') . '/upload/images/' . $filename;
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -135,10 +173,6 @@ class PostController extends Controller
 
         $post = Post::findOrFail($id);
 
-        if ($request->boolean('del_image')) {
-
-            File::delete('upload/images/' . $post->image);
-        }
         if ($file = $request->file('image')) {
 
             $filename = Str::random(42) . '.' . $file->extension();
@@ -146,7 +180,9 @@ class PostController extends Controller
             if ($file->move($path, $filename)) {
 
                 $post->image = $filename;
+                File::delete('upload/images/' . $post->image);
             }
+            
         }
 
         $post->title = $request->title;
@@ -158,9 +194,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return response([
-            'success' => true
-        ], 200);
+        return redirect()->route('post.index')->with('success', 'Berhasil mengupdate artikel');
     }
 
     /**

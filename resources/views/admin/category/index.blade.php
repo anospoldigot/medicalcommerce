@@ -89,7 +89,13 @@
                         data: 'action',
                         name: 'action'
                     },
-                ]
+                ],
+                drawCallback: function( settings ) {
+                    feather.replace({
+                        width: 14,
+                        height: 14
+                    });
+                }
             });
             
         $('form.create').submit(function(){
@@ -102,10 +108,20 @@
                 data,
                 dataType: 'json',
                 success: function(res){
-                    alert(JSON.stringify(res));
+                    toastr['success'](res.message, 'Success!', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: isRtl
+                    });
+
+                    table.ajax.reload();
                 },
                 error: function(err){
-                    alert(JSON.stringify(err));
+                    toastr['error'](err.responseJSON.message, 'Error!', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: isRtl
+                    });
                 }
             })
         })

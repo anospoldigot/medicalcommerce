@@ -5,9 +5,9 @@
     <h2 class="content-header-title float-left mb-0">Home</h2>
     <div class="breadcrumb-wrapper">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a>
             </li>
-            <li class="breadcrumb-item active">Category
+            <li class="breadcrumb-item active">Product
             </li>
         </ol>
     </div>
@@ -17,27 +17,25 @@
 
 @section('content')
 <a class="btn btn-primary mb-1" href="{{ route('product.create') }}">
-    Create
+    <i data-feather='edit'></i> Create
 </a>
 
 <div class="card">
     <div class="card-header border-bottom">
         <h4 class="card-title">Data Product</h4>
     </div>
-    <div class="card-datatable">
-        <table class="datatables-ajax table">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Harga</th>
-                    <th>Stok</th>
-                    <th>Berat</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+    <table class="datatables-basic table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Berat</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 @endsection
 
@@ -90,7 +88,13 @@
                         data: 'action',
                         name: 'action'
                     },
-                ]
+                ],
+                drawCallback: function( settings ) {
+                    feather.replace({
+                        width: 14,
+                        height: 14
+                    });
+                }
         });
     })
 </script>

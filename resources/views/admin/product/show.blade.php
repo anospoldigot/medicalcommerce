@@ -75,7 +75,7 @@
                             <b>Category</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {!! $product->category ? '<span class="badge badge-success">' . $product->category .' </span>' : '-' !!}
+                            : {!! $product->category ? '<span class="badge badge-success">' . $product->category->title .' </span>' : '-' !!}
                         </div>
                     </div>
                     <hr>

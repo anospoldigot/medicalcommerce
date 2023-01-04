@@ -5,10 +5,12 @@ use App\Http\Controllers\Admin\{
     ProductController,
     DashboardController,
     CategoryController,
+    OrderController,
     PostController,
     SettingWebController,
     ShippingController,
-    StoreController
+    StoreController,
+    TransactionController
 };
 
 use Illuminate\Support\Facades\Route;
@@ -25,10 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::controller(AuthController::class)->group(function () {
-    Route::get('/login', 'login')->name('login');
-    Route::post('/login', 'loginPost')->name('login.post');
-});
+
 
 
 Route::middleware([])->group(function () {
@@ -41,6 +40,18 @@ Route::middleware([])->group(function () {
         Route::get('store', 'index')->name('setting.store');
         Route::patch('store', 'update')->name('setting.store.update');
     });
+    Route::controller(TransactionController::class)->group(function () {
+        Route::get('transactions', 'index')->name('transaction.index');
+    });
+    Route::delete('orders/{id}', [OrderController::class, 'destroy']);
+    Route::get('orders', [OrderController::class, 'index']);
+    Route::post('searchAdminOrder', [OrderController::class, 'searchAdminOrder']);
+    Route::put('orders', [OrderController::class, 'update']);
+    Route::post('filterOrder', [OrderController::class, 'filterOrder']);
+    Route::post('updateStatusOrder', [OrderController::class, 'updateStatusOrder']);
+
+    Route::post('paymentAccepted/{id}', [OrderController::class, 'paymentAccepted']);
+    Route::post('inputResi', [OrderController::class, 'inputResi']);
     Route::apiResources([
         'category' => CategoryController::class,
     ]);
@@ -48,6 +59,8 @@ Route::middleware([])->group(function () {
         'post' => PostController::class,
         'product' => ProductController::class
     ]);
+    Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');
+    Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
 });
 
 Route::get('shipping/get_province', [ShippingController::class, 'getProvince'])->name('getProvince');

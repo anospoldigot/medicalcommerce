@@ -53,7 +53,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editor">Alamat tampilan toko</label>
-                        <textarea class="form-control" id="editor" name="address">{!! $shop->address !!}</textarea>
+                        <textarea  id="editor" name="address" autocomplete="off">{!! $shop->address !!}</textarea>
                     </div>
                 </div>
             </div>
@@ -67,13 +67,13 @@
 
 @push('scripts')
     <script>
-        const quill = new Quill('#editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline'],
-                ]
-            },
+        $('#editor').summernote({
+            placeholder: 'Alamat',
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+            ['font', ['bold', 'underline', 'clear', 'italic']],
+            ]
         });
     </script>
 @endpush

@@ -185,17 +185,18 @@ class CategoryController extends Controller
         File::delete('upload/images/'. $cat->filename);
         File::delete('upload/images/'. $cat->bannerName);
         
-        $cat->delete();
-        
-        Cache::forget('categories');
-        Cache::forget('initial_products');
+        try{
+            $cat->delete();
 
-        return response([
-            'success' => true, 
-            'results' => null
-            
-        ],200);
+            Cache::forget('categories');
+            Cache::forget('initial_products');
+
+            session()->flash('success', 'Berhasil menghapus kategori');
+        }catch(\Throwable $th){
+            session()->flash('error', 'Berhasil menghapus kategori');
+        }
         
+        return redirect()->route('category.index');
     }
 
 }
