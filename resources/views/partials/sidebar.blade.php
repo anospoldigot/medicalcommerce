@@ -59,9 +59,9 @@
             </li>
             <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Category Product</span></a>
             </li>
-            <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Transaksi</span></a>
+            {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Transaksi</span></a>
             </li>
-            
+             --}}
             <li class="{{ request()->routeIs('post.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('post.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Artikel / Blog</span></a>
             </li>
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
@@ -97,6 +97,10 @@
                     <li class="{{ request()->routeIs('setting.store') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('setting.store') }}"><i
                                 data-feather="circle"></i><span class="menu-item text-truncate"
                                 data-i18n="Collapsed Menu">Toko</span></a>
+                    </li>
+                    <li class="{{ request()->routeIs('myAccount') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('myAccount') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">My Account</span></a>
                     </li>
                 </ul>
             </li>

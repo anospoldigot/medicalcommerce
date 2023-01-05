@@ -16,17 +16,15 @@
 
 
 @section('content')
-<button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#exampleModal">
-    Create
-</button>
+<button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#createModal"><i data-feather='plus'></i> Create</button>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{ route("category.store") }}" method="post" class="create">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+                    <h5 class="modal-title" id="createModalLabel">Create Category</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -113,7 +111,7 @@
                         tapToDismiss: false,
                         rtl: isRtl
                     });
-
+                    $('#createModal').modal('hide');
                     table.ajax.reload();
                 },
                 error: function(err){
@@ -122,6 +120,7 @@
                         tapToDismiss: false,
                         rtl: isRtl
                     });
+                    $('#createModal').modal('hide');
                 }
             })
         })
@@ -136,11 +135,21 @@
                 data,
                 dataType: 'json',
                 success: function(res){
-                    alert(JSON.stringify(res));
+                    toastr['success'](res.message, 'Success!', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: isRtl
+                    });
+                    $('.modal').modal('hide');
                     table.ajax.reload();
                 },
                 error: function(err){
-                    alert(JSON.stringify(err));
+                    toastr['error'](err.responseJSON.message, 'Error!', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: isRtl
+                    });
+                    $('.modal').modal('hide');
                 }
             })
         })

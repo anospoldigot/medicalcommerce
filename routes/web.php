@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
+    Route::get('/my_account', 'myAccount')->name('myAccount');
+    Route::patch('/user', 'update')->name('user.update');
     Route::post('/login', 'loginPost')->name('login.post');
     Route::post('/logout', 'logout')->name('logout');
 });

@@ -99,7 +99,8 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ route('product.index') }}" class="btn btn-outline-primary"><i data-feather='corner-up-left'></i> Batal</a>
+                    <button type="submit" class="btn btn-primary"><i data-feather='save'></i> Update</button>
                 </div>
             </form>
         </div>

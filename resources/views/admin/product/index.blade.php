@@ -17,7 +17,7 @@
 
 @section('content')
 <a class="btn btn-primary mb-1" href="{{ route('product.create') }}">
-    <i data-feather='edit'></i> Create
+    <i data-feather='plus'></i> Create
 </a>
 
 <div class="card">

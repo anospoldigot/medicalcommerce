@@ -176,7 +176,7 @@
         });
 
         $('.select2').select2();
-
+        
         var isRtl = $('html').attr('data-textdirection') === 'rtl';
 
         
