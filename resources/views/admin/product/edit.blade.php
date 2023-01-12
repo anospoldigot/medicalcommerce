@@ -50,6 +50,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group mt-1">
+                    <div class="custom-control custom-control-primary custom-switch">
+                        <input type="checkbox" {{ (old('discount') ?? $product->is_discount) ? 'checked' : '' }} value="1" class="custom-control-input" id="is_discount" name="is_discount" />
+                        <label class="custom-control-label" for="is_discount">Discount</label>
+                    </div>
+                </div>
+                <div class="row" id="detail-discount">
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group">
+                            <label for="discount_type">Discount Type</label>
+                            <select name="discount_type" class="form-control" id="discount_type">
+                                <option value="" selected disabled>==PILIH==</option>
+                                <option value="persen">Persen</option>
+                                <option value="nominal">Nominal</option>
+                            </select>
+                            @error('discount')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group">
+                            <label for="discount">Discount Value</label>
+                            <input type="number" class="form-control @error('discount') is-invalid @enderror" id="discount"
+                                name="discount" placeholder="Discount (%)" value="{{ old('discount') }}">
+                            @error('discount')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
@@ -108,6 +139,12 @@
 @endsection
 @push('scripts')
     <script>
+        @if ((old('is_discount') ?? $product->is_discount) == 1)
+            $('#detail-discount').show();
+        @else
+            $('#detail-discount').hide();
+        @endif
+
         $('#description').summernote({
             placeholder: 'Alamat',
             tabsize: 2,
@@ -123,5 +160,33 @@
             preloaded: preloaded.map(value => ({ id: value.filename, src:value.src })),
             preloadedInputName: 'oldImageProduct'
         });
+
+
+        $('#discount').on('input', function(){
+            if($('#discount_type').val() == 'persen'){
+                const prev = $(this).data('val');
+                if(event.target.value > 100){
+                    event.preventDefault();
+                    alert('persen tidak bisa diatas 100');
+                }else{
+                    const value = event.target.value.replace(/[^\d]/g, "")
+                    event.target.value = value;
+                }
+            }else if($('#discount_type').val() == 'nominal'){
+                const value = event.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+                event.target.value = numeral(value).format('0,0');
+            }else{
+                alert('Masukkan tipe discount dahulu');
+                event.target.value = '';
+            }
+        });
+
+        $('#is_discount').change(function(){
+            if($('#is_discount').is(':checked')){
+                $('#detail-discount').show();
+            }else{
+                $('#detail-discount').hide();
+            }
+        })
     </script>
 @endpush

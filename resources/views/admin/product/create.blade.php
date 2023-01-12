@@ -80,20 +80,20 @@
                 </div>
                 <div class="form-group mt-1">
                     <div class="custom-control custom-control-primary custom-switch">
-                        <input type="checkbox" checked class="custom-control-input" id="is_discount" name="is_discount" />
-                        <label class="custom-control-label" for="is_discount">Discount</label>
+                        <input type="checkbox" {{ old('discount') == 1 ? 'checked' : '' }} value="1" class="custom-control-input" id="is_discount" name="is_discount" />
+                        <label class="custom-control-label"  for="is_discount">Discount</label>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="detail-discount">
                     <div class="col-12 col-lg-6">
                         <div class="form-group">
-                            <label for="discount">Discount Type</label>
-                            <select name="discount_type" class="form-control" id="discount_type">
+                            <label for="discount_type">Discount Type</label>
+                            <select name="discount_type" class="form-control @error('discount_type') is-invalid @enderror" id="discount_type">
                                 <option value="" selected disabled>==PILIH==</option>
-                                <option value="persentase">Persentase</option>
+                                <option value="persen">Persen</option>
                                 <option value="nominal">Nominal</option>
                             </select>
-                            @error('discount')
+                            @error('discount_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -101,10 +101,10 @@
                     <div class="col-12 col-lg-6">
                         <div class="form-group">
                             <label for="discount">Discount Value</label>
-                            <input type="number" class="form-control @error('discount') is-invalid @enderror" id="discount" name="discount"
-                                placeholder="Discount (%)" value="{{ old('discount') }}">
+                            <input type="text" class="form-control @error('discount') is-invalid @enderror" id="discount" name="discount"
+                                placeholder="Discount" value="{{ old('discount') }}">
                             @error('discount')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -131,7 +131,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="text-right">
                     <a href="{{ route('product.index') }}" class="btn btn-outline-primary"><i data-feather='corner-up-left'></i> Batal</a>
                     <button type="submit" class="btn btn-primary"><i data-feather='save'></i> Tambah</button>
@@ -142,6 +141,14 @@
 @endsection
 @push('scripts')
     <script>
+        @if (old('is_discount') == 1)
+            $('#detail-discount').show();
+        @else
+            $('#detail-discount').hide();
+        @endif
+
+
+
         $('#description').summernote({
             placeholder: 'Alamat',
             tabsize: 2,
@@ -154,26 +161,32 @@
 
 
         $('#discount').on('input', function(){
-            if($('#discount_type').val() == 'persentase'){
+            if($('#discount_type').val() == 'persen'){
+                const prev = $(this).data('val');
+                if(event.target.value > 100){
+                    event.preventDefault();
+                    alert('persen tidak bisa diatas 100');
+                }else{
+                    const value = event.target.value.replace(/[^\d]/g, "")
+                    event.target.value = value;
+                }
             }else if($('#discount_type').val() == 'nominal'){
+                const value = event.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+                event.target.value = numeral(value).format('0,0');
             }else{
-                $('#discount').input(function(){
-                    alert('Silahkan pilih tipe discount terlebih dahulu')
-                })
+                alert('Masukkan tipe discount dahulu');
+                event.target.value = '';
             }
         });
 
         $('#is_discount').change(function(){
-            // if($('#discount_type').val() == 'persentase'){
-            //     $('#discount').input(inputPercentage())
-            // }else if($('#discount_type').val() == 'nominal'){
-            //     $('#discount').input(inputNominal())
-            // }else{
-            //     $('#discount').input(function(){
-            //         alert('Silahkan pilih tipe discount terlebih dahulu')
-            //     })
-            // }
-        });
+            if($('#is_discount').is(':checked')){
+                $('#detail-discount').show();
+            }else{
+                $('#detail-discount').hide();
+            }
+        })
+
 
 
 

@@ -13,7 +13,8 @@ class Product extends Model
     public $appends = ['rating', 'real_stock'];
 
     protected $casts = [
-        'status' > 'boolean'
+        'status' => 'boolean',
+        'is_discount' => 'boolean'
     ];
 
     public function category()

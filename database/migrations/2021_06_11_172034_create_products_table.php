@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->boolean('status')->default(true);
             $table->boolean('is_discount')->default(false);
             $table->integer('discount')->default(false);
-            $table->enum('discount_type', ['percentage', 'nominal'])->nullable();
+            $table->enum('discount_type', ['persen', 'nominal'])->nullable();
             $table->foreignId('category_id')->nullable();
             $table->integer('weight')->default(1000);
             $table->timestamps();

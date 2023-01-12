@@ -54,6 +54,22 @@
                     <hr>
                     <div class="row">
                         <div class="col-6 col-lg-4">
+                            <b>Harga Discount</b>
+                        </div>
+                        <div class="col-6 col-lg-8">
+                            @if ($product->is_discount)
+                                @if ($product->discount_type =='persen')
+                                : Rp. {{ number_format($product->price - (($product->price / 100) * $product->discount),2,',','.') }}
+                                @else
+                                : Rp. {{ number_format($product->price - $product->discount,2,',','.') }}
+                                @endif
+                            @else
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
                             <b>Stock</b>
                         </div>
                         <div class="col-6 col-lg-8">
@@ -67,6 +83,24 @@
                         </div>
                         <div class="col-6 col-lg-8">
                             : {{ $product->weight }} (Gram)
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
+                            <b>Discount</b>
+                        </div>
+                        <div class="col-6 col-lg-8">
+                            : {{ $product->is_discount ? $product->discount : '-' }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
+                            <b>Tipe Discount</b>
+                        </div>
+                        <div class="col-6 col-lg-8">
+                            : {{ $product->is_discount ? $product->discount_type : '-' }}
                         </div>
                     </div>
                     <hr>
@@ -123,6 +157,10 @@
                         </a>
                     </div>
                 </div>
+            </div>
+            <div class="text-right">
+                <a href="{{ route('product.index') }}" class="btn btn-outline-primary"><i data-feather='corner-up-left'></i>
+                    Back</a>
             </div>
         </div>
     </div>

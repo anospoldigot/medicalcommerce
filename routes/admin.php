@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     ProductController,
     DashboardController,
     CategoryController,
+    DuitkuController,
     OrderController,
     PostController,
     SettingWebController,
@@ -29,7 +30,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
+Route::get('test', [DuitkuController::class, 'index']);
+Route::get('test2', [DuitkuController::class, 'test2']);
 Route::middleware([])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::controller(SettingWebController::class)->prefix('setting')->group(function () {

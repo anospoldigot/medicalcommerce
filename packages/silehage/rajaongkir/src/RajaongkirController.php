@@ -4,7 +4,7 @@ namespace Silehage\Rajaongkir;
 
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\Controller;
+use App\Http\Controllers\Controller;
 
 class RajaongkirController extends Controller
 {

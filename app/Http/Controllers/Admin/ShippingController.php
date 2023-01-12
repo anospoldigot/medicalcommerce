@@ -6,6 +6,7 @@ use App\Models\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Rajaongkir;
+use App\Http\Controllers\Controller;
 
 class ShippingController extends Controller
 {

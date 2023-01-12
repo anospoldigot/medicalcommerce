@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,11 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(FrontendController::class)->group(function(){
+    Route::get('/', 'index');
 });
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });

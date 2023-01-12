@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductVariantValue;
-
+use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
     protected $config;

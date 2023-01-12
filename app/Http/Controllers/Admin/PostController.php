@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {

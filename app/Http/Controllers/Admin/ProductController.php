@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -30,6 +31,9 @@ class ProductController extends Controller
             return DataTables::of($products)
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.product._action')
+                ->addColumn('price', function($product){
+                    return 'Rp. ' . number_format($product->price, 2, ',', '.');
+                })
                 ->toJson();
         }
         
@@ -125,14 +129,27 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'title' => 'required|unique:products',
-            'price' => 'required',
-            'weight' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'description' => 'required',
-            'images' => 'required'
-        ], [
+        // if($request->is_discount){
+        //     dd(request()->all());
+        // }
+
+        $rules = [
+            'title'         => 'required|unique:products',
+            'price'         => 'required',
+            'weight'        => 'required|numeric',
+            'stock'         => 'required|numeric',
+            'description'   => 'required',
+            'images'        => 'required'
+        ];
+
+        if($request->is_discount){
+            $rules['is_discount']       = 'required';
+            $rules['discount']          = 'required';
+            $rules['discount_type']     = 'required';
+        }
+
+
+        $request->validate($rules, [
             'title.unique' => 'Nama produk sudah digunakan'
         ]);
 
@@ -148,19 +165,23 @@ class ProductController extends Controller
             $slug = Str::slug($request->title);
             $product = new Product();
 
-            $product->title = $request->title;
-            $product->slug = $slug;
-            $product->price = str_replace(",", "", $request->price);
-            $product->stock = $request->stock;
-            $product->weight = $request->weight;
+            $product->title         = $request->title;
+            $product->slug          = $slug;
+            $product->price         = str_replace(",", "", $request->price);
+            $product->stock         = $request->stock;
+            $product->weight        = $request->weight;
+            $product->category_id   = $request->category_id;
+            $product->description   = $request->description;
+            $product->sku           = 'PRD' . Str::random(14);
 
-            $product->category_id =  $request->category_id;
-
-            $product->description = $request->description;
-
-            $product->sku = 'PRD' . Str::random(14);
+            if($request->is_discount){
+                $product->is_discount       = $request->is_discount;
+                $product->discount          = $request->discount;
+                $product->discount_type     = $request->discount_type;
+            }
 
             $product->save();
+
 
             if ($request->images) {
                 foreach ($request->images as $file) {
@@ -221,7 +242,7 @@ class ProductController extends Controller
             
             DB::rollBack();
             
-            return redirect()->route('product.index')->with('error', 'Gagal membuat data product');
+            return redirect()->route('product.index')->with('error', $th->getMessage());
             // return response([
             //     'success' => false,
             //     'message' => $th->getMessage(),
@@ -255,15 +276,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        // dd(request()->all());
-        $request->validate([
+
+        $rules = [
             'title' => 'required',
             'price' => 'required',
             'weight' => 'required|numeric',
             'stock' => 'required|numeric',
             'description' => 'required',
             // 'images' => 'mimes:png,jpg,svg'
-        ]);
+        ];
+
+        if ($request->is_discount) {
+            $rules['is_discount']       = 'required';
+            $rules['discount']          = 'required';
+            $rules['discount_type']     = 'required';
+        }
+
+        $request->validate($rules);
 
         $path = public_path('/upload/images');
 
@@ -273,12 +302,18 @@ class ProductController extends Controller
 
         DB::beginTransaction();
 
-        $product->title = $request->title;
-        $product->price = str_replace(",", "", $request->price);
-        $product->stock = $request->stock;
-        $product->weight = $request->weight;
-        $product->description = $request->description;
-        $product->category_id = $request->category_id;
+        $product->title         = $request->title;
+        $product->price         = str_replace(",", "", $request->price);
+        $product->stock         = $request->stock;
+        $product->weight        = $request->weight;
+        $product->description   = $request->description;
+        $product->category_id   = $request->category_id;
+
+        $product->is_discount   = $request->is_discount;
+        if($request->is_discount){
+            $product->discount          = $request->discount;
+            $product->discount_type     = $request->discount_type;
+        }
 
         try {
 
