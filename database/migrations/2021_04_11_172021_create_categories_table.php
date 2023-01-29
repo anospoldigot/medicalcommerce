@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug');
             $table->string('filename')->nullable();
             $table->string('banner')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
         });
     }
 

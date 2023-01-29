@@ -22,7 +22,7 @@
             <h4 class="card-title">Create Product</h4>
         </div>
         <div class="card-body">
-            <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data" id="create-product">
                 @csrf
                 <div class="row">
                     <div class="col-12 col-lg-6">
@@ -78,10 +78,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group mt-1">
-                    <div class="custom-control custom-control-primary custom-switch">
-                        <input type="checkbox" {{ old('discount') == 1 ? 'checked' : '' }} value="1" class="custom-control-input" id="is_discount" name="is_discount" />
-                        <label class="custom-control-label"  for="is_discount">Discount</label>
+                <div class="row mt-1">
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="custom-control custom-control-primary custom-switch">
+                                <input type="checkbox" {{ old('discount')==1 ? 'checked' : '' }} value="1" class="custom-control-input"
+                                    id="is_discount" name="is_discount" />
+                                <label class="custom-control-label" for="is_discount">Discount</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="custom-control custom-control-primary custom-switch">
+                                <input type="checkbox"  value="1" class="custom-control-input"
+                                    id="is_front" name="is_front" />
+                                <label class="custom-control-label" for="is_front">Show in Landing Page</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row" id="detail-discount">
@@ -133,7 +147,8 @@
                 </div>
                 <div class="text-right">
                     <a href="{{ route('product.index') }}" class="btn btn-outline-primary"><i data-feather='corner-up-left'></i> Batal</a>
-                    <button type="submit" class="btn btn-primary"><i data-feather='save'></i> Tambah</button>
+                    <button type="button" id="form-submit" class="btn btn-primary"><i data-feather='save'></i> Tambah</button>
+                    <button type="submit" class="btn btn-primary d-none"><i data-feather='save'></i> Tambah</button>
                 </div>
             </form>
         </div>
@@ -186,10 +201,75 @@
                 $('#detail-discount').hide();
             }
         })
+        $('#form-submit').click(function(){
+            let html = '';
+            const data = $('#create-product').serializeArray();
+            console.log(data);
 
+            html += `
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
+                            <small><b>Nama Product</b></small>
+                        </div>
+                        <div class="col-6 col-lg-8">
+                            : ${$('#title').val()}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
+                            <small><b>Harga</b></small>
+                        </div>
+                        <div class="col-6 col-lg-8">
+                            : Rp. ${$('#price').val()}
+                        </div>
+                    </div>
+                    <hr>
 
+            `
+            if($('#is_discount').is(':checked')){
+                let price; 
+                if($('#discount_type').val() == 'persen'){
+                    price = (parseInt($('#price').val().replace(/,/g, '')) / 100) * $('#discount').val()
+                }else if($('#discount_type').val() == 'nominal'){
+                    price = parseInt($('#price').val().replace(/,/g, '')) - parseInt($('#discount').val().replace(/,/g, ''))
+                }
+                console.log($('#price').val().replace(/,/g, ''))
+                html += `
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
+                            <small><b>Harga Setelah Discount</b></small>
+                        </div>
+                        <div class="col-6 col-lg-8">
+                            : Rp. ${numeral(price).format('0,0')}
+                        </div>
+                    </div>
+                    <hr>
+                `
+            }
 
-
+            Swal.fire({
+                title: '<strong>Ringkasan Product</strong>',
+                icon: 'info',
+            
+                html: `<div class="container">${html}</div>`,
+                // html:
+                // 'You can use <b>bold text</b>, ' +
+                // '<a href="//sweetalert2.github.io">links</a> ' +
+                // 'and other HTML tags',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tambah Product',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#create-product').submit()
+                }
+            })
+        });
 
     </script>
 @endpush

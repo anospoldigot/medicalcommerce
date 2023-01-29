@@ -6,11 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "azishapidin/indoregion": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "pusher/pusher-php-server": "^7.0",
         "yajra/laravel-datatables": "9.0",
         "yajra/laravel-datatables-oracle": "^10.0"
     },
@@ -29,7 +31,10 @@
             "Database\\Seeders\\": "database/seeders/",
             "Silehage\\Rajaongkir\\": "packages/silehage/rajaongkir/src",
             "Silehage\\Tripay\\": "packages/silehage/tripay/src"
-        }
+        },
+        "classmap": [
+            "app/Library"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

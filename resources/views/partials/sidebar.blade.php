@@ -64,6 +64,8 @@
              --}}
             <li class="{{ request()->routeIs('post.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('post.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Artikel / Blog</span></a>
             </li>
+            <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('chats.index') }}"><i data-feather='message-square'></i><span class="menu-title text-truncate" data-i18n="Home">Chat</span></a>
+            </li>
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Page Layouts</span><span
                         class="badge badge-light-danger badge-pill ml-auto mr-1">2</span></a>

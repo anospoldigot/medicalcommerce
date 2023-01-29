@@ -1,0 +1,77 @@
+ <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="
+https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js
+"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('dddeb21050da924580f6', {
+      cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      alert(JSON.stringify(data));
+    });
+
+    $('.chat-tab').hide();
+    $('.blantershow-chat').click(function(){
+        $('.chat-tab').fadeToggle();
+    });
+</script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+
+    
+    const addToCart = function(product_id){
+            $.ajax({
+                url: '{{ route("fe.carts.store") }}',
+                method: 'POST',
+                data: {
+                    product_id
+                },
+                success: function(res){
+                    console.log(res);
+                    if(res.success){
+                        window.location.href = res.redirect_url
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                    alert(JSON.stringify(err))
+                }
+            })
+        }
+    function formatRupiah(angka, prefix, toFixed = ''){
+        let number_string = angka.toString().replace(/[^,\d]/g, ''),
+        split = number_string.split(','),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if(ribuan){
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '') + toFixed;
+    }
+</script>

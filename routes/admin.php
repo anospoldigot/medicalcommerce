@@ -45,6 +45,7 @@ Route::middleware([])->group(function () {
     Route::controller(TransactionController::class)->group(function () {
         Route::get('transactions', 'index')->name('transaction.index');
     });
+    
     Route::delete('orders/{id}', [OrderController::class, 'destroy']);
     Route::get('orders', [OrderController::class, 'index']);
     Route::post('searchAdminOrder', [OrderController::class, 'searchAdminOrder']);
@@ -54,13 +55,20 @@ Route::middleware([])->group(function () {
 
     Route::post('paymentAccepted/{id}', [OrderController::class, 'paymentAccepted']);
     Route::post('inputResi', [OrderController::class, 'inputResi']);
+
+
+    // Ajax CRUD
     Route::apiResources([
         'category' => CategoryController::class,
+        'chats'     => ChatController::class
     ]);
+
+    //CRUD
     Route::resources([
-        'post' => PostController::class,
-        'product' => ProductController::class
+        'post'      => PostController::class,
+        'product'   => ProductController::class,
     ]);
+    
     Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');
     Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
 });

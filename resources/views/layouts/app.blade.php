@@ -144,6 +144,7 @@
     <script src="/js/numeral.min.js"></script>
     <script src="/app-assets/js/scripts/ui/ui-feather.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- BEGIN Vendor JS-->
 

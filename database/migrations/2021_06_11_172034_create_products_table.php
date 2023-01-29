@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->integer('sold')->nullable();
             $table->boolean('status')->default(true);
             $table->boolean('is_discount')->default(false);
+            $table->boolean('is_front')->default(false);
             $table->integer('discount')->default(false);
             $table->enum('discount_type', ['persen', 'nominal'])->nullable();
             $table->foreignId('category_id')->nullable();

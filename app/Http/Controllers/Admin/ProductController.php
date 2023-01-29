@@ -309,8 +309,8 @@ class ProductController extends Controller
         $product->description   = $request->description;
         $product->category_id   = $request->category_id;
 
-        $product->is_discount   = $request->is_discount;
         if($request->is_discount){
+            $product->is_discount       = $request->is_discount;
             $product->discount          = $request->discount;
             $product->discount_type     = $request->discount_type;
         }

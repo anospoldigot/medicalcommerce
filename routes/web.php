@@ -1,7 +1,18 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Frontend\AddressController;
+use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\ChatController;
+use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\ShipperController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\Payment\{
+    CancelPayment, ChargeCreditCard, CheckPayment, RequestCPay, RequestCVS, RequestEWallet,
+    RequestVA
+};
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +37,32 @@ Route::controller(AuthController::class)->group(function () {
 
 
 Route::controller(FrontendController::class)->group(function(){
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('landing');
+    // Route::get('product', 'product')->name('product');
+    // Route::get('product/{product:slug}', 'product_detail')->name('product_detail');
+    // Route::get('cart', 'cart')->name('cart');
 });
+
+Route::name('fe.')->group(function () {
+    Route::resource('products', ProductController::class);
+    Route::resource('carts', CartController::class)->middleware('auth');
+    Route::resource('addresses', AddressController::class)->middleware('auth');
+    // Route::resource('shipping', ShipperController::class)->middleware('auth');
+    Route::get('shipping/check', [ShipperController::class, 'check'])->name('shipping.check')->middleware('auth');
+    Route::get('payment/callback', [PaymentController::class, 'callback']);
+    Route::resource('payment', PaymentController::class);
+    route::resource('chats', ChatController::class);
+});
+
+Route::post('chargeCC', ChargeCreditCard::class);
+Route::post('requestVA', RequestVA::class);
+Route::post('requestCVS', RequestCVS::class);
+Route::post('requestCPay', RequestCPay::class);
+Route::post('requestEWallet', RequestEWallet::class);
+// Route::post('requestPayloan', 'RequestPayloan'); //NOT AVAILABLE in V1
+Route::post('checkPayment', CheckPayment::class);
+Route::post('cancelPayment', CancelPayment::class);
+
 
 
 // Route::get('/', function () {

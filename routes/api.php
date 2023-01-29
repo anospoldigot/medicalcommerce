@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\WilayahController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::controller(WilayahController::class)->name('api.')->group(function(){
+    Route::get('regencies/{province_id}', 'regencies')->name('regencies');
+    Route::get('districts/{regency_id}', 'districts')->name('districts');
+    Route::get('villages/{district_id}', 'villages')->name('villages');
 });
