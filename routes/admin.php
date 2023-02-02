@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     ProductController,
     DashboardController,
     CategoryController,
+    ChatController,
     DuitkuController,
     OrderController,
     PostController,

@@ -12,8 +12,15 @@
                     <div class="card-body">
                         <div class="text-center">
                             <h6 class="text-center">No. Virtual Account</h6>
-                            <h2 style="letter-spacing: 2px;">{{ json_decode($transaksi->raw_callback)->bankVacctNo }}</h2>
-                            <div>Status: <span class="badge badge-warning">Waiting</span></div>
+                            <h2 style="letter-spacing: 2px;">{{ json_decode($order->response_data)->vaNumber }}</h2>
+                            @if ($transaction->statusCode == "00")
+                                <div>Status: <span class="badge badge-success">{{$transaction->statusMessage}}</span></div>
+                            @elseif($transaction->statusCode == "01")
+                                <div>Status: <span class="badge badge-warning">{{$transaction->statusMessage}}</span></div>
+                            @else
+                                <div>Status: <span class="badge badge-danger">{{$transaction->statusMessage}}</span></div>
+                            @endif
+
                         </div>
                     </div>
                 </div>

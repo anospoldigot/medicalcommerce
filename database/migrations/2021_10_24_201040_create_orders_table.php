@@ -14,9 +14,9 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->string('trx_id')->nullable();
+            $table->uuid('id')->primary();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->integer('merchant_order_id');
             $table->string('customer_name')->nullable();
             $table->string('customer_whatsapp')->nullable();
             $table->integer('order_qty');
@@ -25,7 +25,8 @@ class CreateOrdersTable extends Migration
             $table->integer('order_unique_code')->nullable();
             $table->integer('order_total')->default(0);
             $table->string('order_status')->nullable(); 
-            $table->json('raw_callback')->nullable(); 
+            $table->json('request_data')->nullable(); 
+            $table->json('response_data')->nullable(); 
             $table->timestamps();
         });
     }

@@ -10,16 +10,44 @@ use App\Models\Product;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Village;
+use Exception;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
 
+
+    private $duitkuConfig;
+    private $merchantCode   = 'DS12776';
+    private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
+    private $callbackUrl    = 'https://medicalcommerce.test/callback';
+    private $returnUrl      = 'https://medicalcommerce.test/callback';
+
+    public function __construct()
+    {
+        $this->duitkuConfig = new \Duitku\Config($this->merchantKey, $this->merchantCode);
+        // false for production mode
+        // true for sandbox mode
+        $this->duitkuConfig->setSandboxMode(true);
+        // set sanitizer (default : true)
+        $this->duitkuConfig->setSanitizedMode(false);
+        // set log parameter (default : true)
+        $this->duitkuConfig->setDuitkuLogs(true);
+    }
+
     public function index()
     {
 
-        $carts = Cart::with('product.assets', 'product.category')->where('user_id', auth()->id())->get();
+        try {
+            $paymentAmount = "10000"; //"YOUR_AMOUNT";
+            $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
+            $paymentMethodList = json_decode($paymentMethodList);
 
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+        $carts = Cart::with('product.assets', 'product.category')->where('user_id', auth()->id())->get();
 
         $order_subtotal = $carts->sum(function ($cart) {
             return $cart->quantity * $cart->product->price;
@@ -32,7 +60,9 @@ class CartController extends Controller
         $villages = Village::all();
 
 
-        return view('frontend.cart.index', compact('carts', 'order_subtotal', 'addresses', 'provinces'));
+        return view('frontend.payment.index', compact(
+            'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList'
+        ));
     }
 
     public function store () 

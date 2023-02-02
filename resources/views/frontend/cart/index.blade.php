@@ -183,7 +183,7 @@
                                 @endif
                                 <div class="row py-5 p-4 bg-white rounded">
                                     <div class="col-lg-6">
-                                        <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">
+                                        {{-- <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">
                                             Payment Method</div>
                                         <div class="p-4">
                                             <p class="font-italic mb-4">
@@ -200,7 +200,7 @@
                                                     <option value="08">GPN Card</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">
                                             Coupon code</div>
                                         <div class="p-4">
@@ -280,25 +280,25 @@
     const options_temp = '<option value="" selected disabled>==Pilh==<option>';
         
 
-        $('#payMethod').change(function(e){
-            if($(this).val() == 01){
-                url_form = '{{ url("chargeCC") }}'
-            }else if($(this).val() == 02){
-                url_form = '{{ url("requestVA") }}'
-            }else if($(this).val() == 03){
-                url_form = '{{ url("requestCVS") }}'
-            }else if($(this).val() == 04){
-                url_form = '{{ url("requestCPay") }}'
-            }else if($(this).val() == 05){
-                url_form = '{{ url("requestEWallet") }}'
-            }else if($(this).val() == 06){
-            }else if($(this).val() == 08){
+        // $('#payMethod').change(function(e){
+        //     if($(this).val() == 01){
+        //         url_form = '{{ url("chargeCC") }}'
+        //     }else if($(this).val() == 02){
+        //         url_form = '{{ url("requestVA") }}'
+        //     }else if($(this).val() == 03){
+        //         url_form = '{{ url("requestCVS") }}'
+        //     }else if($(this).val() == 04){
+        //         url_form = '{{ url("requestCPay") }}'
+        //     }else if($(this).val() == 05){
+        //         url_form = '{{ url("requestEWallet") }}'
+        //     }else if($(this).val() == 06){
+        //     }else if($(this).val() == 08){
 
-            }
+        //     }
 
-            $('form#checkout').attr('action', url_form);
+        //     $('form#checkout').attr('action', url_form);
 
-        });
+        // });
 
 
 

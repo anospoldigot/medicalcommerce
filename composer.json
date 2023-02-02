@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "awobaz/compoships": "^2.1",
         "azishapidin/indoregion": "^3.0",
+        "duitkupg/duitku-php": "dev-master",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "laravel/framework": "^9.19",

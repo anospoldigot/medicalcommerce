@@ -10,8 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use HasApiTokens, HasFactory, Notifiable, \Awobaz\Compoships\Compoships;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -45,5 +45,24 @@ class User extends Authenticatable
     public function addresses()
     {
         return $this->hasMany(Address::class);
+    }
+
+    public function sender ()
+    {
+        return $this->hasMany(Message::class, 'from_id', 'id');
+    }
+    public function receiver ()
+    {
+        return $this->hasMany(Message::class, 'to_id', 'id');
+    }
+
+    public function sender_latest ()
+    {
+        return $this->hasOne(Message::class, 'from_id', 'id')->latestOfMany();
+    }
+    
+    public function receiver_latest ()
+    {
+        return $this->hasOne(Message::class, 'to_id', 'id')->latestOfMany();
     }
 }

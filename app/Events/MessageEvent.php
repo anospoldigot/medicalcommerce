@@ -19,16 +19,24 @@ class MessageEvent implements ShouldBroadcastNow
 
     public function __construct($message)
     {
-        $this->message = 'Halo semua kawan kawanku';
+        $this->message = $message;
     }
 
     public function broadcastOn()
     {
-        return ['my-channel'];
+        return new PresenceChannel('chat.1');
     }
 
     public function broadcastAs()
     {
         return 'my-event';
     }
+
+    // public function broadcastWith()
+    // {
+    //     return [
+    //         'message'   => $this->message,
+    //         // 'user'      => $this->user->only(['name', 'email'])
+    //     ];
+    // }
 }

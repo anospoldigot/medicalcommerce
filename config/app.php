@@ -68,8 +68,8 @@ return [
     | ahead and set this to a sensible default for you out of the box.
     |
     */
-
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -82,8 +82,8 @@ return [
     |
     */
 
-    'locale' => 'en',
-
+    'locale' => 'id',
+    
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -108,8 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
-
+    'faker_locale' => 'id_ID',
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -195,7 +194,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,

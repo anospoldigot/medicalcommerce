@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->uuid('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('payment_ref')->nullable();
             $table->string('payment_type')->nullable();
             $table->string('payment_method')->nullable();

@@ -15,6 +15,54 @@
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 <style>
 
+    .bottom-nav__item {
+        flex: 0 0 50%;
+        max-width: 50%;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        background-color: #333;
+        color: #eee;
+        cursor: pointer;
+    }
+    .bottom-nav__item:not(.swiper-button-disabled):hover {
+        opacity: 0.8;
+    }
+    .bottom-nav__item.swiper-button-disabled {
+    background-color: #999;
+    color: #ccc;
+    cursor: not-allowed;
+    }
+    .cart {
+        position: relative;
+        display: block;
+        width: 28px;
+        height: 28px;
+        height: auto;
+        overflow: hidden;
+    }
+    .cart .material-icons {
+        position: relative;
+        top: 4px;
+        z-index: 1;
+    }
+    .cart .count {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        font-size: 11px;
+        border-radius: 50%;
+        background: #7158e2;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        display: block;
+        text-align: center;
+        color: white;
+        font-family: "Roboto", sans-serif;
+        font-weight: bold;
+    }
     .chat-tab{
         position: fixed;
         bottom: 100px;
@@ -61,17 +109,6 @@
     width: 2rem;
     height: 2rem;
     
-    }
-    .swiper-button-prev {
-    background-image:
-    url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%234c71ae'%2F%3E%3C%2Fsvg%3E")
-    !important;
-    }
-    
-    .swiper-button-next {
-    background-image:
-    url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%234c71ae'%2F%3E%3C%2Fsvg%3E")
-    !important;
     }
 
 
@@ -299,6 +336,7 @@
         .social_profile ul li a {
             margin-right: 10px;
             margin-bottom: 10px;
+            
         }
     }
 

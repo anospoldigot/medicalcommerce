@@ -5,7 +5,7 @@
             <button type="button" class="btn btn-primary btn-sm" data-mdb-ripple-color="dark">Let's Chat
                 App</button>
         </div>
-        <div class="card-body" style="position: relative; height:300px; overflow-y: scroll;">
+        <div class="card-body" style="position: relative; height:300px; overflow-y: scroll;" id="chat-content">
     
             <div class="d-flex flex-row justify-content-start">
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 1"
@@ -116,9 +116,9 @@
         <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3" style="gap: 10px">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 3"
                 style="width: 40px; height: 100%;">
-            <input type="text" class="form-control " id="exampleFormControlInput1"
+            <input type="text" class="form-control " id="chat-input"
                 placeholder="Type message">
-            <a class="ml-3" href="#!"><i class="fas fa-paper-plane"></i></a>
+            <button id="send-chat-btn" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i></b>
         </div>
     </div>
 </div>

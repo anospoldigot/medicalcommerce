@@ -11,8 +11,6 @@ $(function () {
   'use strict';
 
   var quantityCounter = $('.quantity-counter'),
-    CounterMin = 1,
-    CounterMax = 10,
     bsStepper = document.querySelectorAll('.bs-stepper'),
     checkoutWizard = document.querySelector('.checkout-tab-steps'),
     removeItem = $('.remove-wishlist'),
@@ -94,24 +92,30 @@ $(function () {
 
   // checkout quantity counter
   if (quantityCounter.length > 0) {
-    quantityCounter
-      .TouchSpin({
-        min: CounterMin,
-        max: CounterMax
+    quantityCounter.each(function(){
+      const parent = $(this).closest('.ecommerce-card');
+      const product = parent.data('product');
+      $(this).TouchSpin({
+        min: 1,
+        max: product.stock
       })
       .on('touchspin.on.startdownspin', function () {
         var $this = $(this);
+        parent.find('.item-price').html(formatRupiah(product.price * $this.val(), 'Rp. ', ',00')).trigger('change')
         $('.bootstrap-touchspin-up').removeClass('disabled-max-min');
         if ($this.val() == 1) {
           $(this).siblings().find('.bootstrap-touchspin-down').addClass('disabled-max-min');
         }
+        
       })
       .on('touchspin.on.startupspin', function () {
         var $this = $(this);
+        parent.find('.item-price').html(formatRupiah(product.price * $this.val(), 'Rp. ', ',00')).trigger('change')
         $('.bootstrap-touchspin-down').removeClass('disabled-max-min');
-        if ($this.val() == 10) {
+        if ($this.val() == product.stock) {
           $(this).siblings().find('.bootstrap-touchspin-up').addClass('disabled-max-min');
         }
       });
+    })
   }
 });

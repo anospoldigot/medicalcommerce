@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DuitkuController;
+use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\Frontend\AddressController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\CartController;
@@ -50,10 +52,14 @@ Route::name('fe.')->group(function () {
     // Route::resource('shipping', ShipperController::class)->middleware('auth');
     Route::get('shipping/check', [ShipperController::class, 'check'])->name('shipping.check')->middleware('auth');
     Route::get('payment/callback', [PaymentController::class, 'callback']);
+    Route::post('payment/checkout', [PaymentController::class, 'checkout']);
     Route::resource('payment', PaymentController::class);
-    route::resource('chats', ChatController::class);
+    Route::resource('chats', ChatController::class);
+    Route::get('duitku', [DuitkuController::class, 'index'])->name('duitku.index');
 });
 
+
+Route::get('broadcast', [BroadcastController::class, 'index']);
 Route::post('chargeCC', ChargeCreditCard::class);
 Route::post('requestVA', RequestVA::class);
 Route::post('requestCVS', RequestCVS::class);

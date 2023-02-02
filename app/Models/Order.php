@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Uuid;
 
 class Order extends Model
 {
@@ -12,6 +13,22 @@ class Order extends Model
 
     protected $guarded = [];
     public $appends = ['status_label', 'created'];
+    public $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            try {
+                $model->id = Uuid::uuid4();
+            } catch (\Throwable $e) {
+                abort(500, $e->getMessage());
+            }
+        });
+    }
+
 
     public $casts = [
         'created_at' => 'datetime:d/m/Y'

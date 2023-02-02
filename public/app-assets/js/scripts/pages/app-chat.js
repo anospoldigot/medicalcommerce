@@ -9,6 +9,57 @@
 
 'use strict';
 
+function navChatTemplate() {
+  return `<div class="chat-navbar">
+              <header class="chat-header">
+                  <div class="d-flex align-items-center">
+                      <div class="sidebar-toggle d-block d-lg-none mr-1">
+                          <i data-feather="menu" class="font-medium-5"></i>
+                      </div>
+                      <div class="avatar avatar-border user-profile-toggle m-0 mr-1">
+                          <img src="/app-assets/images/portrait/small/avatar-s-7.jpg"
+                              alt="avatar" height="36" width="36" />
+                          <span class="avatar-status-busy"></span>
+                      </div>
+                      <h6 class="mb-0">Kristopher Candy</h6>
+                  </div>
+              </header>
+            </div>`
+}
+
+function customerChatTemplate(data) {
+  return `<div class="chat chat-left">
+                <div class="chat-avatar">
+                    <span class="avatar box-shadow-1 cursor-pointer">
+                        <img src="/app-assets/images/portrait/small/avatar-s-7.jpg"
+                            alt="avatar" height="36" width="36" />
+                    </span>
+                </div>
+                <div class="chat-body">
+                    <div class="chat-content">
+                        <p>${data.content}</p>
+                    </div>
+                </div>
+            </div>`
+}
+
+function adminChatTemplate(data) {
+  return `<div class="chat">
+                <div class="chat-avatar">
+                    <span class="avatar box-shadow-1 cursor-pointer">
+                        <img src="/app-assets/images/portrait/small/avatar-s-11.jpg"
+                            alt="avatar" height="36" width="36" />
+                    </span>
+                </div>
+                <div class="chat-body">
+                    <div class="chat-content">
+                        <p>${data.content}</p>
+                    </div>
+                </div>
+            </div>`
+}
+
+
 $(function () {
   var chatUsersListWrapper = $('.chat-application .chat-user-list-wrapper'),
     overlay = $('.body-content-overlay'),
@@ -28,7 +79,7 @@ $(function () {
     menuToggle = $('.chat-application .menu-toggle'),
     speechToText = $('.speech-to-text'),
     chatSearch = $('.chat-application #chat-search');
-
+    
   // init ps if it is not touch device
   if (!$.app.menu.is_touch_device()) {
     // Chat user list
@@ -48,6 +99,8 @@ $(function () {
       });
     }
 
+    
+
     // User profile right area
     if (profileSidebarArea.length > 0) {
       var user_profile = new PerfectScrollbar(profileSidebarArea[0]);
@@ -61,7 +114,7 @@ $(function () {
     // on user click sidebar close in touch devices
     $(chatsUserList)
       .find('li')
-      .on('click', function () {
+      .live('click', function () {
         $(sidebarContent).removeClass('show');
         $(overlay).removeClass('show');
       });
@@ -129,11 +182,27 @@ $(function () {
     chatUsersListWrapper.find('ul li').on('click', function () {
       var $this = $(this),
         startArea = $('.start-chat-area'),
-        activeChat = $('.active-chat');
-
+        activeChat = $('.active-chat'),
+        id = $(this).data('id');
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         chatUsersListWrapper.find('ul li').removeClass('active');
       }
+
+      $.get(`${window.location.href}/${id}`, function (res) {
+        $('.chat-navbar').remove();
+        activeChat.prepend(navChatTemplate(res.data));
+        let html = '';
+        res.data.forEach(value => {
+          if(value.from_id == id){
+            html += customerChatTemplate(value)
+          }else{
+            html += adminChatTemplate(value)
+          }
+        })
+        $('.chats').html(html);
+        chatsUser.update();
+      })
+
 
       $this.addClass('active');
       $this.find('.badge').remove();
@@ -280,10 +349,28 @@ function onClickFn() {
 // Add message to chat - function call on form submit
 function enterChat(source) {
   var message = $('.message').val();
-  if (/\S/.test(message)) {
-    var html = '<div class="chat-content">' + '<p>' + message + '</p>' + '</div>';
-    $('.chat:last-child .chat-body').append(html);
-    $('.message').val('');
-    $('.user-chats').scrollTop($('.user-chats > .chats').height());
-  }
+  let receiver_id = '';
+  $('.chat-users-list').each(function(){
+      receiver_id = $(this).find('.active').data('id')
+  })
+  $.ajax({
+    url: window.location.href, 
+    data: {
+      content: message,
+      receiver_id
+    },
+    method: 'POST',
+    success: function(res){
+      var html = '<div class="chat-content">' + '<p>' + message + '</p>' + '</div>';
+        $('.chat:last-child .chat-body').append(html);
+        $('.message').val('');
+        $('.user-chats').scrollTop($('.user-chats > .chats').height());
+    },
+    error: function(err){
+      console.log(err);
+    }
+  });
 }
+
+
+

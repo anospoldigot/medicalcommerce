@@ -1,7 +1,10 @@
 @if ($disableHero > 0)
 <nav class="navbar navbar-expand-lg navbar-light py-3 bg-white">
     <div class="container">
-        <a class="navbar-brand" href="#">Permedik</a>
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
+            <span class="font-weight-bold text-uppercase text-secondary">Per<span class="text-primary">medik</span></span>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -19,23 +22,20 @@
                 <li class="nav-item {{ request()->routeIs('fe.products.index') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('fe.products.index') }}">Product</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                <li class="nav-item {{ request()->routeIs('fe.products.index') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('fe.products.index') }}">Contact</a>
                 </li>
+                
                 @auth
                 
-                <li class="na v-item ml-lg-5">
-                    <a href="{{ route('fe.carts.index') }}" class="btn btn-primary rounded-pill px-3 text-white"><i
-                            class="fa-solid fa-cart-shopping"></i></a>
+                <li class="nav-item ml-lg-5">
+                    <a class="cart">
+                        <span class="count">1</span>
+                        <!--   <span class="count">1</span> -->
+                        <i class="material-icons fa-solid fa-cart-shopping"></i>
+                    </a>
+                    {{-- <a href="{{ route('fe.carts.index') }}" class="btn btn-primary rounded-pill px-3 text-white"><i
+                            class="fa-solid fa-cart-shopping"></i></a> --}}
                 </li>
                 @else
                     <li class="nav-item ml-lg-5">
@@ -61,7 +61,10 @@
 <nav class="navbar navbar-hero navbar-expand-lg navbar-light {{ $disableHero > 1 ? 'bg-light' : 'bg-transparent' }} py-3"
     style="position: fixed; width: 100%; z-index: 999">
     <div class="container">
-        <a class="navbar-brand" href="#">Permedik</a>
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
+            <span class="font-weight-bold text-uppercase text-secondary">Per<span class="text-primary">medik</span></span>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -79,21 +82,19 @@
                 <li class="nav-item {{ request()->routeIs('fe.products.index') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('fe.products.index') }}">Product</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                <li class="nav-item {{ request()->routeIs('fe.products.index') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('fe.products.index') }}">Contact</a>
                 </li>
+                
                 @auth
-                    <li class="na v-item ml-lg-5">
-                        <a href="{{ route('fe.carts.index') }}" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <li class="nav-item ml-lg-5">
+                        <a class="cart">
+                            <span class="count">1</span>
+                            <!--   <span class="count">1</span> -->
+                            <i class="material-icons fa-solid fa-cart-shopping"></i>
+                        </a>
+                        {{-- <a href="{{ route('fe.carts.index') }}" class="btn btn-primary rounded-pill px-3 text-white"><i
+                                class="fa-solid fa-cart-shopping"></i></a> --}}
                     </li>
                 @else
                     <li class="nav-item ml-lg-5">

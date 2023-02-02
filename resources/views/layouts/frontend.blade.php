@@ -20,8 +20,12 @@
     @include('partials.frontend.footer')
     <!-- Optional JavaScript; choose one of the two! -->
 
-    @include('partials.frontend.script')
 
+    <script>
+        const id = '{{ auth()->id() }}';
+    </script>
+    @include('partials.frontend.script')
+    
     <script>
         $(window).scroll(function () {
             if ($(this).scrollTop() > 40) {

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('from_id');
             $table->string('from_type');
-            $table->foreignId('to_id');
+            $table->foreignId('to_id')->nullable();
             $table->text('content');
             $table->timestamps();
         });

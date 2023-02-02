@@ -1,8 +1,8 @@
-<div class="col-12 mb-3">
+{{-- <div class="col-12 mb-3">
     <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">
         Address Shipping
     </div>
-</div>
+</div> --}}
 @foreach ($addresses as $address)
 <div class="col-12 p-3">
     <div class="form-check">

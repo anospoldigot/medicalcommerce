@@ -457,7 +457,9 @@
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <i class="fa-solid fa-cube text-primary mb-3" style="font-size: 35px; "></i>
+                        <span class="bg-light p-2">
+                            <i class="fa-solid fa-store text-primary mb-3" style="font-size: 35px; "></i>
+                        </span>
                         <h4 class="text-secondary font-weight-bold">Market Leader</h4>
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci quasi dolores, perferendis
@@ -465,7 +467,9 @@
                         </p>
                     </div>
                     <div class="col-6">
-                        <i class="fa-solid fa-cube text-primary mb-3" style="font-size: 35px; "></i>
+                        <span class="bg-light p-2">
+                            <i class="fa-solid fa-building-columns text-primary mb-3" style="font-size: 35px; "></i>
+                        </span>
                         <h4 class="text-secondary font-weight-bold">Market Leader</h4>
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci quasi dolores, perferendis
@@ -489,45 +493,41 @@
             <div class="row mx-lg-n5">
                 <div class="col-lg-3 px-lg-4">
                     <div class="bg-white shadow border-botton text-center border-primary px-3 py-4"
-                        style="border-radius: 12px;">
-                        <i class="fa-solid fa-cube text-primary mb-3" style="font-size: 35px; "></i>
-                        <h4 class="mb-3">Lorem Ipsum</h4>
+                        style="border-radius: 12px; height: 100%;">
+                        <i class="fa-solid fa-rotate-left text-secondary mb-3" style="font-size: 35px;"></i>
+                        <h5 class="mb-3">Pengembalian Mudah</h5>
                         <p>
-                            Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-                            cupiditate
+                            Salah beli barang bukan jadi halangan untuk anda, kami menyediakan return barang untuk anda yang merasa tidak sesuai
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-3 px-lg-4">
                     <div class="bg-white shadow border-botton text-center border-primary px-3 py-4"
-                        style="border-radius: 12px;">
-                        <i class="fa-solid fa-cube text-primary mb-3" style="font-size: 35px; "></i>
-                        <h4 class="mb-3">Lorem Ipsum</h4>
+                        style="border-radius: 12px; height: 100%;">
+                        <i class="fa-sharp fa-solid fa-comments text-secondary mb-3" style="font-size: 35px;"></i>
+                        <h5 class="mb-3">CS support 24/7</h5>
                         <p>
-                            Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-                            cupiditate
+                            Customer Service kami terhubung setiap saat dan siap membantu anda
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-3 px-lg-4">
                     <div class="bg-white shadow border-botton text-center border-primary px-3 py-4"
-                        style="border-radius: 12px;">
-                        <i class="fa-solid fa-cube text-primary mb-3" style="font-size: 35px; "></i>
-                        <h4 class="mb-3">Lorem Ipsum</h4>
+                        style="border-radius: 12px; height: 100%;">
+                        <i class="fa-solid fa-truck-fast text-secondary mb-3" style="font-size: 35px;"></i>
+                        <h5 class="mb-3">Pengiriman cepat</h5>
                         <p>
-                            Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-                            cupiditate
+                            Tidak perlu menunggu lama, setelah anda checkout pesanan langsung dikirim
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-3 px-lg-4">
                     <div class="bg-white shadow border-botton text-center border-primary px-3 py-4"
-                        style="border-radius: 12px;">
-                        <i class="fa-solid fa-cube text-primary mb-3" style="font-size: 35px; "></i>
-                        <h4 class="mb-3">Lorem Ipsum</h4>
+                        style="border-radius: 12px; height: 100%;">
+                        <i class="fa-solid fa-credit-card text-secondary mb-3" style="font-size: 35px;"></i>
+                        <h5 class="mb-3">Pembayaran Lengkap</h5>
                         <p>
-                            Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-                            cupiditate
+                            Menyediakan banyak jenis pembayaran yang mempermudah proses pesanan ada tanpa ribet
                         </p>
                     </div>
                 </div>
@@ -604,7 +604,7 @@
             <h1 class="text-center text-secondary mb-5">Latest Article</h1>
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="bg-white card border-0 mb-3">
+                    <div class="bg-white shadow card border-0 mb-3">
                         <div class="row no-gutters">
                             <div class="col-md-4">
                                 <img src="https://source.unsplash.com/random" alt="..." class="rounded"
@@ -623,7 +623,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="bg-white card border-0 mb-3">
+                    <div class="bg-white shadow card border-0 mb-3">
                         <div class="row no-gutters">
                             <div class="col-md-4">
                                 <img src="https://source.unsplash.com/random" alt="..." class="rounded">
