@@ -7,6 +7,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 class AuthController extends Controller
 {
     public function login ()
@@ -69,6 +72,52 @@ class AuthController extends Controller
         }
 
         return redirect()->route('myAccount');
+    }
+
+    public function register()
+    {
+        
+        return view('auth.register');
+    }
+
+    public function registerPost()
+    {
+        $data = request()->validate([
+            'name'      => 'required',
+            'email'     => 'required|email',
+            'phone'     => 'required|numeric',
+            'password'  => 'required|min:8'
+        ]);
+
+        $data['role'] = 'user';
+        $data['password'] = bcrypt(request('password'));
+        $user = User::create($data);
+
+        Auth::login($user);
+       
+
+        return redirect()->route('verification.notice');
+    }
+
+    public function verify()
+    {
+        event(new Registered(request()->user()));
+
+        return view('auth.verify');
+    }
+
+    public function verifyEmail(EmailVerificationRequest $request) 
+    {
+        $request->fulfill();
+ 
+        return redirect('/');
+    }
+
+    public function resendVerify()
+    {
+        request()->user()->sendEmailVerificationNotification();
+        
+        return back()->with('message', 'Verification link sent!');
     }
 
     public function logout(Request $request)

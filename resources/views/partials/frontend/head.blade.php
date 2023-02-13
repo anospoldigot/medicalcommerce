@@ -8,31 +8,40 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.2.0/css/glide.core.min.css"
+    integrity="sha512-YQlbvfX5C6Ym6fTUSZ9GZpyB3F92hmQAZTO5YjciedwAaGRI9ccNs4iw2QTCJiSPheUQZomZKHQtuwbHkA9lgw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.2.0/css/glide.theme.min.css"
+    integrity="sha512-wCwx+DYp8LDIaTem/rpXubV/C1WiNRsEVqoztV0NZm8tiTvsUeSlA/Uz02VTGSiqfzAHD4RnqVoevMcRZgYEcQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="
+    https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.css
+    " rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/BrightTheme.css">
 <style>
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 9999;
+    }
 
-    .bottom-nav__item {
-        flex: 0 0 50%;
-        max-width: 50%;
-        text-align: center;
-        height: 30px;
-        line-height: 30px;
-        background-color: #333;
-        color: #eee;
-        cursor: pointer;
+    #loading-animation {
+        width: 200px;
     }
-    .bottom-nav__item:not(.swiper-button-disabled):hover {
-        opacity: 0.8;
-    }
-    .bottom-nav__item.swiper-button-disabled {
-    background-color: #999;
-    color: #ccc;
-    cursor: not-allowed;
-    }
+
+
+
     .cart {
         position: relative;
         display: block;
@@ -41,11 +50,13 @@
         height: auto;
         overflow: hidden;
     }
+
     .cart .material-icons {
         position: relative;
         top: 4px;
         z-index: 1;
     }
+
     .cart .count {
         position: absolute;
         top: 0;
@@ -63,7 +74,8 @@
         font-family: "Roboto", sans-serif;
         font-weight: bold;
     }
-    .chat-tab{
+
+    .chat-tab {
         position: fixed;
         bottom: 100px;
         right: 10px;
@@ -75,44 +87,49 @@
     .swiper {
         width: 100%;
     }
-    #map { height: 180px; }
+
+    #map {
+        height: 180px;
+    }
+
     a.blantershow-chat {
-    /* background: #009688; */
-    background: #fff;
-    color: #404040;
-    position: fixed;
-    display: flex;
-    font-weight: 400;
-    justify-content: space-between;
-    z-index: 98;
-    bottom: 25px;
-    right: 30px;
-    font-size: 15px;
-    padding: 10px 20px;
-    border-radius: 30px;
-    box-shadow: 0 1px 15px rgba(32, 33, 36, 0.28);
+        /* background: #009688; */
+        background: #fff;
+        color: #404040;
+        position: fixed;
+        display: flex;
+        font-weight: 400;
+        justify-content: space-between;
+        z-index: 98;
+        bottom: 25px;
+        right: 30px;
+        font-size: 15px;
+        padding: 10px 20px;
+        border-radius: 30px;
+        box-shadow: 0 1px 15px rgba(32, 33, 36, 0.28);
     }
-    
+
     a.blantershow-chat svg {
-    transform: scale(1.2);
-    margin: 0 10px 0 0;
+        transform: scale(1.2);
+        margin: 0 10px 0 0;
     }
+
     icon-shape {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        vertical-align: middle;
     }
-    
+
     .icon-sm {
-    width: 2rem;
-    height: 2rem;
-    
+        width: 2rem;
+        height: 2rem;
+
     }
 
 
-    
+
     a,
     a:hover,
     a:focus,
@@ -336,7 +353,7 @@
         .social_profile ul li a {
             margin-right: 10px;
             margin-bottom: 10px;
-            
+
         }
     }
 

@@ -49,19 +49,33 @@ class CartController extends Controller
 
         $carts = Cart::with('product.assets', 'product.category')->where('user_id', auth()->id())->get();
 
+        $discount = $carts->sum(function ($cart) {
+            $price = 0;
+            
+            if($cart->product->is_discount > 0){
+                $price = $cart->product->price;
+                if($cart->product->discount_type == 'persen'){
+                    $price = ($cart->product->price / 100) * $cart->product->discount;
+                }else if($cart->product->discount_type == 'nominal'){
+                    $price = $cart->product->price - $cart->product->discount;
+                }
+
+                $price = $cart->product->price - $price;
+            }
+
+            return $cart->quantity * $price;
+        });
+
         $order_subtotal = $carts->sum(function ($cart) {
             return $cart->quantity * $cart->product->price;
         });
 
-        $addresses = Address::where('user_id', auth()->id())->get();
-        $provinces = Province::all();
-        $regencies = Regency::all();
-        $districts = District::all();
-        $villages = Village::all();
 
+        $addresses = Address::with(['province', 'regency', 'village', 'district'])->where('user_id', auth()->id())->get();
+        $provinces = Province::all();
 
         return view('frontend.payment.index', compact(
-            'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList'
+            'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList', 'discount'
         ));
     }
 

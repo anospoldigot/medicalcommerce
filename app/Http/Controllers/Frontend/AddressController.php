@@ -15,7 +15,7 @@ class AddressController extends Controller
         $data['is_priority']= 1;
         $data['rawdata']    = json_encode(request()->all());
 
-        
+        Address::where('user_id', auth()->id())->update(['is_priority' => 0]);
         Address::create($data);
 
         return view('frontend.cart._address', [

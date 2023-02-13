@@ -2,6 +2,13 @@
 'disableHero' => 1
 ])
 
+@push('styles')
+<style>
+    
+</style>
+    
+@endpush
+
 @section('content')
 <!-- Hero  -->
 {{-- <div class="hero-container">
@@ -30,18 +37,17 @@
 <div class="bg-light text-center py-2">
     <span style="font-weight: 900; font-size: 40px; color: #b4b6b8;">PERMATA MITRA MEDIKA</span>
 </div> --}}
-<div style="background: #7158e226">
+<div class="bg-light">
     <div class="container py-5">
-        <div class="card border-0">
-            <!-- Product Details starts -->
+        <div class="card bg-white border-0" style="border-radius: 12px">
             <div class="card-body">
                 <div class="row my-2">
                     <div class="col-12 col-md-5">
-                        <div class="d-flex align-items-center justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
                             <img src="{{ $product->assets->first()->src }}" class="img-fluid product-img"
                                 alt="product image" />
                         </div>
-                        <div class="swiper" id="product">
+                        {{-- <div class="swiper" id="product">
                             <!-- Additional required wrapper -->
                             <div class="swiper-wrapper">
                                 @foreach ($product->assets as $asset)
@@ -50,10 +56,30 @@
                                 </div>
                                 @endforeach
                             </div>
-                            {{-- <div class="swiper-pagination"></div> --}}
                             <div class="swiper-button-prev"></div>
                             <div class="swiper-button-next"></div>
-                            {{-- <div class="swiper-scrollbar"></div> --}}
+                            
+                        </div> --}}
+                        <div class="glide">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    @foreach ($product->assets as $asset)
+                                        <li class="glide__slide">
+                                            <img src="{{ $asset->src }}" alt="" class="img-fluid">
+                                        </li>
+                                        <li class="glide__slide">
+                                            <img src="{{ $asset->src }}" alt="" class="img-fluid">
+                                        </li>
+                                        <li class="glide__slide">
+                                            <img src="{{ $asset->src }}" alt="" class="img-fluid">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="glide__arrows" data-glide-el="controls">
+                                <button class="glide__arrow btn btn-primary glide__arrow--left" data-glide-dir="<">prev</button>
+                                <button class="glide__arrow btn btn-primary glide__arrow--right" data-glide-dir=">">next</button>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-7">
@@ -109,7 +135,8 @@
                         <hr />
 
                         <div class="d-flex flex-column flex-sm-row pt-1">
-                            <a href="javascript:void(0)" onclick="addToCart({{ $product->id }})" class="btn btn-primary btn-cart mr-0 mr-sm-1 mb-1 mb-sm-0">
+                            <a href="javascript:void(0)" onclick="addToCart({{ $product->id }})"
+                                class="btn btn-primary">
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <span class="add-to-cart">Add to cart</span>
                             </a>
@@ -137,285 +164,86 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-light text-center py-2 my-5">
-                    <span style="font-weight: 900; font-size: 40px; color: #b4b6b8;">PERMATA MITRA MEDIKA</span>
-                </div>
-                <div class="text-center mb-5">
-                    <h4 class="mb-2">Related Products</h4>
-                    <h6 class="text-muted">People also search for this items</h6>
-                </div>
-                <div class="swiper" id="relatedProduct">
-                    <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper">
-                        <!-- Slides -->
+            </div>
+            
+            
+            
+        </div>
+    </div>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h4 class="mb-2">Related Products</h4>
+            <h6 class="text-muted">People also search for this items</h6>
+        </div>
+        <div class="swiper" id="relatedProduct">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                
+            </div>
+        
+            <div class="glide related-product">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
                         @foreach ($relatedProducts as $relate)
-                        <div class="swiper-slide" style="height: 100%">
-                            <div class="card mb-3 border-0 bg-light" style="height: 100%">
-                                <div class="card-img-top">
-                                    <img src="{{ $relate->assets->first()->src }}" class="card-img-top" alt="..."
-                                        style="max-height:250px; object-fit: cover;">
-                                    {{-- <img src="https://source.unsplash.com/random/{{ $relate->id }}"
-                                        class="card-img-top" alt="..." style="max-height:250px; object-fit: cover;">
-                                    --}}
-                                    @if ($relate->is_discount && $relate->discount_type == 'persen')
-                                    <span class="badge badge-success" style="position: absolute;top: 0; right: 0">-{{
-                                        $relate->discount }}%</span>
-                                    @endif
-                                </div>
-                                <div class="card-body d-flex flex-column justify-content-between">
-                                    <div>
-                                        <h5 class="card-title text-secondary text-capitalize"><a
-                                                href="{{ route('fe.products.show', $relate->slug) }}">{{ $relate->title
-                                                }}</a> </h5>
-                                        @if ($relate->category)
-                                        <div class="text-center text-capitalize mb-3">({{ $relate->category->title ??
-                                            '-' }})
-                                        </div>
+                            <div class="glide__slide" style="height: 100%">
+                                <div class="card mb-3 border-0 bg-white" style="height: 100%">
+                                    <div class="card-img-top">
+                                        <img src="{{ $relate->assets->first()->src }}" class="card-img-top" alt="..."
+                                            style="max-height:250px; object-fit: cover;">
+                                        {{-- <img src="https://source.unsplash.com/random/{{ $relate->id }}" class="card-img-top" alt="..."
+                                            style="max-height:250px; object-fit: cover;">
+                                        --}}
+                                        @if ($relate->is_discount && $relate->discount_type == 'persen')
+                                        <span class="badge badge-success" style="position: absolute;top: 0; right: 0">-{{
+                                            $relate->discount }}%</span>
                                         @endif
                                     </div>
-                                    <div>
-                                       
-                                        
-                                        
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h5 class="card-title text-secondary text-capitalize"><a
+                                                    href="{{ route('fe.products.show', $relate->slug) }}">{{ $relate->title
+                                                    }}</a> </h5>
+                                            @if ($relate->category)
+                                            <div class="text-center text-capitalize mb-3">({{ $relate->category->title ??
+                                                '-' }})
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
-                    </div>
-                    <!-- If we need pagination -->
-                    <div class="swiper-pagination"></div>
-
-                    <!-- If we need navigation buttons -->
-                    <div class="swiper-button-prev bottom-nav__item"></div>
-                    <div class="swiper-button-next bottom-nav__item"></div>
-
-                    <!-- If we need scrollbar -->
-                    <div class="swiper-scrollbar"></div>
+                    </ul>
+                </div>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow btn btn-primary glide__arrow--left" data-glide-dir="<">prev</button>
+                    <button class="glide__arrow btn btn-primary glide__arrow--right" data-glide-dir=">">next</button>
                 </div>
             </div>
-            <!-- Product Details ends -->
-
-            <!-- Item features starts -->
-            {{-- <div class="item-features">
-                <div class="row text-center">
-                    <div class="col-12 col-md-4 mb-4 mb-md-0">
-                        <div class="w-75 mx-auto">
-                            <i data-feather="award"></i>
-                            <h4 class="mt-2 mb-1">100% Original</h4>
-                            <p class="card-text">Chocolate bar candy canes ice cream toffee. Croissant pie cookie
-                                halvah.</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 mb-4 mb-md-0">
-                        <div class="w-75 mx-auto">
-                            <i data-feather="clock"></i>
-                            <h4 class="mt-2 mb-1">10 Day Replacement</h4>
-                            <p class="card-text">Marshmallow biscuit donut dragée fruitcake. Jujubes wafer cupcake.</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 mb-4 mb-md-0">
-                        <div class="w-75 mx-auto">
-                            <i data-feather="shield"></i>
-                            <h4 class="mt-2 mb-1">1 Year Warranty</h4>
-                            <p class="card-text">Cotton candy gingerbread cake I love sugar plum I love sweet croissant.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            <!-- Item features ends -->
-
-            <!-- Related Products starts -->
-            {{-- <div class="card-body">
-                <div class="mt-4 mb-2 text-center">
-                    <h4>Related Products</h4>
-                    <p class="card-text">People also search for this items</p>
-                </div>
-                <div class="swiper-responsive-breakpoints swiper-container px-4 py-2">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <a href="javascript:void(0)">
-                                <div class="item-heading">
-                                    <h5 class="text-truncate mb-0">Apple Watch Series 6</h5>
-                                    <small class="text-body">by Apple</small>
-                                </div>
-                                <div class="img-container w-50 mx-auto py-75">
-                                    <img src="../../../app-assets/images/elements/apple-watch.png" class="img-fluid"
-                                        alt="image" />
-                                </div>
-                                <div class="item-meta">
-                                    <ul class="unstyled-list list-inline mb-25">
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                    </ul>
-                                    <p class="card-text text-primary mb-0">$399.98</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="javascript:void(0)">
-                                <div class="item-heading">
-                                    <h5 class="text-truncate mb-0">Apple MacBook Pro - Silver</h5>
-                                    <small class="text-body">by Apple</small>
-                                </div>
-                                <div class="img-container w-50 mx-auto py-50">
-                                    <img src="../../../app-assets/images/elements/macbook-pro.png" class="img-fluid"
-                                        alt="image" />
-                                </div>
-                                <div class="item-meta">
-                                    <ul class="unstyled-list list-inline mb-25">
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                    </ul>
-                                    <p class="card-text text-primary mb-0">$2449.49</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="javascript:void(0)">
-                                <div class="item-heading">
-                                    <h5 class="text-truncate mb-0">Apple HomePod (Space Grey)</h5>
-                                    <small class="text-body">by Apple</small>
-                                </div>
-                                <div class="img-container w-50 mx-auto py-75">
-                                    <img src="../../../app-assets/images/elements/homepod.png" class="img-fluid"
-                                        alt="image" />
-                                </div>
-                                <div class="item-meta">
-                                    <ul class="unstyled-list list-inline mb-25">
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                    </ul>
-                                    <p class="card-text text-primary mb-0">$229.29</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="javascript:void(0)">
-                                <div class="item-heading">
-                                    <h5 class="text-truncate mb-0">Magic Mouse 2 - Black</h5>
-                                    <small class="text-body">by Apple</small>
-                                </div>
-                                <div class="img-container w-50 mx-auto py-75">
-                                    <img src="../../../app-assets/images/elements/magic-mouse.png" class="img-fluid"
-                                        alt="image" />
-                                </div>
-                                <div class="item-meta">
-                                    <ul class="unstyled-list list-inline mb-25">
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                    </ul>
-                                    <p class="card-text text-primary mb-0">$90.98</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="javascript:void(0)">
-                                <div class="item-heading">
-                                    <h5 class="text-truncate mb-0">iPhone 12 Pro</h5>
-                                    <small class="text-body">by Apple</small>
-                                </div>
-                                <div class="img-container w-50 mx-auto py-75">
-                                    <img src="../../../app-assets/images/elements/iphone-x.png" class="img-fluid"
-                                        alt="image" />
-                                </div>
-                                <div class="item-meta">
-                                    <ul class="unstyled-list list-inline mb-25">
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i>
-                                        </li>
-                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i>
-                                        </li>
-                                    </ul>
-                                    <p class="card-text text-primary mb-0">$1559.99</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Add Arrows -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </div> --}}
-            <!-- Related Products ends -->
+    
         </div>
     </div>
 </div>
+
 
 @endsection
 
 @push('scripts')
 <script>
-    const swiperProduct = new Swiper('#product', {
-        // Optional parameters
-        // direction: 'vertical',
-        loop: true,
-        slidesPerView: 4,
-        // If we need pagination
-        pagination: {
-            el: '.swiper-pagination',
-        },
+    const product = new Glide('.glide', {
+            startAt: 0,
+            perView: 4
+        })
+        .mount()
 
-        // Navigation arrows
-        navigation: false
-        // navigation: {
-        //     nextEl: '.swiper-button-next',
-        //     prevEl: '.swiper-button-prev',
-        // },
-
-        });
-
-        const relatedProductSwiper = new Swiper('#relatedProduct', {
-            // Optional parameters
-            loop: true,
-            slidesPerView: 3,
-            spaceBetween: 40,
-
-            // Navigation arrows
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-
-
-        });
+    const relatedProduct = new Glide('.related-product', {
+            startAt: 0,
+            perView: 3,
+            gap: 20
+        })
+        .mount()
 </script>
 @endpush

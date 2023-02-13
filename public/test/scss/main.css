@@ -1,10 +1,12 @@
 .hero-container{
     height: 100vh;
-    background-image: url(../../frontend/img/shape.svg); 
+    background-image: url(../../frontend/img/split_backgroundd.svg); 
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top right;
 }
 .hero-container-opacity{
-    background-color: rgba(255, 255, 255,0.5);
+    /* background-color: rgba(255, 255, 255,0.5); */
 }
 .fw-600{
     font-weight: 700;

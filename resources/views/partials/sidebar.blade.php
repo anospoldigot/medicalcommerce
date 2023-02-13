@@ -53,6 +53,10 @@
             <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard') }}"><i
                         data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Home">Home</span></a>
             </li>
+            <li class="{{ request()->routeIs('coupons.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
+                    href="{{ route('coupons.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate"
+                        data-i18n="Home">Coupon</span></a>
+            </li>
             <li class="{{ request()->routeIs('product.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
                     href="{{ route('product.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate"
                         data-i18n="Home">Product</span></a>

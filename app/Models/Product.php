@@ -51,4 +51,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariantValue::class);
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

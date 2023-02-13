@@ -24,7 +24,6 @@ class UserSeeder extends Seeder
             'role'      => 'admin',
         ]);
 
-
         // Customer
         $user = User::create([
             'name'      => 'rama',
@@ -38,7 +37,7 @@ class UserSeeder extends Seeder
             'province_id'       => 32,
             'regency_id'        => 3201,
             'district_id'       => 3201170,
-            'village_id'        => 3201170,
+            'village_id'        => 3201170001,
             'postal_code'       => 11240,
             'detail'            => 'Jl. Pejagalan Raya',
             'latitude'          => '-6.407595511848003',

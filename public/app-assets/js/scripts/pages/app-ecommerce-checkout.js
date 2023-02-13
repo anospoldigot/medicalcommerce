@@ -95,9 +95,13 @@ $(function () {
     quantityCounter.each(function(){
       const parent = $(this).closest('.ecommerce-card');
       const product = parent.data('product');
+      
+
       $(this).TouchSpin({
         min: 1,
-        max: product.stock
+        max: product.stock,
+        step: 1,
+        stepinterval: 100
       })
       .on('touchspin.on.startdownspin', function () {
         var $this = $(this);
@@ -116,6 +120,12 @@ $(function () {
           $(this).siblings().find('.bootstrap-touchspin-up').addClass('disabled-max-min');
         }
       });
+    })
+    
+    $(document).on('change','.quantity-counter', function(){
+      const parent = $(this).closest('.ecommerce-card');
+      const product = parent.data('product');
+      parent.find('.item-price').html(formatRupiah(product.price * $(this).val(), 'Rp. ', ',00')).trigger('change')
     })
   }
 });

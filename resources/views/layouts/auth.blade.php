@@ -80,6 +80,7 @@
             }
         })
     </script>
+    @stack('scripts')
 </body>
 <!-- END: Body-->
 

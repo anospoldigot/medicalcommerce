@@ -7,7 +7,14 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="bg-light">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%" id="loading-wrapper">
+            <div id="loading-animation"></div>
+            <span>Loading...</span>
+        </div>
+    </div>
     @include('partials.frontend.nav', ['disableHero' => $disableHero ?? 0])
 
 
@@ -17,7 +24,10 @@
     
     
     @include('partials.frontend.chat')
-    @include('partials.frontend.footer')
+    
+    @if (!isset($disableFooter))
+        @include('partials.frontend.footer')
+    @endif
     <!-- Optional JavaScript; choose one of the two! -->
 
 
@@ -31,9 +41,15 @@
             if ($(this).scrollTop() > 40) {
                 $('.navbar-hero').removeClass('bg-transparent')
                 $('.navbar-hero').addClass('bg-white shadow')
+                $('.navbar-hero').removeClass('navbar-dark')
+                $('.navbar-hero').addClass('navbar-light')
+                $('.navbar-hero').find('#navbarSupportedContent').removeClass('font-weight-bold')
             } else {
                 $('.navbar-hero').removeClass('bg-white shadow')
                 $('.navbar-hero').addClass('bg-transparent')
+                $('.navbar-hero').removeClass('navbar-light')
+                $('.navbar-hero').addClass('navbar-dark')
+                $('.navbar-hero').find('#navbarSupportedContent').addClass('font-weight-bold')
             }
         });
     </script>

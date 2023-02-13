@@ -39,8 +39,8 @@ class ProductSeeder extends Seeder
 
 
         $product = Product::create([  
-            'title'         => 'HEMATOLOGY ANALYZER',
-            'slug'          => Str::slug('HEMATOLOGY ANALYZER', '-'),
+            'title'         => 'hematology analyzer',
+            'slug'          => Str::slug('hematology analyzer', '-'),
             'description'   => 'alat lengkap pembedah dosa dengan standar medis internasional',
             'stock'         => 100,
             'price'         => 300000,

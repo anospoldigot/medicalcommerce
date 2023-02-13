@@ -15,6 +15,7 @@ class CreateConfigsTable extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->id();
+            $table->json('contact')->nullable();
             $table->string('theme')->nullable()->default('default');
             $table->string('theme_color')->nullable()->default('#1bb90d');
             $table->string('home_view_mode')->nullable()->default('grid');

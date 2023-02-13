@@ -329,9 +329,8 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                             <ul class="chat-users-list contact-list media-list">
                                 @foreach ($users as $user)
                                     @php
-                                        $chat = $user->load(['sender_latest', 'receiver_latest']);
-                                        $chat = $chat->sender_latest->created_at > $chat->receiver_latest->created_at ? 
-                                                $chat->sender_latest->content : $chat->receiver_latest->content
+                                        $chat = $user->sender_latest->created_at > $user->receiver_latest->created_at ? 
+                                                $user->sender_latest->content : $user->receiver_latest->content
                                     @endphp
                                     <li id="userchat-{{$user->id}}" data-id="{{$user->id}}">
                                         <span class="avatar"><img src="/app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42"
@@ -739,7 +738,10 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
     <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
     <!-- END: Footer-->
 
-
+    <script>
+        let chatTabId;
+        
+    </script>
     @include('partials.script')
     <script src="/app-assets/js/scripts/pages/app-chat.js"></script>
     

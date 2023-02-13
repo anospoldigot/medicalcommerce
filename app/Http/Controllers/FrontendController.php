@@ -22,9 +22,7 @@ class FrontendController extends Controller
         $posts = Post::latest()->take(2)->get();
 
         return view('frontend.index',  compact('products', 'posts'));
-    }
-
-    
+    }    
 
    
 }

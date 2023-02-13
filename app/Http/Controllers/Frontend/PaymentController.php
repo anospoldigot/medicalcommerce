@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use Exception;
@@ -66,39 +68,17 @@ class PaymentController extends Controller
      */
     public function store ()
     {
-        
-        // return request()->all();
         $products = collect(request('product'));
         $count = $products->count() + 1;
-        // $cartData['item'] = $products->map(function ($value, $key) {
-        //     $product = Product::find($value);
-        //     return [
-        //         'img_url'       => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-select-2019-family?wid=882&amp;hei=1058&amp;fmt=jpeg&amp;qlt=80&amp;op_usm=0.5,0.5&amp;.v=1567022175704',
-        //         'goods_name'    => $product->title,
-        //         'goods_detail'  => $product->description,
-        //         'goods_amt'     => $product->price * request('quantity')[$key]
 
-        //     ];
-        // });
-
-
-        // $cartData['item'][] = [
-        //     'img_url'       => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-select-2019-family?wid=882&amp;hei=1058&amp;fmt=jpeg&amp;qlt=80&amp;op_usm=0.5,0.5&amp;.v=1567022175704',
-        //     'goods_name'    => 'Ongkos Pengiriman',
-        //     'goods_detail'  => 'Biaya Ongkos Pengiriman paket',
-        //     'goods_amt'     => 10000
-        // ];
 
         $user = auth()->user();
-        $address = Address::find(request('address_id'));
-
-
-        
+        $address = Address::find(request('address_id'));      
 
         $paymentAmount      = request()->input('amt'); // Amount
-        $paymentMethod      = "BT"; // Permata Bank Virtual Account
-        $email              = "customer@gmail.com"; // your customer email
-        $phoneNumber        = "081234567890"; // your customer phone number (optional)
+        $paymentMethod      = request()->input('paymentMethod');
+        $email              = $user->email; // your customer email
+        $phoneNumber        = $user->phone; // your customer phone number (optional)
         $productDetails     = "Test Payment";
         $merchantOrderId    = time(); // from merchant, unique   
         $additionalParam    = ''; // optional
@@ -111,7 +91,15 @@ class PaymentController extends Controller
         $city               = "Jakarta";
         $countryCode        = "ID";
 
-        $address = array(
+        // if(request()->has('code_coupon')) {
+        //     $coupon = Coupon::where('code', request('code_coupon'))->first();
+
+        //     return $coupon;
+        //     $paymentAmount = 
+        // }
+
+
+        $billingAddress = array(
             'firstName'     => $user->name,
             'lastName'      => "",
             'address'       => $alamat,
@@ -126,7 +114,7 @@ class PaymentController extends Controller
             'lastName'          => "",
             'email'             => $user->email,
             'phoneNumber'       => $user->phone,
-            'billingAddress'    => $address,
+            'billingAddress'    => $billingAddress,
             'shippingAddress'   => $address
         );
 
@@ -134,12 +122,33 @@ class PaymentController extends Controller
 
         $itemDetails = $products->map(function ($value, $key) {
             $product = Product::find($value);
+            $price = 0;
+
+            if ($product->is_discount > 0) {
+                $price = $product->price;
+                if ($product->discount_type == 'persen') {
+                    $price = ($product->price / 100) * $product->discount;
+                } else if ($product->discount_type == 'nominal') {
+                    $price = $product->discount;
+                }
+
+                $price = $product->price - $price;
+            }
+
             return [
                 'name'          => $product->title,
-                'price'         => $product->price *  request('quantity')[$key] ,
+                'price'         => $price *  request('quantity')[$key],
                 'quantity'      => request('quantity')[$key]
             ];
         });
+
+        if(request()->filled('code_coupon')){
+            $itemDetails[]  = array(
+                'name'      => 'Potongan Voucher',
+                'price'     => -request('discount_amt'),
+                'quantity'  => 1
+            );
+        }
 
         $itemDetails[]  = array(
             'name'      => 'Pengiriman',
@@ -168,20 +177,34 @@ class PaymentController extends Controller
             // createInvoice Request
             $responseDuitkuApi = \Duitku\Api::createInvoice($params, $this->duitkuConfig);
             $responseDuitkuApi = json_decode($responseDuitkuApi);
+            Cart::where('user_id', $user->id)->whereIn('product_id', request('product'))->delete();
             $dataOrder = [
                 'user_id'               => $user->id,
-                'order_ref'             => $responseDuitkuApi->reference,
-                'order_qty'             => collect(request('quantity'))->sum(),
-                'order_subtotal'        => request()->input('amt'),
-                'order_weight'          => 2000,
-                'order_total'           => $products->count(),
-                'order_unique_code'     => rand(100000, 9999999),
-                'merchant_order_id'     => $merchantOrderId,
-                'request_data'          => json_encode($params),
-                'response_data'         => json_encode($responseDuitkuApi)
+                'note'                  => request('note'),
+                'shipping_address'      => $address->province->name . ', ' . 
+                $address->regency->name . ', ' . 
+                $address->district->name . ', ' . 
+                $address->village->name . ', ' . 
+                $address->detail . ', ' . 
+                $address->postal_code
             ];
 
+            
             $order = Order::create($dataOrder);
+
+            $transaction = $order->transaction()->create([
+                'invoice_number'            => generateInvoiceCode('transactions', 'invoice_number'),
+                'reference'                 => $responseDuitkuApi->reference,
+                'merchant_order_id'         => $merchantOrderId,
+                'payment_name'              => request('payment_name'),
+                'payment_method'            => $paymentMethod,
+                'payment_code'              => $responseDuitkuApi->vaNumber,
+                'payment_request'           => json_encode($params),
+                'payment_response'          => json_encode($responseDuitkuApi),
+                'amount'                    => $paymentAmount,
+                'expired_time'              => $expiryPeriod,
+            ]);
+
             $products->each(function ($value, $key) use ($order) {
                 $product = Product::find($value);
                 $order->items()->create([
@@ -214,7 +237,7 @@ class PaymentController extends Controller
     {
         $order = Order::with('transaction')->findOrFail($id);
 
-        $transactionList = \Duitku\Api::transactionStatus($order->merchant_order_id, $this->duitkuConfig);
+        $transactionList = \Duitku\Api::transactionStatus($order->transaction->merchant_order_id, $this->duitkuConfig);
         $transaction = json_decode($transactionList);
         
         return view('frontend.payment.show', compact('order', 'transaction'));

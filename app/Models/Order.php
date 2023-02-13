@@ -12,7 +12,7 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public $appends = ['status_label', 'created'];
+    public $appends = ['status_label', 'order_status_color', 'created'];
     public $keyType = 'string';
     public $incrementing = false;
 
@@ -51,9 +51,38 @@ class Order extends Model
         return $this->hasOne(Transaction::class);
         
     }
+
+    public function getOrderStatusColorAttribute()
+    {
+        switch ($this->status) {
+            case 'CANCELED':
+                return 'danger';
+                break;
+            case 'ISSUED':
+                return 'warning';
+                break;
+            case 'PAID':
+                return 'primary';
+                break;
+            case 'PROCESS':
+                return 'Sedang Diproses';
+                break;
+            case 'SHIPPING':
+                return 'Dikirim';
+                break;
+            case 'COMPLETE':
+                return 'Selesai';
+                break;
+            
+            default:
+            return 'warning';
+                break;
+        }
+    }
+
     public function getStatusLabelAttribute()
     {
-        switch ($this->order_status) {
+        switch ($this->status) {
             case 'CANCELED':
                 return 'Batal';
                 break;

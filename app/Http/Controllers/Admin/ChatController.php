@@ -12,7 +12,9 @@ class ChatController extends Controller
     public function index  ()
     {
 
-        $users = User::where('role', 'customer')->get();
+        $users = User::with(['sender_latest', 'receiver_latest'])
+                    ->where('role', 'customer')
+                    ->get();
 
         return view('admin.chat.index', compact('users'));
     }

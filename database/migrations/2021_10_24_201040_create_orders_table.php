@@ -15,18 +15,18 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('coupon_id')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->integer('merchant_order_id');
-            $table->string('customer_name')->nullable();
-            $table->string('customer_whatsapp')->nullable();
-            $table->integer('order_qty');
-            $table->integer('order_subtotal');
-            $table->integer('order_weight');
-            $table->integer('order_unique_code')->nullable();
-            $table->integer('order_total')->default(0);
-            $table->string('order_status')->nullable(); 
-            $table->json('request_data')->nullable(); 
-            $table->json('response_data')->nullable(); 
+            $table->string('status')->nullable(); 
+            $table->string('shipping_type')->nullable();
+            $table->string('shipping_courier_code')->nullable();
+            $table->string('shipping_courier_name')->nullable();
+            $table->string('shipping_courier_service')->nullable();
+            $table->integer('shipping_cost')->nullable();
+            $table->mediumText('shipping_address')->nullable();
+            $table->timestamp('shipping_delivered')->nullable();
+            $table->timestamp('shipping_received')->nullable();
+            $table->mediumText('note')->nullable();
             $table->timestamps();
         });
     }

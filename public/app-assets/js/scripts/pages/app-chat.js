@@ -184,6 +184,7 @@ $(function () {
         startArea = $('.start-chat-area'),
         activeChat = $('.active-chat'),
         id = $(this).data('id');
+        chatTabId = id;
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         chatUsersListWrapper.find('ul li').removeClass('active');
       }
@@ -202,7 +203,6 @@ $(function () {
         $('.chats').html(html);
         chatsUser.update();
       })
-
 
       $this.addClass('active');
       $this.find('.badge').remove();

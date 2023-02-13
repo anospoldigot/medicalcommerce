@@ -34,9 +34,9 @@ class ProductController extends Controller
         return view('frontend.product.index',  compact('products', 'categories'));
     }
 
-    public function show(Product $product)
+    public function show($slug)
     {
-        
+        $product = Product::where('slug', $slug)->firstOrFail();
         $relatedProducts = Product::where('category_id', $product->category_id)->get();
 
         return view('frontend.product.show', compact('product', 'relatedProducts'));

@@ -198,6 +198,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -217,6 +218,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Tripay' => Silehage\Tripay\TripayFacade::class,
         'Rajaongkir' => Silehage\Rajaongkir\RajaongkirFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ])->toArray(),
 
 ];

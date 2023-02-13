@@ -12,9 +12,9 @@ use App\Http\Controllers\Admin\{
     SettingWebController,
     ShippingController,
     StoreController,
-    TransactionController
+    TransactionController,
+    CouponController
 };
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,14 +60,16 @@ Route::middleware([])->group(function () {
 
     // Ajax CRUD
     Route::apiResources([
-        'category' => CategoryController::class,
-        'chats'     => ChatController::class
+        'category'      => CategoryController::class,
+        'chats'         => ChatController::class,
     ]);
 
     //CRUD
     Route::resources([
         'post'      => PostController::class,
         'product'   => ProductController::class,
+        'coupons'   => CouponController::class
+
     ]);
     
     Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');

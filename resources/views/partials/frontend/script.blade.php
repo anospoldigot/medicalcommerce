@@ -1,4 +1,5 @@
- <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<form action="{{ route('logout') }}" method="post" id="logout">@csrf</form>
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
 <script src="
 https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js
 "></script>
@@ -6,14 +7,23 @@ https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.2.0/glide.min.js"
+    integrity="sha512-IkLiryZhI6G4pnA3bBZzYCT9Ewk87U4DGEOz+TnRD3MrKqaUitt+ssHgn2X/sxoM7FxCP/ROUp6wcxjH/GcI5Q=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script src="
 https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
+"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"
+    integrity="sha512-fTTVSuY9tLP+l/6c6vWz7uAQqd1rq3Q/GyKBN2jOZvJSLC5RjggSdboIFL1ox09/Ezx/AKwcv/xnDeYN9+iDDA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"
+    integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 "></script>
 <script>
     // Enable pusher logging - don't include this in production
@@ -23,7 +33,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
         cluster: 'ap1',
         channelAuthorization: {
             endpoint: "/broadcasting/auth",
-            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         },
     });
 
@@ -34,6 +44,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
         }else if(data.message.to_id == id){
             $('#chat-content').append(adminChatTemplate(data.message));
         }
+        alert(JSON.stringify(data));
     });
     
     // console.log(channel);
@@ -50,14 +61,41 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
     });
 </script>
 <script>
+
+    const LoadingTemplate = `<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+    Loading...`;
+
+    function logout ()
+    {
+        $('form#logout').submit()
+    }
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    var animation = bodymovin.loadAnimation({
+        container: document.getElementById("loading-animation"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "{{ asset('frontend/img/loading.json') }}"
+    });
+
+    $(window).on("load", function() {
+        // $("#loading-wrapper").fadeOut();
+        $("#preloader").delay(350).fadeOut("slow");
+    });
     
     const addToCart = function(product_id){
+            const target = event.currentTarget;
+            
             $.ajax({
+                beforeSend: function(){
+                    target.innerHTML = LoadingTemplate;
+                    $(target).addClass('disabled');
+                },
                 url: '{{ route("fe.carts.store") }}',
                 method: 'POST',
                 data: {
@@ -70,6 +108,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
                 },
                 error: function(err){
                     alert(JSON.stringify(err))
+                    location.reload();
                 }
             })
         }
@@ -163,4 +202,32 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
             }
         })
     })
+
+
+    // Durasi (Dalam menit)
+    var duration = 2;
+
+    function onCountdownFinished() {
+        const countdownElement = document.getElementById("countdown");
+        const html = '<a href="javascript:void(0)" onclick="resendVerification()" class="text-primary">Kirim ulang</a>'
+        countdownElement.innerHTML = html
+    }
+
+    // Fungsi untuk menampilkan countdown
+    function displayCountdown() {
+        var countdownElement = document.getElementById("countdown");
+        var minutes = Math.floor(duration / 60);
+        var seconds = duration % 60;
+        
+        if (seconds < 10) { seconds="0" + seconds; } countdownElement.innerHTML= "0" + minutes + ":" + seconds; duration=duration - 1;
+            if (duration>= 0) {
+            setTimeout(displayCountdown, 1000);
+            } else {
+                onCountdownFinished();
+            }
+    }
+
+    duration = duration * 60;
+    
+
 </script>
