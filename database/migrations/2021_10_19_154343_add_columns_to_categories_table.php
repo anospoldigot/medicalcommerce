@@ -14,7 +14,6 @@ class AddColumnsToCategoriesTable extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->boolean('is_front')->default(true);
             $table->boolean('is_special')->default(false);
             $table->tinyInteger('weight')->default(1);
         });

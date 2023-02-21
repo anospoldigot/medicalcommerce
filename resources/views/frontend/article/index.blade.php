@@ -14,17 +14,14 @@
         }
         
         .hero-container-contact{
-            
-        }
-
-        .hero-contact{
-            height: 300px;
-            background: linear-gradient(
-            to right,
-            rgba(50, 115, 251, 0.4) 40%, rgba(255, 0, 0, 0) 100%
-            ), url({{ asset('frontend/img/headerdoctor.jpg') }});
+            background: url({{ asset('frontend/img/headerdoctor.jpg') }});
             background-size: cover;
             background-position: center center;
+        }
+        
+        .hero-contact{
+            background-color: rgba(255, 255, 255, 0.8);
+            height: 400px;
         }
     </style>
 @endpush
@@ -33,10 +30,10 @@
 
     <div class="hero-container-contact mb-5">
         <div class="hero-contact">
-            <div class="container h-100 d-flex align-items-center">
-                <div class="text-white">
-                    <h1>Article</h1>
-                    <h6>Pertama mitra medika</h6>
+            <div class="container h-100 d-flex align-items-center justify-content-center">
+                <div class="text-center text-uppercase">
+                    <h6>Article</h6>
+                    <h1>PT <span class="text-primary">Pertama</span> mitra medika</h1>
                 </div>
             </div>
         </div>

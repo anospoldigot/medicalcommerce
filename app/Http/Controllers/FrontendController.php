@@ -16,6 +16,8 @@ class FrontendController extends Controller
 
         $products = Product::with('assets', 'category')
             ->latest()
+            ->take(4)
+
             ->where('is_front', true)
             ->get();
 

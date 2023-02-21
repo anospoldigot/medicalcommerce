@@ -7,7 +7,7 @@
     <div class="container py-5">
         <h2 class="mb-4">List Order</h2>
         <div class="row">
-            <div class="col-8">
+            <div class="col-12 col-lg-8">
                 <div id="list">
                     @forelse ($orders as $order)
                         <div class="bg-white mb-4 p-3" style="border-radius: 10px">
@@ -27,7 +27,7 @@
                     @endforelse
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 d-none">
                 <div id="order-animation"></div>
             </div>
         </div>

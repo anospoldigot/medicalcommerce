@@ -52,7 +52,7 @@
     var channel = pusher.subscribe('presence-chat.1');
     channel.bind("pusher:subscription_succeeded", function (members) {
         members.each(function(member) {
-            alert(JSON.stringify(member));
+            // alert(JSON.stringify(member));
         });
     });
     channel.bind('my-event', function(data) {

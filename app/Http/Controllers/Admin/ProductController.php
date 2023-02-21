@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-
+use Intervention\Image\Facades\Image;
 class ProductController extends Controller
 {
     /**
@@ -129,9 +129,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        // if($request->is_discount){
-        //     dd(request()->all());
-        // }
 
         $rules = [
             'title'         => 'required|unique:products',
@@ -153,7 +150,7 @@ class ProductController extends Controller
             'title.unique' => 'Nama produk sudah digunakan'
         ]);
 
-        $path = public_path('/upload/images');
+        $path = public_path('/upload/images/');
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0755, true, true);
@@ -185,15 +182,18 @@ class ProductController extends Controller
 
             if ($request->images) {
                 foreach ($request->images as $file) {
+                    $filename = Str::random(40) . '.webp';
 
-                    $filename = Str::random(41) . '.' . $file->extension();
-
-                    $file->move($path, $filename);
-
+                    Image::make($file->getRealPath())
+                        ->fit(500)
+                        ->encode('webp', 90)
+                        ->save($path . $filename);
+    
                     $product->assets()->create([
-                        'filename' => $filename
+                        'filename'      => $filename
                     ]);
                 }
+
             }
 
 

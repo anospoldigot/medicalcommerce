@@ -16,7 +16,7 @@
                             <div class="d-flex justify-content-center">
                                 <input type="text" class="d-none" id="payment_code" value="{{ $order->transaction->payment_code }}">
                                 <h2 class="mr-3" style="letter-spacing: 2px;" >{{ $order->transaction->payment_code }}</h2>
-                                <button class="btn btn btn-outline-dark" onclick="copyToClipboard()"><i class="fa-solid fa-paste"></i></button>
+                                <button class="btn btn btn-outline-dark" onclick="CopyMe({{ $order->transaction->payment_code }})"><i class="fa-solid fa-paste"></i></button>
                             </div>
                             @if ($order->transaction->status == "PAID")
                                 <div>Status: <span class="badge badge-success">{{$order->transaction->status}}</span></div>
@@ -35,11 +35,5 @@
 @endsection
 
 @push('scripts')
-    <script>
-        function copyToClipboard(element) {
-            document.getElementById("payment_code").select();
-            document.execCommand("copy");
-            alert("Copied the text: " + document.getElementById("payment_code").value);
-        }
-    </script>
+
 @endpush

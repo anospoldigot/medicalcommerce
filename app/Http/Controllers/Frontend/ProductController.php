@@ -13,24 +13,24 @@ class ProductController extends Controller
     {
 
         $products = Product::with(['assets', 'category'])
-        ->latest()
-            ->where('is_front', true)
-            ->when(request()->has('category'), function ($query) {
-                $query->where('id', request('category'));
-            })
-            ->when(request()->has('q'), function ($query) {
-                $query->where('title', 'like', '%' . request('q') . '%');
-            })
-            ->when(request()->filled('min'), function ($query) {
-                $query->where('price', '>=', request('min'));
-            })
-            ->when(request()->filled('max'), function ($query) {
-                $query->where('price', '<=', request('max'));
-            })
+            ->latest()
+            // ->where('is_front', true)
+            // ->when(request()->has('category'), function ($query) {
+            //     $query->where('id', request('category'));
+            // })
+            // ->when(request()->has('q'), function ($query) {
+            //     $query->where('title', 'like', '%' . request('q') . '%');
+            // })
+            // ->when(request()->filled('min'), function ($query) {
+            //     $query->where('price', '>=', request('min'));
+            // })
+            // ->when(request()->filled('max'), function ($query) {
+            //     $query->where('price', '<=', request('max'));
+            // })
             ->get();
 
         $categories = Category::all();
-
+        
         return view('frontend.product.index',  compact('products', 'categories'));
     }
 

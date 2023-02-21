@@ -35,3 +35,51 @@
     0% { transform: translateY(0); }
     100% { transform: translateY(-10px); }
 }
+
+.glide-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.glide-arrow-left {
+    left: 0;
+}
+
+.glide-arrow-right {
+    right: 0;
+}
+
+.btn-arrow {
+    background-color: rgba(255, 255, 255, 0.4)
+}
+
+.category-product {
+    transition: all 500ms;
+    position: relative;
+    background-color: white;
+}
+
+.category-product:hover {
+    cursor: pointer;
+    background-color: #7158e226;
+}
+
+.card-product {
+    font-size: 14px;
+    transition: all 500ms;
+    position: relative;
+    background-color: white;
+}
+
+.card-product:hover {
+    cursor: pointer;
+}
+
+.label-sell-product{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 999999;
+}

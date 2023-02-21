@@ -3,15 +3,19 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DuitkuController;
 use App\Http\Controllers\BroadcastController;
+use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\AddressController;
 use App\Http\Controllers\Frontend\ArticleController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CategoryController;
+use App\Http\Controllers\Frontend\CategoryProductController;
 use App\Http\Controllers\Frontend\ChatController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\CouponController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\ShipperController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Payment\{
@@ -31,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -58,6 +63,7 @@ Route::controller(FrontendController::class)->group(function(){
  
 Route::name('fe.')->group(function () {
     Route::resource('products', ProductController::class);
+    Route::resource('categories.products', CategoryProductController::class);
     Route::resource('carts', CartController::class)->middleware('auth');
     Route::resource('addresses', AddressController::class)->middleware('auth');
     // Route::resource('shipping', ShipperController::class)->middleware('auth');
@@ -67,6 +73,8 @@ Route::name('fe.')->group(function () {
     Route::resource('payment', PaymentController::class);
     Route::resource('chats', ChatController::class);
     Route::resource('contact', ContactController::class)->only(['index', 'store']);
+    Route::resource('about', AboutController::class)->only(['index']);
+    Route::resource('profile', ProfileController::class)->only(['index']);
     Route::resource('orders', OrderController::class);
     Route::resource('articles', ArticleController::class);
     Route::get('duitku', [DuitkuController::class, 'index'])->name('duitku.index');

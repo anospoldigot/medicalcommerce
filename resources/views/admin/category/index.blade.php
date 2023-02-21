@@ -38,6 +38,10 @@
                         <label for="description">Deskripsi</label>
                         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                     </div>
+                    <div class="form-group">
+                        <input type="file" name="image" id="image" onchange="loadFile(event)">
+                    </div>
+                    <div><img id="output" class="img-fluid" /></div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Tambah</button>
@@ -98,13 +102,21 @@
             
         $('form.create').submit(function(){
             event.preventDefault();
-            const data = $(this).serialize();
+            const data      = $(this).serializeArray();
+            const formData  = new FormData($(this)[0]);
+
+            for (const key in data) {
+                formData.append(data[key].name, data[key].value);
+            }
+            formData.append('image', $('#image')[0].files[0]);
 
             $.ajax({
                 url: $(this).attr('action'),
                 method: 'POST',
-                data,
+                data: formData,
                 dataType: 'json',
+                processData: false,
+                contentType: false,
                 success: function(res){
                     toastr['success'](res.message, 'Success!', {
                         closeButton: true,
@@ -115,6 +127,7 @@
                     table.ajax.reload();
                 },
                 error: function(err){
+                    console.log(err);
                     toastr['error'](err.responseJSON.message, 'Error!', {
                         closeButton: true,
                         tapToDismiss: false,
@@ -127,35 +140,46 @@
 
         $(document).on('submit', 'form.edit', function(){
             event.preventDefault();
-            const data = $(this).serialize();
-
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data,
-                dataType: 'json',
-                success: function(res){
-                    toastr['success'](res.message, 'Success!', {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: isRtl
-                    });
-                    $('.modal').modal('hide');
-                    table.ajax.reload();
-                },
-                error: function(err){
-                    toastr['error'](err.responseJSON.message, 'Error!', {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: isRtl
-                    });
-                    $('.modal').modal('hide');
-                }
-            })
+            const data = $(this).serializeArray();
+            console.log(data)
+            var formData = new FormData($(this)[0]);
+            formData.append('other_data',$("#someInputData").val());
+            // $.ajax({
+            //     url: $(this).attr('action'),
+            //     method: 'POST',
+            //     processData: false,
+            //     contentType: false,
+            //     data,
+            //     dataType: 'json',
+            //     success: function(res){
+            //         toastr['success'](res.message, 'Success!', {
+            //             closeButton: true,
+            //             tapToDismiss: false,
+            //             rtl: isRtl
+            //         });
+            //         $('.modal').modal('hide');
+            //         table.ajax.reload();
+            //     },
+            //     error: function(err){
+            //         toastr['error'](err.responseJSON.message, 'Error!', {
+            //             closeButton: true,
+            //             tapToDismiss: false,
+            //             rtl: isRtl
+            //         });
+            //         $('.modal').modal('hide');
+            //     }
+            // })
         })
 
-        
 
+        
+        const loadFile = function(event) {
+            const output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                    URL.revokeObjectURL(output.src) // free memory
+                }
+        };
         
 </script>
 @endpush

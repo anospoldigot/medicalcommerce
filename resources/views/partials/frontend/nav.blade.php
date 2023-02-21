@@ -18,7 +18,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" href="{{ route('fe.about.index') }}">About Us</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('fe.products.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('fe.products.index') }}">Product</a>
@@ -66,7 +66,7 @@
                             width="30" height="30" alt="profile-user" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="{{ route('fe.profile.index') }}">Profile</a>
                         <a class="dropdown-item" href="{{ route('fe.orders.index') }}">Pesanan</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
@@ -103,7 +103,7 @@
                 </li>
 
                 <li class="nav-item px-2">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" href="{{ route('fe.about.index') }}">About Us</a>
                 </li>
                 <li class="nav-item px-2 {{ request()->routeIs('fe.products.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('fe.products.index') }}">Product</a>
@@ -150,7 +150,7 @@
                             width="30" height="30" alt="profile-user" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="{{ route('fe.profile.index') }}">Profile</a>
                         <a class="dropdown-item" href="{{ route('fe.orders.index') }}">Pesanan</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>

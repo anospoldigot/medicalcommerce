@@ -201,6 +201,7 @@
                 $('#detail-discount').hide();
             }
         })
+        
         $('#form-submit').click(function(){
             let html = '';
             const data = $('#create-product').serializeArray();

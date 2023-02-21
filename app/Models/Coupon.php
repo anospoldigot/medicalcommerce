@@ -9,6 +9,9 @@ class Coupon extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
+    public $incrementing = false;
     public function orders()
     {
         return $this->hasMany(Order::class);

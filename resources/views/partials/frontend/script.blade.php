@@ -229,5 +229,15 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 
     duration = duration * 60;
     
-
+    function CopyMe(TextToCopy) {
+        var TempText = document.createElement("input");
+        TempText.value = TextToCopy;
+        document.body.appendChild(TempText);
+        TempText.select();
+        
+        document.execCommand("copy");
+        document.body.removeChild(TempText);
+        
+        alert("Copied the text: " + TempText.value);
+    }
 </script>

@@ -8,20 +8,7 @@
             color: #b4b6b8;
         }
 
-        .glide-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-
-        .glide-arrow-left {
-            left: 0;
-        }
-
-        .glide-arrow-right {
-            right: 0;
-        }
+        
 
         @media only screen and (max-width: 600px) {
             .company-title-style{
@@ -353,8 +340,11 @@
         });
 
         const product = new Glide('#product-slider', {
-            height: 300,
-            autoplay: 2000,
+            breakpoints: {
+                // 600: {
+                //     perView: 2
+                // }
+            }
         }).mount()
 </script>
 {{-- <script>
