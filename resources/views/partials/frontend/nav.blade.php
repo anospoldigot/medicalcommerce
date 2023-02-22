@@ -62,7 +62,7 @@
                 <li class="nav-item px-2 dropdown">
                     <a class="nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown"
                         aria-expanded="false">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
+                        <img src="{{ asset('upload/images/' . auth()->user()->profile) }}"
                             width="30" height="30" alt="profile-user" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu">
@@ -146,8 +146,8 @@
                 <li class="nav-item px-2 dropdown">
                     <a class="nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown"
                         aria-expanded="false">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                            width="30" height="30" alt="profile-user" class="rounded-circle">
+                        <img src="{{ asset('upload/images/' . auth()->user()->profile) }}" width="30" height="30" alt="profile-user"
+                            class="rounded-circle"> 
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ route('fe.profile.index') }}">Profile</a>

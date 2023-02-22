@@ -75,6 +75,7 @@ Route::name('fe.')->group(function () {
     Route::resource('contact', ContactController::class)->only(['index', 'store']);
     Route::resource('about', AboutController::class)->only(['index']);
     Route::resource('profile', ProfileController::class)->only(['index']);
+    Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('orders', OrderController::class);
     Route::resource('articles', ArticleController::class);
     Route::get('duitku', [DuitkuController::class, 'index'])->name('duitku.index');

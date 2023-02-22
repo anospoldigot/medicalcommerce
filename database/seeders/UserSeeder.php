@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class UserSeeder extends Seeder
 {
@@ -15,6 +17,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
+        $path = public_path('upload/images/');
+        $source_path = public_path('source/');
+            Image::make($source_path . 'profile.webp')->fit(500)
+                ->encode('webp', 90)
+                ->save($path . 'avatar_default.webp');
+
         // Admin
         User::create([
             'name'      => 'admin',
@@ -24,6 +33,7 @@ class UserSeeder extends Seeder
             'role'      => 'admin',
         ]);
 
+        
         // Customer
         $user = User::create([
             'name'      => 'rama',

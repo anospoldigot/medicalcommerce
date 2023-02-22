@@ -226,9 +226,9 @@ class PaymentController extends Controller
     public function callback ()
     {
         
-        // Order::where('order_ref', request('referenceNo'))->update([
-            
-        // ]);
+        Order::where('reference', request('reference'))->update([
+            'response_data'     => request()->all()
+        ]);
 
         return redirect()->route('fe.payment.show', request('referenceNo'));
     }

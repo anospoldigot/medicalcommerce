@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('gender', ['laki laki', 'perempuan'])->nullable();
+            $table->string('profile')
+                ->default('avatar_default.webp');
             $table->rememberToken();
             $table->timestamps();
         });

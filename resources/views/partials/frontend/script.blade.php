@@ -25,6 +25,25 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
 <script src="
 https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 "></script>
+@if (session()->has('success'))
+    <script>
+        PNotify.success({
+            title: 'Success!',
+            text: '{{  session("success")  }}'
+        });
+    </script>
+@endif
+@if (session()->has('error'))
+    <script>
+        PNotify.error({
+            title: 'Error!',
+            text: '{{  session("error")  }}'
+        });
+    </script>
+@endif
+
+
+
 <script>
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
