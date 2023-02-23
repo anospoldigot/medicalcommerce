@@ -17,7 +17,7 @@ class ChatSeeder extends Seeder
     public function run()
     {
         $admin_id       = 1;
-        $customer_id    = 2;
+        $customer_id    = 3;
 
         Message::upsert([
             [

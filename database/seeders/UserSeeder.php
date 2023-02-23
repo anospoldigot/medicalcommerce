@@ -24,14 +24,27 @@ class UserSeeder extends Seeder
                 ->encode('webp', 90)
                 ->save($path . 'avatar_default.webp');
 
+
+        // Developer
+        $user = User::create([
+            'name'      => 'developer',
+            'email'     => 'developer@example.com',
+            'password'  => bcrypt('password'),
+            'phone'     => '081398199618',
+        ]);
+
+
+        $user->assignRole('developer');
+
         // Admin
-        User::create([
+        $user = User::create([
             'name'      => 'admin',
             'email'     => 'admin@example.com',
             'password'  => bcrypt('password'),
             'phone'     => '081398199618',
-            'role'      => 'admin',
         ]);
+
+        $user->assignRole('admin');
 
         
         // Customer
@@ -40,8 +53,10 @@ class UserSeeder extends Seeder
             'email'     => 'ramaramarama009@gmail.com',
             'password'  => bcrypt('password'),
             'phone'     => '081293692142',
-            'role'      => 'customer',
         ]);
+
+        $user->assignRole('customer');
+        
 
         $data = [
             'province_id'       => 32,
@@ -74,6 +89,15 @@ class UserSeeder extends Seeder
         $data['rawdata'] =json_encode($data);
 
         $user->addresses()->create($data);
+
+        $user = User::create([
+            'name'      => 'amar',
+            'email'     => 'amawdhans@gmail.com',
+            'password'  => bcrypt('password'),
+            'phone'     => '081293692142',
+        ]);
+
+        $user->assignRole('customer');
 
     }
 }

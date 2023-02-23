@@ -328,21 +328,23 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                             <h4 class="chat-list-title">Chats</h4>
                             <ul class="chat-users-list contact-list media-list">
                                 @foreach ($users as $user)
-                                    @php
-                                        $chat = $user->sender_latest->created_at > $user->receiver_latest->created_at ? 
-                                                $user->sender_latest->content : $user->receiver_latest->content
-                                    @endphp
-                                    <li id="userchat-{{$user->id}}" data-id="{{$user->id}}">
-                                        <span class="avatar"><img src="/app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42"
-                                                alt="Generic placeholder image" />
-                                        </span>
-                                        <div class="chat-info">
-                                            <h5 class="mb-0">{{$user->name}}</h5>
-                                            <p class="card-text text-truncate">
-                                                {{$chat}}
-                                            </p>
-                                        </div>
-                                    </li>
+                                    @if (!empty($user->sender_latest->created_at) || !empty($user->receiver_latest->created_at))
+                                        @php
+                                            $chat = $user->sender_latest?->created_at > $user->receiver_latest?->created_at ? 
+                                                    $user->sender_latest->content : $user->receiver_latest->content
+                                        @endphp
+                                        <li id="userchat-{{$user->id}}" data-id="{{$user->id}}">
+                                            <span class="avatar"><img src="{{ asset('upload/images/' . $user->profile) }}" height="42" width="42"
+                                                    alt="Generic placeholder image" />
+                                            </span>
+                                            <div class="chat-info">
+                                                <h5 class="mb-0">{{$user->name}}</h5>
+                                                <p class="card-text text-truncate">
+                                                    {{$chat}}
+                                                </p>
+                                            </div>
+                                        </li>
+                                    @endif
                                 @endforeach
                                 {{-- <li>
                                     <span class="avatar"><img

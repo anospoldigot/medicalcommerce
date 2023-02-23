@@ -11,18 +11,11 @@
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 1"
                     style="width: 40px; height: 100%;">
                 <div>
-                    <p class="small p-2 ml-3 mb-1 rounded-3" style="background-color: #f5f6f7;">Hi</p>
-                    <p class="small p-2 ml-3 mb-1 rounded-3" style="background-color: #f5f6f7;">How are you
-                        ...???
-                    </p>
-                    <p class="small p-2 ml-3 mb-1 rounded-3" style="background-color: #f5f6f7;">What are you
-                        doing
-                        tomorrow? Can we come up a bar?</p>
-                    <p class="small ml-3 mb-3 rounded-3 text-muted">23:58</p>
+                    <p class="small p-2 ml-3 mb-1 rounded-3 bg-primary text-white">Anda tidak meiliki riwayat chat silahkan kirim pesan</p>
                 </div>
             </div>
     
-            <div class="divider d-flex align-items-center mb-4">
+            {{-- <div class="divider d-flex align-items-center mb-4">
                 <p class="text-center mx-3 mb-0" style="color: #a2aab7;">Today</p>
             </div>
     
@@ -110,7 +103,7 @@
                 </div>
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp" alt="avatar 1"
                     style="width: 40px; height: 100%;">
-            </div>
+            </div> --}}
     
         </div>
         <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3" style="gap: 10px">

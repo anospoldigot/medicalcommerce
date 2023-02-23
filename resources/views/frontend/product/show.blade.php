@@ -131,11 +131,21 @@
                         <hr />
 
                         <div class="d-flex flex-column flex-sm-row pt-1">
-                            <a href="javascript:void(0)" onclick="addToCart({{ $product->id }})"
-                                class="btn btn-primary">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                <span class="add-to-cart">Add to cart</span>
-                            </a>
+                            @auth
+                                <a href="javascript:void(0)" onclick="addToCart({{ $product->id }})"
+                                    class="btn btn-primary">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    <span class="add-to-cart">Add to cart</span>
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="btn btn-primary">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    <span class="add-to-cart">Add to cart</span>
+                                </a>
+
+                            @endauth
+
                             <div class="btn-group dropdown-icon-wrapper btn-share">
                                 <button type="button"
                                     class="btn btn-icon hide-arrow btn-outline-secondary dropdown-toggle"

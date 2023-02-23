@@ -24,6 +24,7 @@ use App\Http\Controllers\Payment\{
 };
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,6 @@ Route::name('fe.')->group(function () {
 
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/testing', function () {
+    
+});

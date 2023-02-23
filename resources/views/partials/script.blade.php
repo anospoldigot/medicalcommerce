@@ -38,6 +38,7 @@
 <!-- END: Page JS-->
 <form action="{{ route('logout') }}" method="post" id="logout">@csrf</form>
 <script>
+
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
@@ -55,7 +56,9 @@
             // alert(JSON.stringify(member));
         });
     });
+    
     channel.bind('my-event', function(data) {
+        $(`#userchat-${data.message.from_id}, #userchat-${data.message.from_id}`).prependTo('.chat-users-list');
         if(chatTabId == data.message.from_id){
             var html = `
             <div class="chat chat-left">
@@ -71,7 +74,6 @@
                 </div>
             </div>`;
             $('.chats').append(html);
-            
         }
         $('#userchat-'+data.message.from_id).find('p').html(data.message.content)
     });
@@ -104,8 +106,6 @@
     $('.select2').select2();
     
     var isRtl = $('html').attr('data-textdirection') === 'rtl';
-
-    
 
     const currencyInput = function() {
         const value = event.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');

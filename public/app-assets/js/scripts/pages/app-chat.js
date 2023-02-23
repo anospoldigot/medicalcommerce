@@ -79,7 +79,7 @@ $(function () {
     menuToggle = $('.chat-application .menu-toggle'),
     speechToText = $('.speech-to-text'),
     chatSearch = $('.chat-application #chat-search');
-    
+
   // init ps if it is not touch device
   if (!$.app.menu.is_touch_device()) {
     // Chat user list
@@ -99,7 +99,7 @@ $(function () {
       });
     }
 
-    
+
 
     // User profile right area
     if (profileSidebarArea.length > 0) {
@@ -184,19 +184,20 @@ $(function () {
         startArea = $('.start-chat-area'),
         activeChat = $('.active-chat'),
         id = $(this).data('id');
-        chatTabId = id;
+      chatTabId = id;
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         chatUsersListWrapper.find('ul li').removeClass('active');
       }
 
       $.get(`${window.location.href}/${id}`, function (res) {
+        console.log(res);
         $('.chat-navbar').remove();
         activeChat.prepend(navChatTemplate(res.data));
         let html = '';
         res.data.forEach(value => {
-          if(value.from_id == id){
+          if (value.from_id == id) {
             html += customerChatTemplate(value)
-          }else{
+          } else {
             html += adminChatTemplate(value)
           }
         })
@@ -350,23 +351,34 @@ function onClickFn() {
 function enterChat(source) {
   var message = $('.message').val();
   let receiver_id = '';
-  $('.chat-users-list').each(function(){
-      receiver_id = $(this).find('.active').data('id')
+  $('.chat-users-list').each(function () {
+    receiver_id = $(this).find('.active').data('id')
   })
   $.ajax({
-    url: window.location.href, 
+    url: window.location.href,
     data: {
       content: message,
       receiver_id
     },
     method: 'POST',
-    success: function(res){
-      var html = '<div class="chat-content">' + '<p>' + message + '</p>' + '</div>';
-        $('.chat:last-child .chat-body').append(html);
-        $('.message').val('');
-        $('.user-chats').scrollTop($('.user-chats > .chats').height());
+    success: function (res) {
+      var html = `<div class="chat">
+                <div class="chat-avatar">
+                    <span class="avatar box-shadow-1 cursor-pointer">
+                        <img src="/app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36" />
+                    </span>
+                </div>
+                <div class="chat-body">
+                    <div class="chat-content">
+                        <p class="">${message}</p>
+                    </div>
+                </div>
+            </div>`;
+      $('.chats').append(html);
+      $('.message').val('');
+      $('.user-chats').scrollTop($('.user-chats > .chats').height());
     },
-    error: function(err){
+    error: function (err) {
       console.log(err);
     }
   });

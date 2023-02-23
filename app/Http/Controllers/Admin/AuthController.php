@@ -92,10 +92,9 @@ class AuthController extends Controller
         $data['role'] = 'user';
         $data['password'] = bcrypt(request('password'));
         $user = User::create($data);
-
+        $user->assignRole('customer');
         Auth::login($user);
-       
-
+        
         return redirect()->route('verification.notice');
     }
 

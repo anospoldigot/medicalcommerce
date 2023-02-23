@@ -13,16 +13,17 @@ class ChatController extends Controller
     {
 
         $users = User::with(['sender_latest', 'receiver_latest'])
+                    ->whereHas('isCustomer')
                     ->where('role', 'customer')
                     ->get();
 
         return view('admin.chat.index', compact('users'));
     }
 
-    public function show()
+    public function show($id)
     {
-        $data = Message::where('from_id', auth()->id())
-                    ->orWhere('to_id', auth()->id())
+        $data = Message::where('from_id', $id)
+                    ->orWhere('to_id', $id)
                     ->get();
 
         return response()->json([

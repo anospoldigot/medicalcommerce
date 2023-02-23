@@ -167,7 +167,8 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
             html+=subhtml.join('');
         }
 
-        $('#chat-content').html(html);
+        if(res.data) $('#chat-content').html(html);
+        
     })
 
     const dateChatTemplate = function(date){
