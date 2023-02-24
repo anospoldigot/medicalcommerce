@@ -37,6 +37,6 @@ class DatabaseSeeder extends Seeder
             ChatSeeder::class,
             CouponSeeder::class,
             ConfigSeeder::class
-        ]);
+        ]); 
     }
 }

@@ -33,6 +33,7 @@ class Order extends Model
     public $casts = [
         'created_at' => 'datetime:d/m/Y'
     ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -65,13 +66,13 @@ class Order extends Model
                 return 'primary';
                 break;
             case 'PROCESS':
-                return 'Sedang Diproses';
+                return 'info';
                 break;
             case 'SHIPPING':
-                return 'Dikirim';
+                return 'info';
                 break;
             case 'COMPLETE':
-                return 'Selesai';
+                return 'success';
                 break;
             
             default:

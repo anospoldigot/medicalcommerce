@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     ProductController,
     DashboardController,
     CategoryController,
+    CategoryPostController,
     ChatController,
     DuitkuController,
     OrderController,
@@ -71,9 +72,12 @@ Route::middleware([])->group(function () {
         'product'       => ProductController::class,
         'coupons'       => CouponController::class,
         'message_forms' => MessageFormController::class,
-        'orders'        => OrderController::class
+        'orders'        => OrderController::class,
+        'category_post' => CategoryPostController::class,
     ]);
-    
+
+    Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
+    Route::patch('orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
     Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');
     Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
 });

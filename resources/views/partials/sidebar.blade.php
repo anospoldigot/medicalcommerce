@@ -70,10 +70,23 @@
                 </li>
             @endcanany
             <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
+                        class="menu-title text-truncate" data-i18n="Page Layouts">Order</span></a>
+                <ul class="menu-content">
+                    <li class="{{ request()->routeIs('orders.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('orders.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">List</span></a>
+                    </li>
+                    {{-- <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('message_forms.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Form</span></a>
+                    </li> --}}
+                </ul>
+            </li>
+            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Message</span></a>
                 <ul class="menu-content">
-                    <li class="{{ request()->routeIs('post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                    <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('chats.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                 data-i18n="Collapsed Menu">Chat</span></a>
                     </li>
                     <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
@@ -88,6 +101,10 @@
                     <li class="{{ request()->routeIs('post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
                             href="{{ route('post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                 data-i18n="Collapsed Menu">List</span></a>
+                    </li>
+                    <li class="{{ request()->routeIs('category_post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('category_post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Category</span></a>
                     </li>
             
                     {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center"

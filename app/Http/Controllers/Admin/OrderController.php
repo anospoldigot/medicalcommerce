@@ -23,16 +23,47 @@ class OrderController extends Controller
     
     public function index(Request $request)
     {
-
-        return Order::with('transaction')->get();
         if (request()->ajax()) {
-            return DataTables::of(Order::latest()->get())
+    
+            return DataTables::of(Order::with(['items', 'transaction'])->latest()->get())
                 ->addIndexColumn()
-                ->addColumn('action', 'admin.message_form._action')
+                ->addColumn('action', 'admin.order._action')
                 ->toJson();
         }
 
-        return view('admin.message_form.index');
+        return view('admin.order.index');
+    }
+
+    public function process (Order $order)
+    {
+
+        try{
+            $order->update([
+                'status'    => 'PROCESS'
+            ]);
+
+            session()->flash('success','Berhasil mengonfirmasi pesanan');
+        }catch(\Throwable $th){
+            session()->flash('error', $th->getMessage());
+        }
+
+        return redirect()->route('orders.index');
+    }
+
+    public function reject (Order $order)
+    {
+
+        try{
+            $order->update([
+                'status'    => 'CANCELED'
+            ]);
+
+            session()->flash('success','Berhasil membatalkan pesanan');
+        }catch(\Throwable $th){
+            session()->flash('error', $th->getMessage());
+        }
+
+        return redirect()->route('orders.index');
     }
 
     // public function getCustomerOrders(Request $request)
@@ -219,15 +250,13 @@ class OrderController extends Controller
         
     // }
 
-    // public function show($orderRef)
-    // {
-    //     $order = Order::where('order_ref', $orderRef)->firstOrFail();
+    public function show(Order $order)
+    {
+        $order->load(['transaction', 'items']);
 
-    //     return response([
-    //         'success' => true,
-    //         'results' => $order->load('items', 'transaction')
-    //     ]);
-    // }
+        // return $order;
+        return view('admin.order.show', compact('order'));
+    }
 
     // public function destroy($id)
     // {
