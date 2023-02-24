@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\WilayahController;
+use App\Http\Controllers\Frontend\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,5 @@ Route::controller(WilayahController::class)->name('api.')->group(function(){
     Route::get('districts/{regency_id}', 'districts')->name('districts');
     Route::get('villages/{district_id}', 'villages')->name('villages');
 });
+Route::post('payment/callback', [PaymentController::class, 'callback']);
+

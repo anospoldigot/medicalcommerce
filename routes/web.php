@@ -69,7 +69,6 @@ Route::name('fe.')->group(function () {
     Route::resource('addresses', AddressController::class)->middleware('auth');
     // Route::resource('shipping', ShipperController::class)->middleware('auth');
     Route::get('shipping/check', [ShipperController::class, 'check'])->name('shipping.check')->middleware('auth');
-    Route::get('payment/callback', [PaymentController::class, 'callback']);
     Route::post('payment/checkout', [PaymentController::class, 'checkout']);
     Route::resource('payment', PaymentController::class);
     Route::resource('chats', ChatController::class);
