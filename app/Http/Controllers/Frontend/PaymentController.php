@@ -241,7 +241,7 @@ class PaymentController extends Controller
         $signature = request()->has('signature') ? request('signature') : null; 
 
         $location = public_path('/payment-data.txt');
-        File::delete($location);
+        // File::delete($location);
         
         if(!empty($merchantCode) && !empty($amount) && !empty($merchantOrderId) && !empty($signature))
         {
