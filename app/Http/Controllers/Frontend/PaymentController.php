@@ -226,12 +226,13 @@ class PaymentController extends Controller
     
     public function callback ()
     {
-        
-        Transaction::where('reference', request('reference'))->update([
-            'response_data'     => request()->all()
-        ]);
 
-        return redirect()->route('fe.payment.show', request('referenceNo'));
+        $data = request()->getContent(); //mendapatkan data body dari request
+
+        //menyimpan data ke dalam file .txt
+        file_put_contents(public_path('/payment-data.txt'), $data, FILE_APPEND);
+
+        return response('OK', 200);
     }
 
     public function show ($id)
