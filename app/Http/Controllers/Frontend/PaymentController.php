@@ -227,12 +227,50 @@ class PaymentController extends Controller
     public function callback ()
     {
 
-        $data = request()->getContent(); //mendapatkan data body dari request
+        $apiKey = $this->merchantKey; // API key anda
+        $merchantCode = request()->has('merchantCode') ? request('merchantCode') : null; 
+        $amount = request()->has('amount') ? request('amount') : null; 
+        $merchantOrderId = request()->has('merchantOrderId') ? request('merchantOrderId') : null; 
+        $productDetail = request()->has('productDetail') ? request('productDetail') : null; 
+        $additionalParam = request()->has('additionalParam') ? request('additionalParam') : null; 
+        $paymentMethod = request()->has('paymentMethod') ? request('paymentMethod') : null; 
+        $resultCode = request()->has('resultCode') ? request('resultCode') : null; 
+        $merchantUserId = request()->has('merchantUserId') ? request('merchantUserId') : null; 
+        $reference = request()->has('reference') ? request('reference') : null; 
+        $signature = request()->has('signature') ? request('signature') : null; 
 
-        //menyimpan data ke dalam file .txt
-        file_put_contents(public_path('/payment-data.txt'), $data, FILE_APPEND);
 
-        return response('OK', 200);
+        if(!empty($merchantCode) && !empty($amount) && !empty($merchantOrderId) && !empty($signature))
+        {
+            $params = $merchantCode . $amount . $merchantOrderId . $apiKey;
+            $calcSignature = md5($params);
+
+            if($signature == $calcSignature)
+            {
+
+                $where = [
+                    'referenece'            => $reference,
+                    'merchant_order_id'     => $merchantOrderId,
+                ];
+
+                Transaction::where($where)->update([
+                    'status'            => 'PAID',
+                    'paid_at'           => date('Y-m-d H:i:s'),
+                    'amount_received'   => $amount
+                ]);
+                
+                return response('OK', 200);
+
+            }
+            else
+            {
+                return response('Bad Signature', 401);
+            }
+        }
+        else
+        {
+            return response('Bad Parameter', 422);
+        }
     }
 
     public function show ($id)
