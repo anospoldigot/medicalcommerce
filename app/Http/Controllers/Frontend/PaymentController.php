@@ -251,15 +251,16 @@ class PaymentController extends Controller
             {
 
                 $where = [
-                    'referenece'            => $reference,
+                    'reference'            => $reference,
                     'merchant_order_id'     => $merchantOrderId,
                 ];
 
-                // Transaction::where($where)->update([
-                //     'status'            => 'PAID',
-                //     'paid_at'           => date('Y-m-d H:i:s'),
-                //     'amount_received'   => $amount
-                // ]);
+                Transaction::where($where)->update([
+                    'status'            => 'PAID',
+                    'paid_at'           => date('Y-m-d H:i:s'),
+                    'amount_received'   => $amount
+                ]);
+
                 $fileContent = "SUCCESS";
                 file_put_contents($location, $fileContent);
                 return response('OK', 200);
