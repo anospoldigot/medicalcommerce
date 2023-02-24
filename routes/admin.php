@@ -13,7 +13,8 @@ use App\Http\Controllers\Admin\{
     ShippingController,
     StoreController,
     TransactionController,
-    CouponController
+    CouponController,
+    MessageFormController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -66,10 +67,11 @@ Route::middleware([])->group(function () {
 
     //CRUD
     Route::resources([
-        'post'      => PostController::class,
-        'product'   => ProductController::class,
-        'coupons'   => CouponController::class
-
+        'post'          => PostController::class,
+        'product'       => ProductController::class,
+        'coupons'       => CouponController::class,
+        'message_forms' => MessageFormController::class,
+        'orders'        => OrderController::class
     ]);
     
     Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');

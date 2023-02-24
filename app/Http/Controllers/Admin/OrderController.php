@@ -16,20 +16,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductVariantValue;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\DataTables;
+
 class OrderController extends Controller
 {
-    protected $config;
-    public function __construct()
-    {
-        $this->config =  Config::first();
-    }
+    
     public function index(Request $request)
     {
-        return response([
-            'success' => true,
-            'results' => $this->getOrders($request)
-        ]);
+
+        return Order::with('transaction');
+        if (request()->ajax()) {
+            return DataTables::of(Order::latest()->get())
+                ->addIndexColumn()
+                ->addColumn('action', 'admin.message_form._action')
+                ->toJson();
+        }
+
+        return view('admin.message_form.index');
     }
+
     public function getCustomerOrders(Request $request)
     {
         $take = $request->take ?? 4;

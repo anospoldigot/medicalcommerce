@@ -53,22 +53,48 @@
             <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard') }}"><i
                         data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Home">Home</span></a>
             </li>
-            <li class="{{ request()->routeIs('coupons.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
-                    href="{{ route('coupons.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate"
-                        data-i18n="Home">Coupon</span></a>
+            @canany(['product.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Product</span></a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('product.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('product.index') }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate" data-i18n="Collapsed Menu">List</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate" data-i18n="Collapsed Menu">Category</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('coupons.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('coupons.index') }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate" data-i18n="Collapsed Menu">Coupon</span></a>
+                        </li>
+                    </ul>
+                </li>
+            @endcanany
+            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
+                        class="menu-title text-truncate" data-i18n="Page Layouts">Message</span></a>
+                <ul class="menu-content">
+                    <li class="{{ request()->routeIs('post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Chat</span></a>
+                    </li>
+                    <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('message_forms.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Form</span></a>
+                    </li>
+                </ul>
             </li>
-            <li class="{{ request()->routeIs('product.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
-                    href="{{ route('product.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate"
-                        data-i18n="Home">Product</span></a>
-            </li>
-            <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Category Product</span></a>
-            </li>
-            {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('category.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Transaksi</span></a>
-            </li>
-             --}}
-            <li class="{{ request()->routeIs('post.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('post.index') }}"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Home">Artikel / Blog</span></a>
-            </li>
-            <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('chats.index') }}"><i data-feather='message-square'></i><span class="menu-title text-truncate" data-i18n="Home">Chat</span></a>
+            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+                        class="menu-title text-truncate" data-i18n="Page Layouts">Artikel</span></a>
+                <ul class="menu-content">
+                    <li class="{{ request()->routeIs('post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">List</span></a>
+                    </li>
+            
+                    {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('category.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Category</span></a>
+                    </li> --}}
+                </ul>
             </li>
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Page Layouts</span><span
