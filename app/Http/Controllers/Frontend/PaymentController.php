@@ -227,10 +227,10 @@ class PaymentController extends Controller
     
     public function callback ()
     {
-        $fileContent = "SUCCESS";
-        $location = public_path('/payment-data.txt');
-        file_put_contents($location, $fileContent);
-        return 'OK';
+        // $fileContent = "SUCCESS";
+        // $location = public_path('/payment-data.txt');
+        // file_put_contents($location, $fileContent);
+        // return 'OK';
         $apiKey = $this->merchantKey; // API key anda
         $merchantCode = request()->has('merchantCode') ? request('merchantCode') : null; 
         $amount = request()->has('amount') ? request('amount') : null; 
