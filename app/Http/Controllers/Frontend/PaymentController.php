@@ -19,8 +19,8 @@ class PaymentController extends Controller
     private $duitkuConfig;
     private $merchantCode   = 'DS12776';
     private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
-    private $callbackUrl    = 'https://permedik.inttekno.com/callback';
-    private $returnUrl      = 'https://permedik.inttekno.com/callback';
+    private $callbackUrl    = 'https://permedik.inttekno.com/api/payment/callback';
+    private $returnUrl      = 'https://permedik.inttekno.com/api/payment/callback';
 
     public function __construct()
     {
