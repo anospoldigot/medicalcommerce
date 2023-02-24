@@ -278,7 +278,7 @@ class PaymentController extends Controller
         }
         else
         {
-            $fileContent = "Bad Signature";
+            $fileContent = "Bad Parameter";
             file_put_contents($location, $fileContent);
             return response('Bad Parameter', 422);
         }
