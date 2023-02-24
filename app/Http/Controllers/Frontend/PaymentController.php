@@ -227,10 +227,7 @@ class PaymentController extends Controller
     
     public function callback ()
     {
-        // $fileContent = "SUCCESS";
-        // $location = public_path('/payment-data.txt');
-        // file_put_contents($location, $fileContent);
-        // return 'OK';
+
         $apiKey = $this->merchantKey; // API key anda
         $merchantCode = request()->has('merchantCode') ? request('merchantCode') : null; 
         $amount = request()->has('amount') ? request('amount') : null; 
@@ -244,7 +241,6 @@ class PaymentController extends Controller
         $signature = request()->has('signature') ? request('signature') : null; 
 
         $location = public_path('/payment-data.txt');
-        // File::delete($location);
         
         if(!empty($merchantCode) && !empty($amount) && !empty($merchantOrderId) && !empty($signature))
         {
@@ -259,11 +255,11 @@ class PaymentController extends Controller
                     'merchant_order_id'     => $merchantOrderId,
                 ];
 
-                Transaction::where($where)->update([
-                    'status'            => 'PAID',
-                    'paid_at'           => date('Y-m-d H:i:s'),
-                    'amount_received'   => $amount
-                ]);
+                // Transaction::where($where)->update([
+                //     'status'            => 'PAID',
+                //     'paid_at'           => date('Y-m-d H:i:s'),
+                //     'amount_received'   => $amount
+                // ]);
                 $fileContent = "SUCCESS";
                 file_put_contents($location, $fileContent);
                 return response('OK', 200);
