@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -226,7 +227,7 @@ class PaymentController extends Controller
     public function callback ()
     {
         
-        Order::where('reference', request('reference'))->update([
+        Transaction::where('reference', request('reference'))->update([
             'response_data'     => request()->all()
         ]);
 
