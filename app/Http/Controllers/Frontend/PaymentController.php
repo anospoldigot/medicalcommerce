@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PaymentController extends Controller
 {
@@ -239,7 +240,9 @@ class PaymentController extends Controller
         $reference = request()->has('reference') ? request('reference') : null; 
         $signature = request()->has('signature') ? request('signature') : null; 
 
-
+        $location = public_path('/payment-data.txt');
+        File::delete($location);
+        
         if(!empty($merchantCode) && !empty($amount) && !empty($merchantOrderId) && !empty($signature))
         {
             $params = $merchantCode . $amount . $merchantOrderId . $apiKey;
@@ -258,17 +261,22 @@ class PaymentController extends Controller
                     'paid_at'           => date('Y-m-d H:i:s'),
                     'amount_received'   => $amount
                 ]);
-                
+                $fileContent = "SUCCESS";
+                file_put_contents($location, $fileContent);
                 return response('OK', 200);
 
             }
             else
             {
+                $fileContent = "Bad Signature";
+                file_put_contents($location, $fileContent);
                 return response('Bad Signature', 401);
             }
         }
         else
         {
+            $fileContent = "Bad Signature";
+            file_put_contents($location, $fileContent);
             return response('Bad Parameter', 422);
         }
     }
