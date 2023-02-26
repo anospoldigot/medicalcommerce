@@ -44,7 +44,7 @@
 </div>
 
 <div class="bg-light text-center py-2">
-    <span class="company-title-style">PERMATA MITRA MEDIKA</span>
+    <span class="company-title-style">PERTAMA MITRA MEDIKA</span>
 </div>
 
 <div class="bg-white">
@@ -56,7 +56,7 @@
             <div class="col-12 col-lg-7">
                 <div class="mb-5">
                     <div class="mb-3">
-                        <span class="text-primary font-weight-bold">PERMATA MITRA MEDIKA</span> Didirikan
+                        <span class="text-primary font-weight-bold">PERTAMA MITRA MEDIKA</span> Didirikan
                         pada tahun 2015 yang bergerak pada
                         bidang distribusi alat – alat kesehatan
                         dengan kualitas dan pelayanan terbaik.

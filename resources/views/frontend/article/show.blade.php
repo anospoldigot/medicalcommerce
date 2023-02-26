@@ -27,8 +27,8 @@
             <div class="col-lg-4">
                 <div class="mb-4">
                     <h6 class="text-gray mb-3">Tags</h6>
-                    @foreach (explode(',', $post->tags) as $tag)
-                        <span class="badge p-2 alert-primary">#{{ $tag }}</span>
+                    @foreach ($post->tags as $tag)
+                        <span class="badge mb-1 p-2 alert-primary">#{{ $tag->name }}</span>
                     @endforeach
                 </div>
                 <div class="mb-4">

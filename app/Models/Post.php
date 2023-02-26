@@ -25,6 +25,11 @@ class Post extends Model
         'is_promote' => 'boolean'
     ];
 
+    public function tags ()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function scopeListing()
     {
         return $this->where('is_listing', 1);

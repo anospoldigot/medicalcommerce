@@ -39,6 +39,7 @@ class CartController extends Controller
     {
 
         try {
+            
             $paymentAmount = "10000"; //"YOUR_AMOUNT";
             $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
             $paymentMethodList = json_decode($paymentMethodList);

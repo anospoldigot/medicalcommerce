@@ -106,6 +106,10 @@
                             href="{{ route('category_post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                 data-i18n="Collapsed Menu">Category</span></a>
                     </li>
+                    <li class="{{ request()->routeIs('tags.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                            href="{{ route('tags.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                            data-i18n="Collapsed Menu">Tag</span></a>
+                    </li>
             
                     {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
                             href="{{ route('category.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"

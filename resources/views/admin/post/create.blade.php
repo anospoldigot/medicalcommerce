@@ -36,7 +36,12 @@
                     </div>
                     <div class="form-group">
                         <label for="tags">Tags</label>
-                        <input type="text" class="form-control @error('tags') is-invalid @enderror" id="tags" name="tags" placeholder="tags">
+                        <select id="tags" name="tags" class="form-control @error('tags') is-invalid @enderror" multiple>
+                            <option>==Pilih==</option>
+                            @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                            @endforeach
+                        </select>
                         @error('tags')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

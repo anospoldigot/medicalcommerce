@@ -200,7 +200,7 @@ return [
         AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
+        Shetabit\Visitor\Provider\VisitorServiceProvider::class,
     ],
 
     /*
@@ -220,6 +220,7 @@ return [
         'Tripay' => Silehage\Tripay\TripayFacade::class,
         'Rajaongkir' => Silehage\Rajaongkir\RajaongkirFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'Visitor' => Shetabit\Visitor\Facade\Visitor::class,
     ])->toArray(),
 
 ];

@@ -21,7 +21,7 @@ class ArticleController extends Controller
 
     public function show ($slug)
     {
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::with('tags')->where('slug', $slug)->firstOrFail();
         $articles = Post::take(4)->get();
 
         return view('frontend.article.show', compact('post', 'articles'));

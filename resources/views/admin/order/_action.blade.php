@@ -1,12 +1,12 @@
 {{-- <a href={{ route('orders.show', $model->id) }} class="btn btn-sm btn-primary" title="Detail Coupon"><i data-feather='eye'></i></a> --}}
 
 <form onsubmit="return confirm('Are you sure?');" action="{{ route('orders.process', $model->id) }}"
-    method="POST" class="d-none" id="process">
+    method="POST" class="d-none" id="process{{$model->id}}">
     @csrf
     @method('patch')
 </form> 
 <form onsubmit="return confirm('Are you sure?');" action="{{ route('orders.reject', $model->id) }}"
-    method="POST" class="d-none" id="reject">
+    method="POST" class="d-none" id="reject{{$model->id}}">
     @csrf
     @method('patch')
 </form> 
@@ -20,11 +20,11 @@
             <span>Lihat</span>
         </a>
         @if ($model->status == 'ISSUED')
-            <a class="dropdown-item" href="javascript:void(0)" onclick="return $('form#process').submit()">
+            <a class="dropdown-item" href="javascript:void(0)" onclick="return $('form#process{{$model->id}}').submit()">
                 <i data-feather="check" class="mr-50"></i>
                 <span>Confirm</span>
             </a>
-            <a class="dropdown-item" href="javascript:void(0)" onclick="return $('form#reject').submit()">
+            <a class="dropdown-item" href="javascript:void(0)" onclick="return $('form#reject{{$model->id}}').submit()">
                 <i data-feather="x" class="mr-50"></i>
                 <span>Reject</span>
             </a>

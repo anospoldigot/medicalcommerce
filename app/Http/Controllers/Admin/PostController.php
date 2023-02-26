@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -51,7 +52,10 @@ class PostController extends Controller
 
     public function create ()
     {
-        return view('admin.post.create');
+        
+        return view('admin.post.create', [
+            'tags' => Tag::all()
+        ]);
     }
 
     public function edit(Post $post)

@@ -23,6 +23,8 @@ class ChatController extends Controller
             })
             ->sortKeys();
 
+        if($data->isEmpty()) $data = null;
+
         return response()->json([
             'success'       => true,
             'status_code'   => 200,

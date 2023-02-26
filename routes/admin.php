@@ -15,7 +15,8 @@ use App\Http\Controllers\Admin\{
     StoreController,
     TransactionController,
     CouponController,
-    MessageFormController
+    MessageFormController,
+    TagController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +65,8 @@ Route::middleware([])->group(function () {
     Route::apiResources([
         'category'      => CategoryController::class,
         'chats'         => ChatController::class,
+        'category_post' => CategoryPostController::class,
+        'tags'          => TagController::class,
     ]);
 
     //CRUD
@@ -73,7 +76,6 @@ Route::middleware([])->group(function () {
         'coupons'       => CouponController::class,
         'message_forms' => MessageFormController::class,
         'orders'        => OrderController::class,
-        'category_post' => CategoryPostController::class,
     ]);
 
     Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
