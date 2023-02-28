@@ -25,6 +25,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
 <script src="
 https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 "></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if (session()->has('success'))
     <script>
         PNotify.success({
@@ -81,6 +82,14 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 </script>
 <script>
 
+    function pluck(array, property) {
+        return array.map(obj => obj[property]);
+    }
+
+    function refetchCart(){
+        
+    }
+
     const LoadingTemplate = `<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
     Loading...`;
 
@@ -94,6 +103,20 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    function pluck(array, property) {
+         return array.map(obj => obj[property]);
+    }
+    
+    function refetchCart(){
+        $.get('{{ route("fe.carts.count") }}', function(res){
+            if(res.success){
+                $('a.cart').find('.count').html(res.data);
+            }
+        })
+    }
+
+
     var animation = bodymovin.loadAnimation({
         container: document.getElementById("loading-animation"),
         renderer: "svg",
@@ -121,12 +144,38 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
                     product_id
                 },
                 success: function(res){
+                    const html = `
+                        <div class="row no-gutters mb-3">
+                            <div class="col p-1">
+                                <img src="${res.data.product.assets[0].src}" alt="" width="100">
+                            </div>
+                            <div class="col p-1 flex-grow-1">
+                                <h6>${res.data.product.title}</h6>
+                            </div>
+                        </div>
+                        <a href="{{ route('fe.carts.index') }}" class="btn btn-outline-primary btn-block rounded-0">View Cart</a>
+                    `
+
                     if(res.success){
-                        window.location.href = res.redirect_url
+                        refetchCart();
+                        Swal.fire({
+                            title: '<small>Item telah ditambahkan ke cart</small>',
+                            toast: true,
+                            html,
+                            position: 'bottom-right',
+                            showConfirmButton: false,
+                            timer: 6000,
+                            showCloseButton: true,
+                        })
+                        $(target).removeClass('disabled');
+                        $(target).html(`<i class="fa-solid fa-cart-shopping"></i><span class="add-to-cart">Add to cart</span>`)
                     }
                 },
                 error: function(err){
                     alert(JSON.stringify(err))
+                    target.innerHTML = LoadingTemplate;
+                    $(target).removeClass('disabled');
+                    $(target).html(`<i class="fa-solid fa-cart-shopping"></i><span class="add-to-cart">Add to cart</span>`)
                     location.reload();
                 }
             })

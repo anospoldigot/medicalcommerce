@@ -260,6 +260,7 @@ class PaymentController extends Controller
                     'paid_at'           => date('Y-m-d H:i:s'),
                     'amount_received'   => $amount
                 ]);
+
                 $transaction->order()->update([
                     'status' => 'ISSUED'
                 ]);

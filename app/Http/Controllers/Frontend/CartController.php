@@ -12,6 +12,7 @@ use App\Models\Regency;
 use App\Models\Village;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -83,18 +84,6 @@ class CartController extends Controller
     public function store () 
     {
  
-        request()->validate([
-            // 'session_id' => 'required',
-            // 'price' => 'required|numeric',
-            // 'name' => 'required',
-            // 'quantity' => 'required|numeric',
-            // 'weight' => 'required|numeric',
-            // 'sku' => 'required',
-            // 'image_url' => 'required',
-            // 'product_url' => 'required',
-            // 'product_stock' => 'required',
-        ]);
-
         $cart = Cart::where('user_id', auth()->id())
                     ->where('product_id', request('product_id'))
                     ->first();
@@ -102,8 +91,7 @@ class CartController extends Controller
         if ($cart) {
             $cart->increment('quantity');
         } else {
-
-            Cart::create([
+            $cart = Cart::create([
                 'user_id'               => auth()->id(),
                 'product_id'            => request('product_id'),
                 'product_history'       => Product::where('id', request('product_id'))->first(),
@@ -115,7 +103,20 @@ class CartController extends Controller
             'success'       => true,
             'code'          => 200,
             'message'       => 'Berhasil menambah ke cart',
-            'redirect_url'  => route('fe.carts.index')
+            'redirect_url'  => route('fe.carts.index'),
+            'data'          => $cart->load('product.assets')
+        ], 200);
+    }
+
+    public function count ()
+    {
+        $count = DB::table('carts')->where('user_id', auth()->id())->count();
+
+        return response()->json([
+            'success'       => true,
+            'code'          => 200,
+            'message'       => 'Berhasil mengambil total cart',
+            'data'          => $count
         ], 200);
     }
 

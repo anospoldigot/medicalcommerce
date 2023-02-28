@@ -65,6 +65,7 @@ Route::controller(FrontendController::class)->group(function(){
 Route::name('fe.')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('categories.products', CategoryProductController::class);
+    Route::get('carts/count', [CartController::class, 'count'])->name('carts.count')->middleware('auth');
     Route::resource('carts', CartController::class)->middleware('auth');
     Route::resource('addresses', AddressController::class)->middleware('auth');
     // Route::resource('shipping', ShipperController::class)->middleware('auth');

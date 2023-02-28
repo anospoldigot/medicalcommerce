@@ -346,6 +346,8 @@
                 // }
             }
         }).mount()
+
+
 </script>
 {{-- <script>
     /* Whatsapp Chat Widget by www.bloggermix.com */

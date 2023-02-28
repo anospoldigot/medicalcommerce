@@ -8,6 +8,7 @@
 </head>
 
 <body class="bg-light">
+    <div id="custom-target"></div>
     <!-- Preloader -->
     <div id="preloader">
         <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%" id="loading-wrapper">

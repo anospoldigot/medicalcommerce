@@ -117,7 +117,7 @@
                                 <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
                             </ul>
                         </div>
-                        <p class="card-text">Available - <span class="text-success">{{ $product->stock }}</span></p>
+                        <p class="card-text">{{ $product->stock > 0 ? 'Available' : ''}} - <span class="text-success">{{ $product->stock }}</span></p>
                         <p class="card-text">
                             {!!$product->description!!}
                         </p>
@@ -258,7 +258,6 @@
                     <button class="glide__arrow btn btn-primary glide__arrow--right" data-glide-dir=">">next</button>
                 </div>
             </div>
-    
         </div>
     </div>
 </div>
@@ -280,5 +279,7 @@
             gap: 20
         })
         .mount()
+
+    
 </script>
 @endpush

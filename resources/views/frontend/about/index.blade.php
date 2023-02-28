@@ -134,57 +134,7 @@
             </div>
     </div>
 </section>
-<div class="container py-5">
-    <div class="row mb-5">
-        <div class="col-6">
-            @foreach ($contact as $c)
-            <div class="d-flex mb-5">
-                <div class="px-2 icon-style text-primary"><i class="{{$c->first()->icon_class}}"></i></div>
-                <div class="px-2 flex-grow text-icon-style d-flex align-items-center">
-                    @foreach ($c as $v)
-                        {{ $v->value }} <br />
-                    @endforeach
-                </div>
-            </div>
-            @endforeach
-            {{-- <div class="d-flex mb-5">
-                <div class="px-2 icon-style text-primary"><i class="fa-solid fa-phone"></i></div>
-                <div class="px-2 flex-grow text-icon-style">Jl. Kesehatan Raya No. 20, Bintaro, Jakarta Selatan</div>
-            </div>
-            <div class="d-flex mb-5">
-                <div class="px-2 icon-style text-primary"><i class="fa-solid fa-envelope"></i></div>
-                <div class="px-2 flex-grow text-icon-style">Jl. Kesehatan Raya No. 20, Bintaro, Jakarta Selatan</div>
-            </div> --}}
-        </div>
-        <div class="col-6">
-            <h3 class="mb-4">Contact Form</h3>
-            <form action="{{ route('fe.contact.store') }}" method="post" id="contact">
-                @csrf
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Name" name="name" id="name">
-                    </div>
-                    <div class="col">
-                        <input type="email" class="form-control" placeholder="Email" name="email" id="email">
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Subject" name="subject" id="subject">
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <textarea type="text" class="form-control" placeholder="Message" name="message"
-                            id="message"></textarea>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary text-right">Submit</button>
-            </form>
-        </div>
-    </div>
-    <div id="map"></div>
-</div>
+
 @endsection
 
 @push('scripts')
