@@ -65,8 +65,6 @@ class CategoryPostController extends Controller
                 'success' => false
             ]);
         }
-
-        
     }
 
     /**

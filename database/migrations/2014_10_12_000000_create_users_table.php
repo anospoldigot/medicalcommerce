@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('profile')
                 ->default('avatar_default.webp');
             $table->rememberToken();
+            $table->bigInteger('credit')->nullable();
+            $table->boolean('is_credit_active')->default(0);
             $table->timestamps();
         });
     }

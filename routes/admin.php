@@ -70,6 +70,16 @@ Route::middleware([])->group(function () {
     Route::post('inputResi', [OrderController::class, 'inputResi']);
 
 
+    
+    Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
+    Route::patch('orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
+    Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');
+    Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
+    Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
+    Route::patch('roles/{role}/updatePermission', [RoleController::class, 'updatePermission'])->name('roles.updatePermission');
+
+
+
     // Ajax CRUD
     Route::apiResources([
         'category'      => CategoryController::class,
@@ -89,11 +99,6 @@ Route::middleware([])->group(function () {
         'orders'        => OrderController::class,
         'users'         => UserController::class,
     ]);
-
-    Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
-    Route::patch('orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
-    Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');
-    Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
 });
 
 Route::get('shipping/get_province', [ShippingController::class, 'getProvince'])->name('getProvince');
