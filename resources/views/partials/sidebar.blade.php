@@ -117,6 +117,30 @@
                     </li> --}}
                 </ul>
             </li>
+            @canany(['user.index', 'role.index', 'permission.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Users</span></a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('users.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">List</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('roles.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Role</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('permissions.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">Permission</span></a>
+                        </li>
+                
+                        {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('category.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Category</span></a>
+                        </li> --}}
+                    </ul>
+                </li>
+            @endcanany
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Page Layouts</span><span
                         class="badge badge-light-danger badge-pill ml-auto mr-1">2</span></a>

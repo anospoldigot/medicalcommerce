@@ -22,9 +22,9 @@
 <!-- Hero  -->
 <div class="hero-container">
     <div class="h-100 hero-container-opacity">
-        <div class="container h-100">
+        <div class="container h-100 py-5 py-lg-0">
             <div class="row align-items-center justify-content-center h-100">
-                <div class="col-12 col-lg-6 text-secondary px-2 order-1 order-lg-0">
+                <div class="col-12 col-lg-6 mb-lg-0 text-secondary px-2 order-1 order-lg-0">
                     <div class="mb-4">
                         <span class="text-uppercase fw-600 fs-30 mb-4">Permedik</span>
                         <h6 style="">Product Kits & <span class="text-primary">Medical</span></h6>
@@ -35,7 +35,7 @@
                     </p>
                     <a href="{{ route('fe.products.index') }}" class="btn btn-primary px-3">Shop Now</a>
                 </div>
-                <div class="col-12 col-lg-6 order-0 order-lg-1">
+                <div class="col-12 col-lg-6 mb-3 mb-lg-0 order-0 order-lg-1">
                     <img src="{{ asset('frontend/img/hero.svg') }}" alt="" class="img-fluid">
                 </div>
             </div>
@@ -336,7 +336,7 @@
             renderer: "svg",
             loop: true,
             autoplay: true,
-            path: "https://assets6.lottiefiles.com/packages/lf20_q6wsiidu.json"
+            path: "https://assets4.lottiefiles.com/packages/lf20_IcvJ1B.json"
         });
 
         const product = new Glide('#product-slider', {
@@ -349,55 +349,4 @@
 
 
 </script>
-{{-- <script>
-    /* Whatsapp Chat Widget by www.bloggermix.com */
-        $(document).on("click", "#send-it", function() {
-            var a = document.getElementById("chat-input");
-            if ("" != a.value) {
-                var b = $("#get-number").text(),
-                c = document.getElementById("chat-input").value,
-                d = "https://web.whatsapp.com/send",
-                e = b,
-                f = "&text=" + c;
-                if (
-                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                    navigator.userAgent
-                )
-                )
-                var d = "whatsapp://send";
-                var g = d + "?phone=+31 6 29320129" + e + f;
-                window.open(g, "_blank");
-            }
-            }),
-            $(document).on("click", ".informasi", function() {
-                (document.getElementById("get-number").innerHTML = $(this)
-                .children(".my-number")
-                .text()),
-                $(".start-chat,.get-new")
-                    .addClass("show")
-                    .removeClass("hide"),
-                $(".home-chat,.head-home")
-                    .addClass("hide")
-                    .removeClass("show"),
-                (document.getElementById("get-nama").innerHTML = $(this)
-                    .children(".info-chat")
-                    .children(".chat-nama")
-                    .text()),
-                (document.getElementById("get-label").innerHTML = $(this)
-                    .children(".info-chat")
-                    .children(".chat-label")
-                    .text());
-            }),
-            $(document).on("click", ".close-chat", function() {
-                $("#whatsapp-chat")
-                .addClass("hide")
-                .removeClass("show");
-            }),
-            $(document).on("click", ".blantershow-chat", function() {
-                $("#whatsapp-chat")
-                .addClass("show")
-                .removeClass("hide");
-        });
-
-</script> --}}
 @endpush

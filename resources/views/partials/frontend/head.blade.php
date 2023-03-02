@@ -84,6 +84,21 @@
     }
 
 
+    @media only screen and (max-width: 600px){
+        .chat-tab {
+            position: fixed;
+            bottom: 100px;
+            box-sizing: border-box; /* menghitung padding sebagai bagian dari width */
+            width: 100%;
+            right: 0;
+            left: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+            z-index: 99;
+        }
+    }
+
+
     .swiper {
         width: 100%;
     }

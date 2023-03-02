@@ -64,7 +64,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         }else if(data.message.to_id == id){
             $('#chat-content').append(adminChatTemplate(data.message));
         }
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
     });
     
     // console.log(channel);
@@ -81,7 +81,32 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
     });
 </script>
 <script>
-
+    $(window).scroll(function () {
+        const screenWidth = window.screen.width;
+        if(screenWidth > 992){
+            if ($(this).scrollTop() > 40) {
+                $('.navbar-hero').removeClass('bg-transparent')
+                $('.navbar-hero').addClass('bg-white shadow')
+                $('.navbar-hero').removeClass('navbar-dark')
+                $('.navbar-hero').addClass('navbar-light')
+                $('.navbar-hero').find('#navbarSupportedContent').removeClass('font-weight-bold')
+                $('.navbar-hero').find('.btn-light').addClass('btn-primary')
+                $('.navbar-hero').find('.btn-light').removeClass('btn-light')
+                $('.navbar-hero').find('.btn-outline-light').addClass('btn-outline-primary')
+                $('.navbar-hero').find('.btn-outline-light').removeClass('btn-outline-light')
+            } else {
+                $('.navbar-hero').removeClass('bg-white shadow')
+                $('.navbar-hero').addClass('bg-transparent')
+                $('.navbar-hero').removeClass('navbar-light')
+                $('.navbar-hero').addClass('navbar-dark')
+                $('.navbar-hero').find('#navbarSupportedContent').addClass('font-weight-bold')
+                $('.navbar-hero').find('.btn-primary').addClass('btn-light')
+                $('.navbar-hero').find('.btn-primary').removeClass('btn-primary')
+                $('.navbar-hero').find('.btn-outline-primary').addClass('btn-outline-light')
+                $('.navbar-hero').find('.btn-outline-primary').removeClass('btn-outline-primary')
+            }
+        }
+    });
     function pluck(array, property) {
         return array.map(obj => obj[property]);
     }
@@ -128,6 +153,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
     $(window).on("load", function() {
         // $("#loading-wrapper").fadeOut();
         $("#preloader").delay(350).fadeOut("slow");
+        $('html, body').animate({ scrollTop: 0 }, "fast");
     });
     
     const addToCart = function(product_id){
@@ -249,8 +275,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         </div>`
     }
 
-
-    $('#send-chat-btn').click(function(){
+    function sendChat(){
         const data = {
             content: $('#chat-input').val()
         }
@@ -270,6 +295,17 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
                 console.log(err);
             }
         })
+    }
+
+
+    $('#send-chat-btn').click(function(){
+        sendChat()
+    })
+
+    $('#chat-input').on('keydown', function(event){
+        if (event.keyCode === 13) {
+            sendChat();
+        }
     })
 
 
@@ -309,4 +345,6 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         
         alert("Copied the text: " + TempText.value);
     }
+
+
 </script>

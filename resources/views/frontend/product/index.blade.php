@@ -1,5 +1,6 @@
 @extends('layouts.frontend', [
-'disableHero' => 1
+    'disableHero' => 1,
+    'disableFooter' => 1
 ])
 
 @push('styles')
@@ -12,8 +13,32 @@
 @section('content')
 
 <div class="bg-light">
-    <div class="container py-5">
-        <div class="row mb-4">
+    <div class="row mb-4 d-block d-lg-none">
+        <div class="col-12">
+            <div class="glide" id="banner-slider">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide">
+                            <img src="{{ asset('frontend/img/banner1.jpg') }}" alt=""
+                                style="height: 100%; object-fit: cover">
+                        </li>
+                        <li class="glide__slide">
+                            <img src="{{ asset('frontend/img/banner2.jpg') }}" alt=""
+                                style="height: 100%; object-fit: cover">
+                        </li>
+                    </ul>
+                    <div class="glide__arrows" data-glide-el="controls">
+                        <button class="glide-arrow glide-arrow-left btn btn-arrow rounded-pill" data-glide-dir="<"><i
+                                class="fa-solid fa-chevron-left"></i></button>
+                        <button class="glide-arrow glide-arrow-right btn btn-arrow rounded-pill" data-glide-dir=">"><i
+                                class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container py-5 d-none d-lg-block">
+        <div class="row mb-4 ">
             <div class="col-12 col-lg-8">
                 <div class="glide" id="banner-slider">
                     <div class="glide__track" data-glide-el="track">
@@ -63,7 +88,7 @@
             </div>
         </div>
         <h6 class="text-center mb-3">Product Terlaris</h6>
-        <div class="row mb-4">
+        <div class="row mb-4" >
             <div class="glide" id="product-slider" style="height: 100%">
                 <div class="glide__track" style="height: 100%" data-glide-el="track">
                     <ul class="glide__slides" style="height: 100%">
@@ -121,7 +146,7 @@
             </div>
         </div>
         <h6 class="text-center mb-3">Semua Product</h6>
-        <div class="row mb-4">
+        <div class="row mb-4" id="content">
             @foreach ($products as $product) 
             <div class="col-6 col-md-4 col-xl-2 p-1">
                 <a href="{{ route('fe.products.show', $product->slug) }}">
@@ -300,9 +325,83 @@
                 600: {
                     perView: 2
                 },
-
             }
         }).mount()
         
+        $(document).ready(function() {
+            let page = 1; 
+            let isLoad = false; 
+            let isFinish = false; 
+
+            function productTemplate(data){
+                let priceRender = '';
+
+                if(data.is_discount){
+                    priceRender += `<div>
+                        <del>
+                            <small class="text-muted text-decoration-line-through mb-0">Rp. {{
+                                number_format ($product->price,2,",",".") }}
+                            </small>
+                        </del>
+                    </div>`;
+                    
+                    if (data.discount_type == 'persen') {
+                        priceRender += `<div>
+                            <span class="text-primary  mb-0">${formatRupiah((data.price / 100) * data.discount, 'Rp. ', ',00')}</span>
+                        </div>`
+                    }else{
+                        priceRender += `<div>
+                            <span class="text-primary  mb-0">${formatRupiah(data.price -data.discount, 'Rp. ', ',00')}</span>
+                        </div>`
+                    }
+                }else{
+                    priceRender += `<span class="text-primary  mb-0">${formatRupiah(data.price, 'Rp. ', ',00')}</span>`
+                }
+
+                return `<div class="col-6 col-md-4 col-xl-2 p-1">
+                    <a href="{{ route('fe.products.index') }}/${data.slug}">
+                        <div class="rounded card-product" style="height: 100%">
+                            <img src="${data.assets[0].src}" alt="${data.title}-image" class="card-img-top rounded">
+                            <span class="badge badge-success label-sell-product">50 Terjual</span>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    ${data.title}
+                                </div>
+                                ${priceRender}
+                            </div>
+                        </div>
+                    </a>
+                </div>`
+            }
+
+            function loadContent(page) {
+                $.ajax({
+                    url: window.location.href,
+                    method: "GET",
+                    data: { page: page + 1},
+                    beforeSend: function() {
+                        isLoad = true; 
+                        $("#content").append('<div class="loading col-12 text-center my-3">Loading...</div>');
+                    },
+                    success: function(data) {
+                        if(data.length == 0) isFinish = true
+                        isLoad = false; 
+                        $(".loading").remove();
+                        $("#content").append(data.map(value => productTemplate(value)));
+                    }
+                });
+            }
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() == $(document).height() - $(window).height() && !isLoad) {
+                    if(!isFinish){
+                        page++; // mengubah halaman
+                        loadContent(page); // memuat konten
+                    }
+                }
+            });
+                loadContent(page);
+            });
+
 </script>
 @endpush

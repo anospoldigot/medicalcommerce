@@ -28,18 +28,11 @@
 
 @section('content')
 
-    <div class="hero-container-contact mb-5">
-        <div class="hero-contact">
-            <div class="container h-100 d-flex align-items-center justify-content-center">
-                <div class="text-center text-uppercase">
-                    <h6>Article</h6>
-                    <h1>PT <span class="text-primary">Pertama</span> mitra medika</h1>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container py-5">
+        <div class="row mb-5">
+            
+        </div>
         <div class="row">
             <div class="col-12 col-lg-8">
                 <div class="row">

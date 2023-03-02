@@ -36,24 +36,6 @@
         const id = '{{ auth()->id() }}';
     </script>
     @include('partials.frontend.script')
-    
-    <script>
-        $(window).scroll(function () {
-            if ($(this).scrollTop() > 40) {
-                $('.navbar-hero').removeClass('bg-transparent')
-                $('.navbar-hero').addClass('bg-white shadow')
-                $('.navbar-hero').removeClass('navbar-dark')
-                $('.navbar-hero').addClass('navbar-light')
-                $('.navbar-hero').find('#navbarSupportedContent').removeClass('font-weight-bold')
-            } else {
-                $('.navbar-hero').removeClass('bg-white shadow')
-                $('.navbar-hero').addClass('bg-transparent')
-                $('.navbar-hero').removeClass('navbar-light')
-                $('.navbar-hero').addClass('navbar-dark')
-                $('.navbar-hero').find('#navbarSupportedContent').addClass('font-weight-bold')
-            }
-        });
-    </script>
     @stack('scripts')
 </body>
 

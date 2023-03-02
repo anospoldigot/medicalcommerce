@@ -35,8 +35,17 @@ class RolePermissionSeeder extends Seeder
             'category' => [
                 'category.index', 'category.create', 'category.edit', 'category.delete'
             ],
-            'category' => [
+            'chat' => [
                 'chat.index', 'chat.create', 'chat.edit', 'chat.delete'
+            ],
+            'user' => [
+                'user.index', 'user.create', 'user.edit', 'user.delete'
+            ],
+            'role' => [
+                'role.index', 'role.create', 'role.edit', 'role.delete'
+            ],
+            'permission' => [
+                'permission.index', 'permission.create', 'permission.edit', 'permission.delete'
             ],
 
         ];
@@ -59,7 +68,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
 
-        $role->givePermissionTo(collect($permission)->map(function ($v, $k) {
+        $role->givePermissionTo(collect($permission)->except(['user', 'role', 'permission'])->map(function ($v, $k) {
             unset($v[$k]);
             return $v;
         }));

@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Frontend;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
-use App\Models\User;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class AuthController extends Controller
 {
-    public function login ()
+    public function login()
     {
-        return view('admin.auth.login');
+        return view('auth.login');
     }
 
     public function loginPost()
@@ -25,31 +23,22 @@ class AuthController extends Controller
             'password'  => ['required'],
         ]);
 
-        if (!NoCaptcha::verifyResponse(request('g-recaptcha-response'))) {
-            return back()->withErrors([
-                'email' => 'captcha error.',
-            ])->onlyInput('email');
-        } 
+        if (auth()->attempt($credentials)) {
+            request()->session()->regenerate();
 
-        $user = User::where('email', request('email'))->first();
-        if (Hash::check(request('password'), $user->password)) {
-            
-            if($user->hasRole(['admin', 'developer'])){
-                Auth::login($user);
-                request()->session()->regenerate();
-                return redirect()->intended(route('dashboard'));
+            if (auth()->user()->hasRole('customer')) {
+                return redirect()->intended(route('landing'));
             }
 
         }
 
-        
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
 
     public function myAccount()
-    {   
+    {
         return view('admin.setting.account', [
             'user' => auth()->user()
         ]);
@@ -66,17 +55,17 @@ class AuthController extends Controller
         ];
 
         $attr = request()->validate($rules);
-        
-        if(request()->filled('password')){
+
+        if (request()->filled('password')) {
             $attr['password'] = bcrypt(request('password'));
-        }else{
+        } else {
             unset($attr['password']);
         }
 
-        try{
+        try {
             User::where('id', auth()->id())->update($attr);
             session()->flash('success', 'Berhasil mengupdate');
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             session()->flash('error', $th->getMessage());
         }
 
@@ -85,7 +74,7 @@ class AuthController extends Controller
 
     public function register()
     {
-        
+
         return view('auth.register');
     }
 
@@ -103,7 +92,7 @@ class AuthController extends Controller
         $user = User::create($data);
         $user->assignRole('customer');
         Auth::login($user);
-        
+
         return redirect()->route('verification.notice');
     }
 
@@ -114,17 +103,17 @@ class AuthController extends Controller
         return view('auth.verify');
     }
 
-    public function verifyEmail(EmailVerificationRequest $request) 
+    public function verifyEmail(EmailVerificationRequest $request)
     {
         $request->fulfill();
- 
+
         return redirect('/');
     }
 
     public function resendVerify()
     {
         request()->user()->sendEmailVerificationNotification();
-        
+
         return back()->with('message', 'Verification link sent!');
     }
 
@@ -138,6 +127,4 @@ class AuthController extends Controller
 
         return redirect('/');
     }
-    
-
 }

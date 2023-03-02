@@ -12,22 +12,22 @@ class ProductController extends Controller
     public function index()
     {
 
+        if(request()->ajax()){
+
+            $per_page = request('per_page') ?? 6;
+            $page = request('page') ?? 1;
+            $skip = ($page - 1) * $per_page;
+
+            return Product::with(['assets', 'category'])
+                ->latest()
+                ->skip($skip)
+                ->take($per_page)
+                ->get();
+        }
+
         $products = Product::with(['assets', 'category'])
             ->latest()
-            // ->where('is_front', true)
-            // ->when(request()->has('category'), function ($query) {
-            //     $query->where('id', request('category'));
-            // })
-            // ->when(request()->has('q'), function ($query) {
-            //     $query->where('title', 'like', '%' . request('q') . '%');
-            // })
-            // ->when(request()->filled('min'), function ($query) {
-            //     $query->where('price', '>=', request('min'));
-            // })
-            // ->when(request()->filled('max'), function ($query) {
-            //     $query->where('price', '<=', request('max'));
-            // })
-            ->get();
+            ->paginate(6);
 
         $categories = Category::all();
         

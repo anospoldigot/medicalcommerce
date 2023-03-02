@@ -5,6 +5,29 @@
     background-repeat: no-repeat;
     background-position: top right;
 }
+
+@media only screen and (max-width: 600px) {
+    .hero-container{
+        height: 100vh;
+        background-image: url(../../frontend/img/split_background_mobile.svg); 
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: top right;
+    }
+}
+
+.bg-nav-with-hero {
+  background-color: white;
+}
+
+@media (min-width: 992px) {
+  .bg-nav-with-hero {
+    background-color: transparent !important;
+  }
+}
+
+
+
 .hero-container-opacity{
     /* background-color: rgba(255, 255, 255,0.5); */
 }

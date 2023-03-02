@@ -16,7 +16,10 @@ use App\Http\Controllers\Admin\{
     TransactionController,
     CouponController,
     MessageFormController,
-    TagController
+    TagController,
+    PermissionController,
+    UserController,
+    RoleController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +39,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('test', [DuitkuController::class, 'index']);
 Route::get('test2', [DuitkuController::class, 'test2']);
+
+Route::controller(AuthController::class)->group(function(){
+    Route::get('login', 'login')->name('admin.login');
+    Route::post('login', 'loginPost')->name('admin.loginPost');
+});
+
 Route::middleware([])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::controller(SettingWebController::class)->prefix('setting')->group(function () {
@@ -67,6 +76,8 @@ Route::middleware([])->group(function () {
         'chats'         => ChatController::class,
         'category_post' => CategoryPostController::class,
         'tags'          => TagController::class,
+        'roles'         => RoleController::class,
+        'permissions'   => PermissionController::class,
     ]);
 
     //CRUD
@@ -76,6 +87,7 @@ Route::middleware([])->group(function () {
         'coupons'       => CouponController::class,
         'message_forms' => MessageFormController::class,
         'orders'        => OrderController::class,
+        'users'         => UserController::class,
     ]);
 
     Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');

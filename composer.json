@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "anhskohbo/no-captcha": "^3.5",
         "awobaz/compoships": "^2.1",
         "azishapidin/indoregion": "^3.0",
         "duitkupg/duitku-php": "dev-master",

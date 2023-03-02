@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Frontend\AuthController;
 use App\Http\Controllers\Admin\DuitkuController;
 use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\Frontend\AboutController;

@@ -11,7 +11,7 @@
 
 @section('content')
 
-<div class="hero">
+{{-- <div class="hero">
     <div class="container">
         <div class="row">
             <div class="col-6 col-xl-3">
@@ -22,9 +22,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="container py-5">
-    <h6 class="text-center mb-3">Semua Product</h6>
+    <h6 class="text-center mb-3">{{ $category->title }}</h6>
     <div class="row">
         @foreach ($category->products as $product)
         <div class="col-12 col-xl-2 p-1 d-none d-md-block">

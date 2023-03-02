@@ -201,6 +201,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Shetabit\Visitor\Provider\VisitorServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        
     ],
 
     /*
@@ -221,6 +223,7 @@ return [
         'Rajaongkir' => Silehage\Rajaongkir\RajaongkirFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         'Visitor' => Shetabit\Visitor\Facade\Visitor::class,
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
     ])->toArray(),
 
 ];
