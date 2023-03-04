@@ -54,8 +54,8 @@
                         name: 'title'
                     },
                     {
-                        data: 'tags',
-                        name: 'tags'
+                        data: 'category.name',
+                        name: 'category.name'
                     },
                     {
                         data: 'action',

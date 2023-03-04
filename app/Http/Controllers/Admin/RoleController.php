@@ -58,7 +58,7 @@ class RoleController extends Controller
         try {
             $role->update($attr);
             return response()->json([
-                'message' => 'Berhasil mengupdate role',
+                'message' => 'Berhasil mengupdate role ' . $role->name,
                 'success' => true
             ]);
         } catch (\Throwable $th) {
@@ -92,7 +92,7 @@ class RoleController extends Controller
     {
         try {
             $role->delete();
-            session()->flash('success', 'Berhasil menghapus role');
+            session()->flash('success', 'Berhasil menghapus role ' . $role->name);
         } catch (\Throwable $th) {
             session()->flash('error', $th->getMessage());
         }

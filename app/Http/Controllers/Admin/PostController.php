@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\CategoryPost;
 use App\Models\Tag;
 
 class PostController extends Controller
@@ -40,7 +41,7 @@ class PostController extends Controller
                 });
             }
 
-            return DataTables::of(Post::latest()->get())
+            return DataTables::of(Post::with('category')->latest()->get())
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.post._action')
                 ->toJson();
@@ -54,13 +55,16 @@ class PostController extends Controller
     {
         
         return view('admin.post.create', [
-            'tags' => Tag::all()
+            'tags'          => Tag::all(),
+            'categories'    => CategoryPost::all(),
         ]);
     }
 
     public function edit(Post $post)
-    {
-        return view('admin.post.edit', compact('post'));
+    {   
+        $tags = Tag::all();
+        $categories = CategoryPost::all();
+        return view('admin.post.edit', compact('post', 'categories', 'tags'));
     }
     
     public function getListing()
@@ -85,7 +89,7 @@ class PostController extends Controller
             'image' => ['required'],
             'body' => ['required']
         ]);
-
+        
         $path = public_path('/upload/images');
 
         if (!File::exists($path)) {
@@ -94,14 +98,12 @@ class PostController extends Controller
 
         $post = new Post();
 
-        $post->title = $request->title;
-        $post->slug = Str::slug($request->title);
-        $post->tags = $request->tags;
-        $post->body = $request->body;
-
-        $post->is_listing = $request->boolean('is_listing');
-        $post->is_promote = $request->boolean('is_promote');
-
+        $post->title            = $request->title;
+        $post->slug             = Str::slug($request->title);
+        $post->body             = $request->body;
+        $post->category_id      = $request->category_id;
+        $post->is_listing       = $request->boolean('is_listing');
+        $post->is_promote       = $request->boolean('is_promote');
         if ($file = $request->file('image')) {
 
             $filename = Str::random(42) . '.' . $file->extension();
@@ -114,12 +116,12 @@ class PostController extends Controller
 
         try{
             $post->save();
-
+            $post->tags()->attach($request->tags);
             return redirect()->route('post.index')->with('success', 'Berhasil menyimpan artikel');
             
         }catch(\Throwable $th){
 
-            return redirect()->route('post.index')->with('error', 'Gagal menyimpan artikel');
+            return redirect()->route('post.index')->with('error', $th->getMessage());
         }
 
     }
@@ -147,15 +149,6 @@ class PostController extends Controller
         return response()->json([
             'success' => true,
             'results' => Post::findOrFail($id)
-        ]);
-    }
-
-    
-    public function getPostBySlug($slug)
-    {
-        return response()->json([
-            'success' => true,
-            'results' => Post::where('slug', $slug)->first()
         ]);
     }
 
@@ -190,15 +183,14 @@ class PostController extends Controller
             
         }
 
-        $post->title = $request->title;
-        $post->tags = $request->tags;
-        $post->body = $request->body;
-
-        $post->is_listing = $request->boolean('is_listing');
-        $post->is_promote = $request->boolean('is_promote');
+        $post->title            = $request->title;
+        $post->body             = $request->body;
+        $post->category_id      = $request->category_id;
+        $post->is_listing       = $request->boolean('is_listing');
+        $post->is_promote       = $request->boolean('is_promote');
 
         $post->save();
-
+        $post->tags()->attach($request->tags);
         return redirect()->route('post.index')->with('success', 'Berhasil mengupdate artikel');
     }
 

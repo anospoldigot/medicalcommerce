@@ -40,10 +40,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('test', [DuitkuController::class, 'index']);
 Route::get('test2', [DuitkuController::class, 'test2']);
 
-Route::controller(AuthController::class)->group(function(){
-    Route::get('login', 'login')->name('admin.login');
-    Route::post('login', 'loginPost')->name('admin.loginPost');
-});
+
 
 Route::middleware([])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

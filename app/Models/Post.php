@@ -5,10 +5,10 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Shetabit\Visitor\Traits\Visitable;
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Visitable;
 
     public function assets()
     {
@@ -28,6 +28,11 @@ class Post extends Model
     public function tags ()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function category ()
+    {
+        return $this->belongsTo(CategoryPost::class, 'category_id', 'id');
     }
 
     public function scopeListing()

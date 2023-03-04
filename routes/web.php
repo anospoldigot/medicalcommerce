@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\AuthController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DuitkuController;
 use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\Frontend\AboutController;
@@ -52,6 +53,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/email/verification-notification', 'resendVerify')
         ->middleware(['auth', 'throttle:6,1'])
         ->name('verification.send');
+});
+
+
+Route::controller(AuthController::class)->prefix('admin')->group(function () {
+    Route::get('login', 'login')->name('admin.login');
+    Route::post('login', 'loginPost')->name('admin.loginPost');
 });
 
 

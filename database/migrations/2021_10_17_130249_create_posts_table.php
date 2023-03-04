@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('category_id')->nullable();
+            $table->string('category_id');
             $table->string('image');
             $table->text('body');
             $table->boolean('is_promote')->default(false);
