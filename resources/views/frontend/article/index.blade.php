@@ -50,13 +50,22 @@
     <div class="row">
         <div class="col-12 col-lg-8">
             <div class="row">
-                .col-12
+                <div class="col-12">
+                    <div class="card  border-0 text-dark mb-5">
+                        <img src="{{ $articles->first()->image_url }}" class="card-img" alt="..." style="filter: brightness(0.9)">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title">{{ $article->first()->title }}</h5>
+                            
+                            <p class="card-text">{{ $articles->first()->created_at->diffForHumans() }}</p>
+                        </div>
+                    </div>
+                </div>
                 @foreach ($articles as $article)
                 <div class="col-lg-12">
                     <div class="bg-white card border-0 mb-4">
                         <div class="row no-gutters">
                             <div class="col-md-4">
-                                <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="rounded"
+                                <img src="{{ $article->image_url }}" alt="{{ $article->title }}-image" class="rounded"
                                     style="height: 100%; object-fit: cover">
                             </div>
                             <div class="col-md-8">

@@ -299,6 +299,50 @@
         </div>
     </div>
 </div>
+<div class="py-5 bg-white">
+    <div class="container py-3">
+        <h1 class="text-center text-secondary mb-2">Kurir</h1>
+        <div class="d-flex justify-content-center mb-5">
+            <div class="col-12 col-lg-6">
+                <small>
+                    Kami menyediakan berbagai jenis kurir untuk mempermudah transaksi anda
+                </small>
+            </div>
+        </div>
+        <div class="glide" id="kurir-slider">
+            <div class="glide__track" data-glide-el="track">
+                <ul class="glide__slides">
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/jnt.png') }}" alt="" class="img-fluid">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="py-5 bg-white">
+    <div class="container py-3">
+        <h1 class="text-center text-secondary mb-2">Payment</h1>
+        <div class="d-flex justify-content-center mb-5">
+            <div class="col-12 col-lg-6">
+                <small>
+                    Kami menyediakan berbagai jenis payment untuk mempermudah transaksi anda
+                </small>
+            </div>
+        </div>
+        <div class="glide" id="payment-slider">
+            <div class="glide__track" data-glide-el="track">
+                <ul class="glide__slides">
+                    @foreach ($paymentMethodList->paymentFee as $payment )
+                        <li class="glide__slide">
+                            <img src="{{ $payment->paymentImage }}" alt="" class="img-fluid">
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="py-5" style="background: #7158e226">
     <div class="container py-5">
         <h1 class="text-center text-secondary mb-5">Latest Article</h1>
@@ -341,9 +385,29 @@
 
         const product = new Glide('#product-slider', {
             breakpoints: {
-                // 600: {
-                //     perView: 2
-                // }
+                600: {
+                    perView: 2
+                }
+            }
+        }).mount()
+
+        const kurir = new Glide('#kurir-slider', {
+            perView: 6,
+            autoplay: 3000,
+            breakpoints: {
+                600: {
+                    perView: 2
+                }
+            }
+        }).mount()
+
+        const payment = new Glide('#payment-slider', {
+            perView: 6,
+            autoplay: 3000,
+            breakpoints: {
+                600: {
+                    perView: 2
+                }, 
             }
         }).mount()
 

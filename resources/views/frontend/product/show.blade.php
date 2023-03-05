@@ -276,7 +276,8 @@
     const relatedProduct = new Glide('.related-product', {
             startAt: 0,
             perView: 3,
-            gap: 20
+            gap: 20,
+            autoplay: 3000,
         })
         .mount()
 

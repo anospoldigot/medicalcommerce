@@ -37,39 +37,42 @@
             </div>
         </div>
     </div>
-    <div class="container py-5 d-none d-lg-block">
-        <div class="row mb-4 ">
-            <div class="col-12 col-lg-8">
-                <div class="glide" id="banner-slider">
-                    <div class="glide__track" data-glide-el="track">
-                        <ul class="glide__slides">
-                            <li class="glide__slide">
-                                <img src="{{ asset('frontend/img/banner1.jpg') }}" alt=""
-                                    style="height: 100%; object-fit: cover">
-                            </li>
-                            <li class="glide__slide">
-                                <img src="{{ asset('frontend/img/banner2.jpg') }}" alt=""
-                                    style="height: 100%; object-fit: cover">
-                            </li>
-                        </ul>
-                        <div class="glide__arrows" data-glide-el="controls">
-                            <button class="glide-arrow glide-arrow-left btn btn-arrow rounded-pill"
-                                data-glide-dir="<"><i class="fa-solid fa-chevron-left"></i></button>
-                            <button class="glide-arrow glide-arrow-right btn btn-arrow rounded-pill"
-                                data-glide-dir=">"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="container py-5">
+        <div class="d-none d-lg-block">
+            <div class="row mb-4">
+                <div class="col-12 col-lg-8">
+                    <div class="glide" id="banner-slider">
+                        <div class="glide__track" data-glide-el="track">
+                            <ul class="glide__slides">
+                                <li class="glide__slide">
+                                    <img src="{{ asset('frontend/img/banner1.jpg') }}" alt=""
+                                        style="height: 100%; object-fit: cover">
+                                </li>
+                                <li class="glide__slide">
+                                    <img src="{{ asset('frontend/img/banner2.jpg') }}" alt=""
+                                        style="height: 100%; object-fit: cover">
+                                </li>
+                            </ul>
+                            <div class="glide__arrows" data-glide-el="controls">
+                                <button class="glide-arrow glide-arrow-left btn btn-arrow rounded-pill" data-glide-dir="<"><i
+                                        class="fa-solid fa-chevron-left"></i></button>
+                                <button class="glide-arrow glide-arrow-right btn btn-arrow rounded-pill" data-glide-dir=">"><i
+                                        class="fa-solid fa-chevron-right"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 d-none d-lg-flex flex-column">
-                <div class="py-1">
-                    <img src="{{ asset('frontend/img/banner1.jpg') }}" alt="" style="height: 100%; object-fit: cover">
-                </div>
-                <div class="py-1">
-                    <img src="{{ asset('frontend/img/banner2.jpg') }}" alt="" style="height: 100%; object-fit: cover">
+                <div class="col-lg-4 d-none d-lg-flex flex-column">
+                    <div class="py-1">
+                        <img src="{{ asset('frontend/img/banner1.jpg') }}" alt="" style="height: 100%; object-fit: cover">
+                    </div>
+                    <div class="py-1">
+                        <img src="{{ asset('frontend/img/banner2.jpg') }}" alt="" style="height: 100%; object-fit: cover">
+                    </div>
                 </div>
             </div>
         </div>
+        
         <div class="d-none d-lg-block">
             <h6 class="text-center mb-3">Kategori</h6>
             <div class="row mb-4">
