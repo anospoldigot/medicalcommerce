@@ -1,23 +1,25 @@
 <?php
 
-use App\Http\Controllers\Frontend\AuthController;
+use App\Http\Controllers\Frontend\{
+    AuthController,
+    CategoryProductController,
+    CategoryController,
+    DuitkuController,
+    BroadcastController,
+    AboutController,
+    AddressController,
+    ArticleController,
+    ProductController,
+    CartController,
+    ChatController,
+    ContactController,
+    CouponController,
+    OrderController,
+    PaymentController,
+    ProfileController,
+    ShipperController
+};
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
-use App\Http\Controllers\Admin\DuitkuController;
-use App\Http\Controllers\BroadcastController;
-use App\Http\Controllers\Frontend\AboutController;
-use App\Http\Controllers\Frontend\AddressController;
-use App\Http\Controllers\Frontend\ArticleController;
-use App\Http\Controllers\Frontend\ProductController;
-use App\Http\Controllers\Frontend\CartController;
-use App\Http\Controllers\Frontend\CategoryController;
-use App\Http\Controllers\Frontend\CategoryProductController;
-use App\Http\Controllers\Frontend\ChatController;
-use App\Http\Controllers\Frontend\ContactController;
-use App\Http\Controllers\Frontend\CouponController;
-use App\Http\Controllers\Frontend\OrderController;
-use App\Http\Controllers\Frontend\PaymentController;
-use App\Http\Controllers\Frontend\ProfileController;
-use App\Http\Controllers\Frontend\ShipperController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Payment\{
     CancelPayment, ChargeCreditCard, CheckPayment, RequestCPay, RequestCVS, RequestEWallet,
