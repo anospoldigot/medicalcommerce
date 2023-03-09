@@ -56,7 +56,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 
-Route::controller(AuthController::class)->prefix('admin')->group(function () {
+Route::controller(AdminAuthController::class)->prefix('admin')->group(function () {
     Route::get('login', 'login')->name('admin.login');
     Route::post('login', 'loginPost')->name('admin.loginPost');
 });
