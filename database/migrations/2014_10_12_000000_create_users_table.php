@@ -20,8 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('gender', ['laki laki', 'perempuan'])->nullable();
-            $table->string('profile')
-                ->default('avatar_default.webp');
+            $table->string('profile')->default('avatar_default.webp');
             $table->rememberToken();
             $table->bigInteger('credit')->nullable();
             $table->boolean('is_credit_active')->default(0);

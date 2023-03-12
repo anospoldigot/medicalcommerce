@@ -25,11 +25,11 @@ class AuthController extends Controller
             'password'  => ['required'],
         ]);
 
-        if (!NoCaptcha::verifyResponse(request('g-recaptcha-response'))) {
-            return back()->withErrors([
-                'email' => 'captcha error.',
-            ])->onlyInput('email');
-        } 
+        // if (!NoCaptcha::verifyResponse(request('g-recaptcha-response'))) {
+        //     return back()->withErrors([
+        //         'email' => 'captcha error.',
+        //     ])->onlyInput('email');
+        // } 
 
         $user = User::where('email', request('email'))->first();
         if (Hash::check(request('password'), $user->password)) {

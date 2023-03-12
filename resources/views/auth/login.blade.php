@@ -104,7 +104,7 @@
                                     href="javascript:void(0)"><i data-feather="facebook"></i></a><a
                                     class="btn btn-twitter white" href="javascript:void(0)"><i
                                         data-feather="twitter"></i></a><a class="btn btn-google"
-                                    href="javascript:void(0)"><i data-feather="mail"></i></a><a class="btn btn-github"
+                                    href="{{ url('/auth/google') }}"><i data-feather="mail"></i></a><a class="btn btn-github"
                                     href="javascript:void(0)"><i data-feather="github"></i></a></div>
                         </div>
                     </div>

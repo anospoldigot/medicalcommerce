@@ -50,9 +50,12 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard') }}"><i
-                        data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Home">Home</span></a>
-            </li>
+            @canany(['dashboard.index'])
+                <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                        href="{{ route('dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate"
+                            data-i18n="Home">Home</span></a>
+                </li>
+            @endcanany
             @canany(['product.index'])
                 <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
                             class="menu-title text-truncate" data-i18n="Page Layouts">Product</span></a>
@@ -69,71 +72,80 @@
                     </ul>
                 </li>
             @endcanany
-            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
-                        class="menu-title text-truncate" data-i18n="Page Layouts">Order</span></a>
-                <ul class="menu-content">
-                    <li class="{{ request()->routeIs('orders.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('orders.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">List</span></a>
-                    </li>
-                    {{-- <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('message_forms.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">Form</span></a>
-                    </li> --}}
-                </ul>
-            </li>
-            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
-                        class="menu-title text-truncate" data-i18n="Page Layouts">Message</span></a>
-                <ul class="menu-content">
-                    <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('chats.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">Chat</span></a>
-                    </li>
-                    <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('message_forms.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">Form</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
-                        class="menu-title text-truncate" data-i18n="Page Layouts">Artikel</span></a>
-                <ul class="menu-content">
-                    <li class="{{ request()->routeIs('post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">List</span></a>
-                    </li>
-                    <li class="{{ request()->routeIs('category_post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('category_post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">Category</span></a>
-                    </li>
-                    <li class="{{ request()->routeIs('tags.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('tags.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                            data-i18n="Collapsed Menu">Tag</span></a>
-                    </li>
-            
-                    {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                            href="{{ route('category.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">Category</span></a>
-                    </li> --}}
-                </ul>
-            </li>
-            @canany(['user.index', 'role.index', 'permission.index'])
-                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
-                            class="menu-title text-truncate" data-i18n="Page Layouts">Users</span></a>
+            @canany(['order.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Order</span></a>
                     <ul class="menu-content">
-                        <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                                href="{{ route('users.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                        <li class="{{ request()->routeIs('orders.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('orders.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                     data-i18n="Collapsed Menu">List</span></a>
                         </li>
-                        <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                                href="{{ route('roles.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                    data-i18n="Collapsed Menu">Role</span></a>
+                    </ul>
+                </li>
+            @endcanany
+            @canany(['chat.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Message</span></a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('chats.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Chat</span></a>
                         </li>
-                        <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
-                                href="{{ route('permissions.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                data-i18n="Collapsed Menu">Permission</span></a>
+                        <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('message_forms.index') }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate" data-i18n="Collapsed Menu">Form</span></a>
                         </li>
-                
+                    </ul>
+                </li>
+            @endcanany
+            @canany(['post.index', 'category_post.index', 'tag.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Artikel</span></a>
+                    <ul class="menu-content">
+                        @can('post.index')
+                            <li class="{{ request()->routeIs('post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                        data-i18n="Collapsed Menu">List</span></a>
+                            </li>
+                        @endcan
+                        @can('category_post.index')
+                            <li class="{{ request()->routeIs('category_post.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('category_post.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                        data-i18n="Collapsed Menu">Category</span></a>
+                            </li>
+                        @endcan
+                        @can('tag.index')
+                            <li class="{{ request()->routeIs('tags.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('tags.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                        data-i18n="Collapsed Menu">Tag</span></a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+            @canany(['user.index', 'role.index', 'permission.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Users</span></a>
+                    <ul class="menu-content">
+                        @can('user.index')
+                            <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('users.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                        data-i18n="Collapsed Menu">List</span></a>
+                            </li>
+                        @endcan
+                        @can('role.index')
+                            <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('roles.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                        data-i18n="Collapsed Menu">Role</span></a>
+                            </li>
+                            
+                        @endcan
+                        @can('permission.index')
+                            <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('permissions.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Permission</span></a>
+                            </li>
+                        @endcan
                         {{-- <li class="{{ request()->routeIs('category.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
                                 href="{{ route('category.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                     data-i18n="Collapsed Menu">Category</span></a>

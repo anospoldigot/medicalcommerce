@@ -55,6 +55,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/email/verification-notification', 'resendVerify')
         ->middleware(['auth', 'throttle:6,1'])
         ->name('verification.send');
+    Route::get('/auth/google', 'authGoogle');
+    Route::get('/callback/google', 'callbackGoogle');
 });
 
 

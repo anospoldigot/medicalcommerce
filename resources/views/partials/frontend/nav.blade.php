@@ -1,5 +1,5 @@
 @if ($disableHero > 0)
-<nav class="navbar navbar-expand-lg navbar-light py-3 bg-white">
+<nav class="navbar navbar-fixed navbar-expand-lg navbar-light py-3 bg-white" style="position: fixed; width: 100%; z-index: 999">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">

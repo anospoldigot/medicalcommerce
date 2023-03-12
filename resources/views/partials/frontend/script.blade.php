@@ -87,6 +87,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
             if ($(this).scrollTop() > 40) {
                 $('.navbar-hero').removeClass('bg-transparent')
                 $('.navbar-hero').addClass('bg-white shadow')
+                $('.navbar-fixed').addClass(' shadow')
                 $('.navbar-hero').removeClass('navbar-dark')
                 $('.navbar-hero').addClass('navbar-light')
                 $('.navbar-hero').find('#navbarSupportedContent').removeClass('font-weight-bold')
@@ -96,6 +97,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
                 $('.navbar-hero').find('.btn-outline-light').removeClass('btn-outline-light')
             } else {
                 $('.navbar-hero').removeClass('bg-white shadow')
+                $('.navbar-fixed').removeClass('shadow')
                 $('.navbar-hero').addClass('bg-transparent')
                 $('.navbar-hero').removeClass('navbar-light')
                 $('.navbar-hero').addClass('navbar-dark')

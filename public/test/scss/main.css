@@ -107,6 +107,11 @@
     z-index: 999999;
 }
 
+.navbar-fixed{
+    position: fixed;
+    width: 100%;
+}
+
 /* #custom-target {
   position: relative;
   width: 600px;

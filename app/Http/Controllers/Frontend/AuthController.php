@@ -8,6 +8,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -126,5 +128,28 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function authGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function callbackGoogle()
+    {
+        $user = Socialite::driver('google')->user();
+        
+        $user = User::firstOrCreate([
+            'email' => $user->email
+        ], [
+            'email'         => $user->email,
+            'name'          => $user->name,
+            'profile'       => $user->avatar,
+            'password'      => bcrypt(Str::random(8))
+        ]);
+
+        Auth::login($user);
+        
+        return redirect()->route('landing');
     }
 }
