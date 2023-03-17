@@ -21,6 +21,8 @@ class CreateOrderItemsTable extends Migration
             $table->foreignId('product_id');
             $table->integer('quantity');
             $table->integer('price');
+            $table->integer('price_after_disc');
+            $table->integer('discount_amount');
             $table->timestamps();
         });
     }

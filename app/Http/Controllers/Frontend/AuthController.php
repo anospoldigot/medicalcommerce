@@ -148,8 +148,60 @@ class AuthController extends Controller
             'password'      => bcrypt(Str::random(8))
         ]);
 
+        $user->syncRoles('customer');
+
         Auth::login($user);
         
         return redirect()->route('landing');
     }
+
+    public function authFacebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function callbackFacebook()
+    {
+        $user = Socialite::driver('facebook')->user();
+        $user = User::firstOrCreate([
+            'email' => $user->email
+        ], [
+            'email'         => $user->email,
+            'name'          => $user->name,
+            'profile'       => $user->avatar,
+            'password'      => bcrypt(Str::random(8))
+        ]);
+
+        $user->syncRoles('customer');
+
+        Auth::login($user);
+
+        return redirect()->route('landing');
+    }
+
+    public function authTwitter()
+    {
+        return Socialite::driver('twitter')->redirect();
+    }
+
+    public function callbackTwitter()
+    {
+        $user = Socialite::driver('twitter')->user();
+
+        $user = User::firstOrCreate([
+            'email' => $user->email
+        ], [
+            'email'         => $user->email,
+            'name'          => $user->name,
+            'profile'       => $user->avatar,
+            'password'      => bcrypt(Str::random(8))
+        ]);
+
+        $user->syncRoles('customer');
+
+        Auth::login($user);
+
+        return redirect()->route('landing');
+    }
+
 }

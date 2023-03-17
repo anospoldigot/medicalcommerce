@@ -25,7 +25,11 @@ use App\Http\Controllers\Payment\{
     CancelPayment, ChargeCreditCard, CheckPayment, RequestCPay, RequestCVS, RequestEWallet,
     RequestVA
 };
-
+use App\Mail\ExceptionMail;
+use App\Mail\ExceptionOccured;
+use App\Mail\test;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 
@@ -57,6 +61,10 @@ Route::controller(AuthController::class)->group(function () {
         ->name('verification.send');
     Route::get('/auth/google', 'authGoogle');
     Route::get('/callback/google', 'callbackGoogle');
+    Route::get('/auth/facebook', 'authFacebook');
+    Route::get('/callback/facebook', 'callbackFacebook');
+    Route::get('/auth/twitter', 'authTwitter');
+    Route::get('/callback/twitter', 'callbackTwitter');
 });
 
 
@@ -80,7 +88,8 @@ Route::name('fe.')->group(function () {
     Route::resource('carts', CartController::class)->middleware('auth');
     Route::resource('addresses', AddressController::class)->middleware('auth');
     // Route::resource('shipping', ShipperController::class)->middleware('auth');
-    Route::get('shipping/check', [ShipperController::class, 'check'])->name('shipping.check')->middleware('auth');
+    Route::post('shipping/check', [ShipperController::class, 'check'])->name('shipping.check')->middleware('auth');
+    Route::get('shipping/couriers', [ShipperController::class, 'couriers'])->name('shipping.couriers')->middleware('auth');
     Route::post('payment/checkout', [PaymentController::class, 'checkout']);
     Route::resource('payment', PaymentController::class);
     Route::resource('chats', ChatController::class);
@@ -90,7 +99,6 @@ Route::name('fe.')->group(function () {
     Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('orders', OrderController::class);
     Route::resource('articles', ArticleController::class);
-    Route::get('duitku', [DuitkuController::class, 'index'])->name('duitku.index');
     Route::post('coupons/check', [CouponController::class, 'check'])->name('coupons.check');
     Route::resource('coupons', CouponController::class);
 });

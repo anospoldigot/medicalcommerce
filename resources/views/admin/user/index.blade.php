@@ -27,14 +27,11 @@
                 <table class="datatables-basic table">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th></th>
-                            <th>id</th>
+                            {{-- <th></th>
+                            <th></th> --}}
+                            <th>No</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Date</th>
-                            <th>Salary</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>

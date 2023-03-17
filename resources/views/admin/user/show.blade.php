@@ -2,12 +2,12 @@
 
 @section('breadcrumb')
 <div class="col-12">
-    <h2 class="content-header-title float-left mb-0">Product</h2>
+    <h2 class="content-header-title float-left mb-0">User</h2>
     <div class="breadcrumb-wrapper">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a>
             </li>
-            <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Product</a>
+            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">User</a>
             </li>
             <li class="breadcrumb-item active">Show
             </li>
@@ -20,147 +20,114 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Detail Product</h4>
+            <h4 class="card-title">Detail User</h4>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-lg-6">
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Nama Product</b>
+                            <b>Nama</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {{ $product->title }}
+                            : {{ $user->name }}
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>SKU</b>
+                            <b>Email</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {{ $product->sku }}
+                            : {{ $user->email }}
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Harga</b>
+                            <b>Phone</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : Rp. {{ number_format($product->price,2,',','.') }}
+                            : {{ $user->phone ?? '-' }}
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Harga Discount</b>
+                            <b>Permedik Cash</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            @if ($product->is_discount)
-                                @if ($product->discount_type =='persen')
-                                : Rp. {{ number_format($product->price - (($product->price / 100) * $product->discount),2,',','.') }}
-                                @else
-                                : Rp. {{ number_format($product->price - $product->discount,2,',','.') }}
-                                @endif
-                            @else
-                            @endif
+                            : {!! $user->is_credit_ative > 0 ? $user->credit : '<span class="badge badge-danger">Nonaktif</span>' !!}
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Stock</b>
+                            <b>Transaction</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {{ $product->stock }}
+                            : {{ $user->orders->count() ?? '-' }} @if($user->orders->isNotEmpty())  <a href="javascript:void(0)">Click Detail</a>  @endif
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Berat</b>
+                            <b>Transaction Amount</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {{ $product->weight }} (Gram)
+                            : Rp. {{ $user->orders->sum(function ($order) {
+                                return $order->transation->amount;
+                            })}} 
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Discount</b>
+                            <b>Address</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {{ $product->is_discount ? $product->discount : '-' }}
+                            : <a href="javascript:void(0)" data-toggle="modal" data-target="#addressModal">Click Detail</a>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    {{-- <div class="row mb-1">
                         <div class="col-6 col-lg-4">
-                            <b>Tipe Discount</b>
+                            <b>Role</b>
                         </div>
                         <div class="col-6 col-lg-8">
-                            : {{ $product->is_discount ? $product->discount_type : '-' }}
+                            : {{ $user->roles->first()->name }}
                         </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-6 col-lg-4">
-                            <b>Category</b>
-                        </div>
-                        <div class="col-6 col-lg-8">
-                            : {!! $product->category ? '<span class="badge badge-success">' . $product->category->title .' </span>' : '-' !!}
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-6 col-lg-4">
-                            <b>Total Review</b>
-                        </div>
-                        <div class="col-6 col-lg-8">
-                            : {{ $product->reviews_count }}
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-6 col-lg-4">
-                            <b>Description</b>
-                        </div>
-                        <div class="col-6 col-lg-8">
-                            : {{ $product->description }}
-                        </div>
-                    </div>
-                    <hr>
+                    </div> --}}
                 </div>
                 <div class="col-12 col-lg-6">
-                    <b>Gambar Product</b>
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            @foreach ($product->assets as $key => $asset)
-                                <li data-target="#carousel-example-generic" data-slide-to="{{$key}}" class="{{ $loop->first ? 'active' : ''}}"></li>
-                            @endforeach
-                        </ol>
-                        <div class="carousel-inner" role="listbox">
-                            @foreach ($product->assets as $asset)
-                                <div class="carousel-item {{ $loop->first ? 'active' : ''}}">
-                                    <img class="img-fluid" src="{{ $asset->src }}" alt="First slide" />
-                                </div>
-                            @endforeach
-                        </div>
-                        <a class="carousel-control-prev" href="#carousel-example-generic" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carousel-example-generic" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
+                    <h6><b>Profile User</b></h6>
+                    <img src="{{ asset('upload/images/' . $user->profile) }}" alt="profile-user"
+                        onerror="this.onerror=null;this.src='{{ $user->profile }}';">
                 </div>
             </div>
             <div class="text-right">
-                <a href="{{ route('product.index') }}" class="btn btn-outline-primary"><i data-feather='corner-up-left'></i>
+                <a href="{{ route('users.index') }}" class="btn btn-outline-primary"><i data-feather='corner-up-left'></i>
                     Back</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel">Address {{ $user->name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="text-lowercase">
+                        @forelse ($user->addresses as $address)
+                            <li class="mb-1">
+                                {{ $address->province->name }}, {{ $address->regency->name }}, {{ $address->district->name }}, 
+                                {{ $address->village->name }}, {{ "($address->detail)" }} @if($address->is_priority > 0) <span class="badge badge-success">Alamat Utama</span> @endif
+                            </li>
+                        @empty 
+                            <div class="text-center">Alamat Kosong</div>
+                        @endforelse
+                    </ul>
+                </div>
+                {{-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div> --}}
             </div>
         </div>
     </div>

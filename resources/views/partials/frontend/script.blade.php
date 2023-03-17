@@ -95,6 +95,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
                 $('.navbar-hero').find('.btn-light').removeClass('btn-light')
                 $('.navbar-hero').find('.btn-outline-light').addClass('btn-outline-primary')
                 $('.navbar-hero').find('.btn-outline-light').removeClass('btn-outline-light')
+                $('.navbar-fixed').css("position", "fixed")
             } else {
                 $('.navbar-hero').removeClass('bg-white shadow')
                 $('.navbar-fixed').removeClass('shadow')
@@ -106,6 +107,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
                 $('.navbar-hero').find('.btn-primary').removeClass('btn-primary')
                 $('.navbar-hero').find('.btn-outline-primary').addClass('btn-outline-light')
                 $('.navbar-hero').find('.btn-outline-primary').removeClass('btn-outline-primary')
+                $('.navbar-fixed').css("position", "relative")
             }
         }
     });

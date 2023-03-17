@@ -63,7 +63,7 @@
                                 <div class="alert alert-info p-1">{{ $errors->first() }}</div>
                             @endif
                             <h2 class="card-title font-weight-bold mb-1">Welcome to Pemedik! 👋</h2>
-                            <p class="card-text mb-2">Please sign-in to your account</p>
+                            <p class="card-text mb-2">Please sign-in to your account <a href="{{ route('admin.login') }}">Admin Login</a></p>
                             <form class="auth-login-form mt-2" action="{{ route('login.post') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
@@ -101,8 +101,8 @@
                                 <div class="divider-text">or</div>
                             </div>
                             <div class="auth-footer-btn d-flex justify-content-center"><a class="btn btn-facebook"
-                                    href="javascript:void(0)"><i data-feather="facebook"></i></a><a
-                                    class="btn btn-twitter white" href="javascript:void(0)"><i
+                                    href="{{ url('/auth/facebook') }}"><i data-feather="facebook"></i></a><a
+                                    class="btn btn-twitter white" href="{{ url('/auth/twitter') }}"><i
                                         data-feather="twitter"></i></a><a class="btn btn-google"
                                     href="{{ url('/auth/google') }}"><i data-feather="mail"></i></a><a class="btn btn-github"
                                     href="javascript:void(0)"><i data-feather="github"></i></a></div>

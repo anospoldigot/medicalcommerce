@@ -9,7 +9,7 @@
             </li>
             <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Product</a>
             </li>
-            <li class="breadcrumb-item active">Create
+            <li class="breadcrumb-item active">Edit
             </li>
         </ol>
     </div>
@@ -19,7 +19,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Create Product</h4>
+            <h4 class="card-title">Edit Product</h4>
         </div>
         <div class="card-body">
             <form action="{{ route('product.update', $product->id) }}" method="post" enctype="multipart/form-data">

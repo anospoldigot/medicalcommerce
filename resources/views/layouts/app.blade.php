@@ -4,6 +4,7 @@
 
 <head>
     @include('partials.head')
+    @stack('styles')
 </head>
 <!-- END: Head-->
 

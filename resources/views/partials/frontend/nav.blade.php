@@ -1,5 +1,5 @@
 @if ($disableHero > 0)
-<nav class="navbar navbar-fixed navbar-expand-lg navbar-light py-3 bg-white" style="position: fixed; width: 100%; z-index: 999">
+<nav class="navbar navbar-fixed navbar-expand-lg navbar-light py-3 bg-white" style="width: 100%; z-index: 999">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
@@ -38,11 +38,7 @@
 
                 @else
                 <li class="nav-item ml-lg-5">
-                    <a class=" btn btn-primary rounded-pill px-3 text-white" href="{{ route('register') }}">Register</a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{{ route('login') }}" class=" btn btn-outline-primary rounded-pill px-3 ml-lg-2">Sign
-                        In</a>
+                    <a class=" btn btn-primary rounded-pill px-3 text-white" href="{{ route('login') }}">Sign In</a>
                 </li>
                 @endauth
                 {{-- <li class="nav-item">
@@ -62,7 +58,8 @@
                 <li class="nav-item px-2 dropdown">
                     <a class="nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown"
                         aria-expanded="false">
-                        <img src="{{ asset('upload/images/' . auth()->user()->profile) }}"
+        
+                        <img src="{{ asset('upload/images/' . auth()->user()->profile) }}" onerror="this.onerror=null;this.src='{{ auth()->user()->profile }}';"
                             width="30" height="30" alt="profile-user" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu">
@@ -122,11 +119,7 @@
 
                 @else
                 <li class="nav-item ml-lg-5">
-                    <a class="btn btn-light rounded-pill px-3" href="{{ route('register') }}">Register</a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{{ route('login') }}" class=" btn btn-outline-light rounded-pill px-3 ml-lg-2">Sign
-                        In</a>
+                    <a class="btn btn-light rounded-pill px-3" href="{{ route('login') }}">Sign In</a>
                 </li>
                 @endauth
                 {{-- <li class="nav-item">
@@ -146,7 +139,9 @@
                 <li class="nav-item px-2 dropdown">
                     <a class="nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown"
                         aria-expanded="false">
-                        <img src="{{ asset('upload/images/' . auth()->user()->profile) }}" width="30" height="30" alt="profile-user"
+                        <img src="{{ asset('upload/images/' . auth()->user()->profile) }}" width="30" height="30" 
+                        alt="profile-user"
+                        onerror="this.onerror=null;this.src='{{ auth()->user()->profile }}';"
                             class="rounded-circle"> 
                     </a>
                     <div class="dropdown-menu">
@@ -204,12 +199,9 @@
 
                 @else
                 <li class="nav-item ml-lg-5">
-                    <a class=" btn btn-primary rounded-pill px-3 text-white" href="{{ route('register') }}">Register</a>
+                    <a class=" btn btn-primary rounded-pill px-3 text-white" href="{{ route('login') }}">Sign In</a>
                 </li>
-                <li class="nav-item ">
-                    <a href="{{ route('login') }}" class=" btn btn-outline-primary rounded-pill px-3 ml-lg-2">Sign
-                        In</a>
-                </li>
+
                 @endauth
                 {{-- <li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>

@@ -13,6 +13,7 @@ use App\Models\Village;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CartController extends Controller
 {
@@ -23,7 +24,8 @@ class CartController extends Controller
     private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
     private $callbackUrl    = 'https://medicalcommerce.test/callback';
     private $returnUrl      = 'https://medicalcommerce.test/callback';
-
+    private $authorization = 'biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUGVtZWRpayIsInVzZXJJZCI6IjYzZDMwMzMyOWFiOTQ1MTIyYjY3NWE0NyIsImlhdCI6MTY3NDc3MzQ0M30.IAjCyQMVlIzLWFkKnKbDKFc8AFVwVLYFkeFy-ncT_eg';
+    
     public function __construct()
     {
         $this->duitkuConfig = new \Duitku\Config($this->merchantKey, $this->merchantCode);
@@ -39,17 +41,18 @@ class CartController extends Controller
     public function index()
     {
 
-        try {
-            
-            $paymentAmount = "10000"; //"YOUR_AMOUNT";
-            $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
-            $paymentMethodList = json_decode($paymentMethodList);
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        $paymentAmount = "10000"; //"YOUR_AMOUNT";
+        $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
+        $paymentMethodList = json_decode($paymentMethodList);
 
         $carts = Cart::with('product.assets', 'product.category')->where('user_id', auth()->id())->get();
+        $couriers = Http::withHeaders([
+            'authorization' => $this->authorization
+        ])
+        ->get('https://api.biteship.com/v1/couriers');
+
+        $couriers = collect(json_decode($couriers)->couriers)->groupBy('courier_name');
+
 
         $discount = $carts->sum(function ($cart) {
             $price = 0;
@@ -76,8 +79,9 @@ class CartController extends Controller
         $addresses = Address::with(['province', 'regency', 'village', 'district'])->where('user_id', auth()->id())->get();
         $provinces = Province::all();
 
-        return view('frontend.payment.index', compact(
-            'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList', 'discount'
+        return view('frontend.cart.index', compact(
+            'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList', 'discount',
+            'couriers'
         ));
     }
 

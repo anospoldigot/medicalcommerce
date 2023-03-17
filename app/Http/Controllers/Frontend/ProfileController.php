@@ -29,6 +29,9 @@ class ProfileController extends Controller
             'gender'    => 'nullable',
             'profile'   => 'nullable|image'
         ]);
+
+        $attr = collect($attr)->filter(fn ($value) => !is_null($value));
+
         if(request()->filled('password')){
             $attr['password'] = bcrypt(request('password'));
         }

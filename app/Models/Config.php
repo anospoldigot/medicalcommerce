@@ -108,4 +108,9 @@ class Config extends Model
     {
         return env('IS_DEMO_MODE', false);
     }
+
+    public function address ()
+    {
+        return $this->belongsTo(Address::class);
+    }
 }

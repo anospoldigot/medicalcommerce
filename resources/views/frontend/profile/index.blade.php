@@ -129,7 +129,7 @@
                             <input id="file" type="file" onchange="loadFile(event)" name="profile" />
                             <img src="{{ asset('upload/images/' . $user->profile) }}" id="output" width="200" class="mb-3" />
                         </div>
-                        @error('password')
+                        @error('profile')
                             <div class="text-danger">
                                 {{ $message }}
                             </div>

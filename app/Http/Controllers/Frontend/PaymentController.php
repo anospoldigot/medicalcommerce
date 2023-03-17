@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Config;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
@@ -21,7 +22,7 @@ class PaymentController extends Controller
     private $merchantCode   = 'DS12776';
     private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
     private $callbackUrl    = 'https://permedik.inttekno.com/api/payment/callback';
-    private $returnUrl      = 'https://permedik.inttekno.com/api/payment/callback';
+    private $returnUrl;
 
     public function __construct()
     {
@@ -33,14 +34,38 @@ class PaymentController extends Controller
         $this->duitkuConfig->setSanitizedMode(false);
         // set log parameter (default : true)
         $this->duitkuConfig->setDuitkuLogs(true);
+
+        $config = Config::first();
+
+        $this->merchantCode     = $config->merchant_code;
+        $this->merchantKey      = $config->merchant_key;
+        $this->callbackUrl      = $config->callback_url;
+        $this->returnUrl        = $config->return_url;
+
     }
 
 
     public function index ()
     {
 
+        try {
+            $paymentAmount = request('amount'); //"YOUR_AMOUNT";
+            $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
+            $paymentMethodList = json_decode($paymentMethodList);
 
-        return view('frontend.payment.index');
+            return response()->json([
+                'success'       => true,
+                'status_code'   => 200,
+                'message'       => 'Berhasil mengambil pembayaran',
+                'html'          => view('frontend.payment.index', compact('paymentMethodList'))->render()
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success'       => true,
+                'status_code'   => 200,
+                'message' =>  $e->getMessage()
+            ], 500);
+        }
     }
     
     /**
@@ -52,14 +77,22 @@ class PaymentController extends Controller
     {
 
         try {
-            $paymentAmount = "10000"; //"YOUR_AMOUNT";
+            $paymentAmount = request('amount'); //"YOUR_AMOUNT";
             $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
             $paymentMethodList = json_decode($paymentMethodList);
 
-            return $paymentMethodList;
-            return view('frontend.payment.checkout');
+            return response()->json([
+                'success'       => true,
+                'status_code'   => 200,
+                'message'       => 'Berhasil mengambil pembayaran', 
+                'html'          => view('frontend.payment.checkout')->render()
+            ], 200);
         } catch (Exception $e) {
-            return $e->getMessage();
+            return response()->json([
+                'success'       => true,
+                'status_code'   => 200,
+                'message' =>  $e->getMessage()
+            ], 500);
         }
     }
 
@@ -72,8 +105,6 @@ class PaymentController extends Controller
     {
         $products = collect(request('product'));
         $count = $products->count() + 1;
-
-
         $user = auth()->user();
         $address = Address::find(request('address_id'));      
 
@@ -124,10 +155,9 @@ class PaymentController extends Controller
 
         $itemDetails = $products->map(function ($value, $key) {
             $product = Product::find($value);
-            $price = 0;
+            $price = $product->price;
 
             if ($product->is_discount > 0) {
-                $price = $product->price;
                 if ($product->discount_type == 'persen') {
                     $price = ($product->price / 100) * $product->discount;
                 } else if ($product->discount_type == 'nominal') {
@@ -154,9 +184,20 @@ class PaymentController extends Controller
 
         $itemDetails[]  = array(
             'name'      => 'Pengiriman',
-            'price'     => 10000,
+            'price'     => request('shipping_amt'),
             'quantity'  => 1
         );
+
+        $itemDetails[]  = array(
+            'name'      => 'Biaya Admin',
+            'price'     => request('fee_amt'),
+            'quantity'  => 1
+        );
+
+        // return response()->json([
+        //     'amount'    => $paymentAmount,
+        //     'details'   => $itemDetails
+        // ]);
 
         $params = array(
             'paymentAmount'     => $paymentAmount,
@@ -203,18 +244,34 @@ class PaymentController extends Controller
                 'payment_code'              => $responseDuitkuApi->vaNumber,
                 'payment_request'           => json_encode($params),
                 'payment_response'          => json_encode($responseDuitkuApi),
-                'amount'                    => $paymentAmount,
+                'amount'                    => Product::whereIn('id', $products->all())->get()->sum('price'),
+                'amount_after_disc'         => $paymentAmount,
+                'voucher_amount'            => request('voucher_amt'),
                 'expired_time'              => $expiryPeriod,
             ]);
 
             $products->each(function ($value, $key) use ($order) {
                 $product = Product::find($value);
+                $price_after_discount = 0;
+                $discount = 0;
+                if ($product->is_discount > 0) {
+                    $discount = $product->price;
+                    if ($product->discount_type == 'persen') {
+                        $discount = ($product->price / 100) * $product->discount;
+                    } else if ($product->discount_type == 'nominal') {
+                        $discount = $product->discount;
+                    }
+                    $price_after_discount = $product->price - $discount;
+                }
+
                 $order->items()->create([
-                    'name'          => $product->title,
-                    'sku'           => $product->sku,
-                    'product_id'    => $value,
-                    'quantity'      => request('quantity')[$key],
-                    'price'         => $product->price * request('quantity')[$key]
+                    'name'                  => $product->title,
+                    'sku'                   => $product->sku,
+                    'product_id'            => $value,
+                    'quantity'              => request('quantity')[$key],
+                    'price'                 => $product->price,
+                    'price_after_disc'      => $price_after_discount,
+                    'discount_amount'       => $discount,
                 ]);
             });
             
@@ -294,4 +351,6 @@ class PaymentController extends Controller
         
         return view('frontend.payment.show', compact('order', 'transaction'));
     }
+
+
 }

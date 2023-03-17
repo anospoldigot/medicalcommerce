@@ -29,6 +29,8 @@ class CreateTransactionsTable extends Migration
             $table->json('payment_response')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->integer('amount')->default(0);
+            $table->integer('amount_after_disc')->default(0);
+            $table->integer('voucher_amount')->default(0);
             $table->integer('amount_received')->default(0);
             $table->integer('total_fee')->default(0);
             $table->integer('expired_time')->nullable();
