@@ -26,6 +26,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
 https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 "></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/app-assets/vendors/js/forms/wizard/bs-stepper.min.js"></script>
 @if (session()->has('success'))
     <script>
         PNotify.success({

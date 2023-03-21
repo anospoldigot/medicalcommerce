@@ -12,7 +12,6 @@
 
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/vendors.min.css">
-<link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/wizard/bs-stepper.min.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css">
 {{--
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/extensions/toastr.min.css"> --}}
@@ -114,10 +113,11 @@
                 <form action="{{ url('payment') }}" method="post">
                     @csrf
                     <input type="hidden" name="amt" value="{{ $order_subtotal - $discount }}" id="amt" />
-                    <input type="hidden" name="discount_amt" value="" id="discount_amt" />
-                    <input type="hidden" name="voucher_amt" value="" id="voucher_amt" />
-                    <input type="hidden" name="fee_amt" value="" id="fee_amt" />
-                    <input type="hidden" name="shipping_amt" value="" id="shipping_amt" />
+                    <input type="hidden" name="discount_amt" value="0" id="discount_amt" />
+                    <input type="hidden" name="voucher_amt" value="0" id="voucher_amt" />
+                    <input type="hidden" name="fee_amt" value="0" id="fee_amt" />
+                    <input type="hidden" name="shipping_amt" value="0" id="shipping_amt" />
+                    <input type="hidden" name="shipping_type" value="" id="shipping_type" />
                     <input type="hidden" name="payment_name" id="payment_name">
                     <div class="bs-stepper-content">
                         <!-- Checkout Place order starts -->
@@ -268,17 +268,17 @@
                                         @endif
                                         <div class="form-group">
                                             <label for="courier">Kurir</label>
-                                            <select class="form-control" id="courier">
+                                            <select class="form-control" id="courier" name="courier">
                                                 <option selected disabled>==Pilih==</< /option>
                                                     @foreach ($couriers as $courier_name => $courier)
-                                                <option value="{{ $courier->first()->courier_code }}">{{ $courier_name
+                                                <option value="{{ $courier->first()->courier_code }}" data-courier="{{ json_encode($courier->first()) }}">{{ $courier_name
                                                     }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="courier_service">Service</label>
-                                            <select class="form-control" id="courier_service" disabled>
+                                            <select class="form-control" id="courier_service" name="courier_service" disabled>
                                                 <option selected disabled>==Pilih==</option>
                                             </select>
                                         </div>
@@ -440,7 +440,7 @@
 
 <script src="/app-assets/vendors/js/vendors.min.js"></script>
 <script src="/app-assets/vendors/js/ui/jquery.sticky.js"></script>
-<script src="/app-assets/vendors/js/forms/wizard/bs-stepper.min.js"></script>
+
 <script src="/app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script>
 <script src="/app-assets/vendors/js/extensions/toastr.min.js"></script>
 <script src="/app-assets/js/core/app-menu.js"></script>
@@ -849,7 +849,7 @@
                 success: function(res){
                     if(res.success){
                         const html = res.pricing.map(value => {
-                            return `<option value="${value.courier_service_code}" data-amt="${value.price}">${value.courier_service_name} - Rp. ${value.price}</option>`
+                            return `<option value="${value.courier_service_code}" data-detail='${JSON.stringify(value)}' data-amt="${value.price}">${value.courier_service_name} - Rp. ${value.price}</option>`
                         });
                         $('#courier_service').prop('disabled', false)
                         $('#courier_service').html(options_temp+html)
@@ -869,6 +869,8 @@
 
         $('#courier_service').change(function(){
             ongkir = $(this).find(':selected').data('amt');
+            const detail = $(this).find(':selected').data('detail')
+            $('#shipping_type').val(detail.type);
             $('.pengiriman-tax').find('.detail-amt').html(formatRupiah(ongkir, 'Rp. ', ',00'))
             if($('.pengiriman-tax').length){
                 $('.pengiriman-tax').find('.detail-amt').html(formatRupiah(ongkir, 'Rp. ', ',00'))

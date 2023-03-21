@@ -25,6 +25,7 @@
     https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.css
     " rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/BrightTheme.css">
+<link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/wizard/bs-stepper.min.css">
 <style>
     #preloader {
         position: fixed;

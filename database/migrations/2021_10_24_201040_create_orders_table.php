@@ -16,7 +16,11 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('coupon_id')->nullable();
+            $table->string('biteship_order_id')->nullable();
+            $table->string('biteship_tracking_id')->nullable();
+            $table->string('biteship_waybill_id')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('address_id');
             $table->string('status')->nullable(); 
             $table->string('shipping_type')->nullable();
             $table->string('shipping_courier_code')->nullable();

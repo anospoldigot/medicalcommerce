@@ -12,13 +12,17 @@ use App\Models\Product;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
+use Ramsey\Uuid\Uuid;
 
 class PaymentController extends Controller
 {
 
     
     private $duitkuConfig;
+    private $config;
     private $merchantCode   = 'DS12776';
     private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
     private $callbackUrl    = 'https://permedik.inttekno.com/api/payment/callback';
@@ -36,7 +40,7 @@ class PaymentController extends Controller
         $this->duitkuConfig->setDuitkuLogs(true);
 
         $config = Config::first();
-
+        $this->config = $config;
         $this->merchantCode     = $config->merchant_code;
         $this->merchantKey      = $config->merchant_key;
         $this->callbackUrl      = $config->callback_url;
@@ -80,7 +84,7 @@ class PaymentController extends Controller
             $paymentAmount = request('amount'); //"YOUR_AMOUNT";
             $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
             $paymentMethodList = json_decode($paymentMethodList);
-
+            
             return response()->json([
                 'success'       => true,
                 'status_code'   => 200,
@@ -216,22 +220,72 @@ class PaymentController extends Controller
             'expiryPeriod'      => $expiryPeriod
         );
 
+
+
+        // $biteshipPayload = [
+        //     // "shipper_contact_name" => "Amir",
+        //     // "shipper_contact_phone" => "081277882932",
+        //     // "shipper_contact_email" => "biteship@test.com",
+        //     // "shipper_organization" => "Biteship Org Test",
+        //     "origin_contact_name" => $user->name,
+        //     "origin_contact_phone" => $user->email,
+        //     "origin_address" => "Plaza Senayan, Jalan Asia Afrik...",
+        //     "origin_note" => "Deket pintu masuk STC",
+        //     "origin_postal_code" => 12440,
+        //     "destination_contact_name" => "John Doe",
+        //     "destination_contact_phone" => "08170032123",
+        //     "destination_contact_email" => "jon@test.com",
+        //     "destination_address" => "Lebak Bulus MRT...",
+        //     "destination_postal_code" => 12950,
+        //     "destination_note" => "Near the gas station",
+        //     "destination_cash_on_delivery" => 500000,
+        //     "destination_cash_on_delivery_type" => "7_days",
+        //     "destination_cash_proof_of_delivery" => true,
+        //     "courier_company" => "grab",
+        //     "courier_type" => "instant",
+        //     "courier_insurance" => 500000,
+        //     "delivery_type" => "later",
+        //     "delivery_date" => "2019-09-24",
+        //     "delivery_time" => "12:00",
+        //     "order_note" => "Please be carefull",
+        //     "metadata" => [],
+        //     "items" => [
+        //         [
+        //             "id" => "5db7ee67382e185bd6a14608",
+        //             "name" => "Black L",
+        //             "image" => "",
+        //             "description" => "White Shirt",
+        //             "value" => 165000,
+        //             "quantity" => 1,
+        //             "height" => 10,
+        //             "length" => 10,
+        //             "weight" => 200,
+        //             "width" => 10,
+        //         ],
+        //     ],
+        // ];
+
         try {
+            DB::beginTransaction();
+
             // createInvoice Request
             $responseDuitkuApi = \Duitku\Api::createInvoice($params, $this->duitkuConfig);
             $responseDuitkuApi = json_decode($responseDuitkuApi);
             Cart::where('user_id', $user->id)->whereIn('product_id', request('product'))->delete();
             $dataOrder = [
-                'user_id'               => $user->id,
-                'note'                  => request('note'),
-                'shipping_address'      => $address->province->name . ', ' . 
+                'user_id'                       => $user->id,
+                'address_id'                    => $address->id,
+                'note'                          => request('note'),
+                'shipping_courier_name'         => request('courier'),
+                'shipping_courier_service'      => request('courier_servive'),
+                'shipping_type'                 => request('shipping_type'),
+                'shipping_address'              => $address->province->name . ', ' . 
                 $address->regency->name . ', ' . 
                 $address->district->name . ', ' . 
                 $address->village->name . ', ' . 
                 $address->detail . ', ' . 
                 $address->postal_code
             ];
-
             
             $order = Order::create($dataOrder);
 
@@ -244,9 +298,10 @@ class PaymentController extends Controller
                 'payment_code'              => $responseDuitkuApi->vaNumber,
                 'payment_request'           => json_encode($params),
                 'payment_response'          => json_encode($responseDuitkuApi),
-                'amount'                    => Product::whereIn('id', $products->all())->get()->sum('price'),
+                'amount'                    => $paymentAmount,
                 'amount_after_disc'         => $paymentAmount,
                 'voucher_amount'            => request('voucher_amt'),
+                'shipping_amount'           => request('shipping_amt'),
                 'expired_time'              => $expiryPeriod,
             ]);
 
@@ -264,7 +319,10 @@ class PaymentController extends Controller
                     $price_after_discount = $product->price - $discount;
                 }
 
+                $item_id = Uuid::uuid4();
+
                 $order->items()->create([
+                    'id'                    => $item_id,
                     'name'                  => $product->title,
                     'sku'                   => $product->sku,
                     'product_id'            => $value,
@@ -274,9 +332,12 @@ class PaymentController extends Controller
                     'discount_amount'       => $discount,
                 ]);
             });
-            
+
+            DB::commit();
             return redirect()->route('fe.payment.show', $order->id);
         } catch (Exception $e) {
+            DB::rollBack();
+
             return $e->getMessage();
         }
     }

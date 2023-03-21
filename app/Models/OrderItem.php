@@ -12,7 +12,10 @@ class OrderItem extends Model
 
     protected $guarded = [];
     public $appends = ['created'];
+    protected $keyType = 'string';
+    public $incrementing = true;
 
+    
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\{
     ContactController,
     CouponController,
     OrderController,
+    OrderTrackingController,
     PaymentController,
     ProfileController,
     ShipperController
@@ -25,6 +26,7 @@ use App\Http\Controllers\Payment\{
     CancelPayment, ChargeCreditCard, CheckPayment, RequestCPay, RequestCVS, RequestEWallet,
     RequestVA
 };
+use App\Http\Controllers\TestController;
 use App\Mail\ExceptionMail;
 use App\Mail\ExceptionOccured;
 use App\Mail\test;
@@ -98,6 +100,7 @@ Route::name('fe.')->group(function () {
     Route::resource('profile', ProfileController::class)->only(['index']);
     Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('orders', OrderController::class);
+    Route::resource('orders.tracking', OrderTrackingController::class);
     Route::resource('articles', ArticleController::class);
     Route::post('coupons/check', [CouponController::class, 'check'])->name('coupons.check');
     Route::resource('coupons', CouponController::class);
@@ -105,6 +108,4 @@ Route::name('fe.')->group(function () {
 
 
 
-Route::get('/testing', function () {
-    
-});
+Route::get('/testing', TestController::class);

@@ -70,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
     Route::patch('orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
+    Route::patch('orders/{order}/send', [OrderController::class, 'send'])->name('orders.send');
+    Route::patch('orders/{order}/confirm-with-send', [OrderController::class, 'confirmWithSend'])->name('orders.confirmWithSend');
     Route::post('post/assets', [PostController::class, 'storeAssets'])->name('post.storeAssets');
     Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');
     Route::delete('post/assets', [PostController::class, 'destroyAssets'])->name('post.destroyAssets');

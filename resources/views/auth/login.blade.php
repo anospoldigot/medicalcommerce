@@ -96,7 +96,7 @@
                                 <button class="btn btn-primary btn-block" tabindex="4">Sign in</button>
                             </form>
                             <p class="text-center mt-2"><span>New on our platform?</span><a
-                                    href="page-auth-register-v2.html"><span>&nbsp;Create an account</span></a></p>
+                                    href="{{ route('register') }}"><span>&nbsp;Create an account</span></a></p>
                             <div class="divider my-2">
                                 <div class="divider-text">or</div>
                             </div>

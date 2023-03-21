@@ -87,11 +87,11 @@ class Order extends Model
             case 'CANCELED':
                 return 'Batal';
                 break;
+            case 'UNPAID':
+                return 'Menunggu Pembayaran';
+                break;
             case 'ISSUED':
                 return 'Menunggu Konfirmasi';
-                break;
-            case 'PAID':
-                return 'Lunas';
                 break;
             case 'PROCESS':
                 return 'Sedang Diproses';
@@ -108,5 +108,10 @@ class Order extends Model
                 break;
         }
 
+        
+    }
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 }

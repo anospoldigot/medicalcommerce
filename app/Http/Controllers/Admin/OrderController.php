@@ -16,11 +16,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductVariantValue;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\DataTables;
 
 class OrderController extends Controller
 {
-    
+
+    private $config;
+
+    public function __construct()
+    {
+        $this->config = Config::first();
+    }
+
     public function index(Request $request)
     {
         if (request()->ajax()) {
@@ -34,15 +42,145 @@ class OrderController extends Controller
         return view('admin.order.index');
     }
 
+    public function confirmWithSend (Order $order)
+    {
+
+        $user = auth()->user();
+        
+        $biteshipPayload = [
+            // "shipper_contact_name" => "Amir",
+            // "shipper_contact_phone" => "081277882932",
+            // "shipper_contact_email" => "biteship@test.com",
+            // "shipper_organization" => "Biteship Org Test",
+            "origin_contact_name"       => "$user->name",
+            "origin_contact_phone"      => $user->email,
+            "origin_address"            => $this->config->address->detail,
+            "origin_note"               => "Deket pintu masuk STC",
+            "origin_postal_code"        => 12440,
+            "origin_coordinate"          => [
+                'latitude'          => $this->config->address->latitude,
+                'longitude'         => $this->config->address->longitude
+            ],
+            "destination_contact_name"  => $order->user->name,
+            "destination_contact_phone" => $order->user->phone,
+            "destination_contact_email" => $order->user->email,
+            "destination_address"       => $order->shipping_address,
+            "destination_postal_code"   => $order->address->postal_code,
+            "destinatio_coordinate"     => [
+                'latitude'          => $order->address->latitude,
+                'longitude'         => $order->address->longitude
+            ],
+            "destination_note"          => "Near the gas station",
+            "destination_cash_on_delivery"=>500000, 
+            "destination_cash_on_delivery_type"=>"7_days",
+            "destination_cash_proof_of_delivery"=>true,
+            "courier_company"           => $order->shipping_courier_name,
+            "courier_type"              => $order->shipping_type,
+            "courier_insurance"         => 500000, 
+            "delivery_type"             => "now",
+            "delivery_date"             => date('Y-m-d'), 
+            "order_note"                => "okeh",
+            "metadata"                  => [],
+            "items"                     => $order->items->map(function($item, $key){
+                return [
+                    'id'            => $item->id,
+                    'name'          => $item->name,
+                    'value'         => $item->price,
+                    'image'         => "",
+                    // 'image'         => "$item->product->assets->first()->image",
+                    'quantity'      => $item->quantity,
+                    "weight"        => $item->product->weight,
+                ];
+            })
+        ];
+        // return $biteshipPayload;
+        try{
+            $response = Http::withHeaders(['authorization' => $this->config->biteship_token])
+                ->post('https://api.biteship.com/v1/orders', $biteshipPayload);
+            $response = json_decode($response);
+
+            $order->update([
+                'status'                => 'SHIPPING',
+                'biteship_order_id'     => $response->id,
+                'biteship_tracking_id'  => $response->courier->tracking_id,
+                'biteship_waybill_id'   => $response->courier->waybill_id,
+            ]);
+ 
+            session()->flash('success','Berhasil mengonfirmasi pesanan');
+
+        }catch(\Throwable $th){
+            session()->flash('error', $th->getMessage());
+        }
+
+        return redirect()->route('orders.index');
+    }
+
     public function process (Order $order)
     {
 
-        try{
-            $order->update([
-                'status'    => 'PROCESS'
-            ]);
+        $delivery_date = Carbon::create(request('delivery_datetime'))->format('Y-m-d');
+        $delivery_time = Carbon::create(request('delivery_datetime'))->format('H:i');
+        $user = auth()->user();
+        
+        $biteshipPayload = [
+            // "shipper_contact_name" => "Amir",
+            // "shipper_contact_phone" => "081277882932",
+            // "shipper_contact_email" => "biteship@test.com",
+            // "shipper_organization" => "Biteship Org Test",
+            "origin_contact_name"       => "$user->name",
+            "origin_contact_phone"      => $user->email,
+            "origin_address"            => $this->config->address->detail,
+            "origin_note"               => "Deket pintu masuk STC",
+            "origin_postal_code"        => 12440,
+            "origin_coordinate"          => [
+                'latitude'          => $this->config->address->latitude,
+                'longitude'         => $this->config->address->longitude
+            ],
+            "destination_contact_name"  => $order->user->name,
+            "destination_contact_phone" => $order->user->phone,
+            "destination_contact_email" => $order->user->email,
+            "destination_address"       => $order->shipping_address,
+            "destination_postal_code"   => $order->address->postal_code,
+            "destinatio_coordinate"     => [
+                'latitude'          => $order->address->latitude,
+                'longitude'         => $order->address->longitude
+            ],
+            "destination_note"          => "Near the gas station",
+            // "destination_cash_on_delivery" => 500000,
+            // "destination_cash_on_delivery_type" => "7_days",
+            // "destination_cash_proof_of_delivery" => true,
+            "courier_company"           => $order->shipping_courier_name,
+            "courier_type"              => $order->shipping_type,
+            // "courier_insurance"         => 500000,
+            "delivery_type"             => "later",
+            "delivery_date"             => $delivery_date,
+            "delivery_time"             => $delivery_time,
+            "order_note"                => $order->note,
+            "metadata"                  => [],
+            "items"                     => $order->items->map(function($item, $key){
+                return [
+                    'id'            => $item->id,
+                    'name'          => $item->name,
+                    'value'         => $item->price,
+                    'image'         => $item->product->assets->first()->image,
+                    'quantity'      => $item->quantity,
+                    "weight"        => $item->product->weight,
+                ];
+            })
+        ];
 
+        try{
+            $response = Http::withHeaders(['authorization' => $this->config->biteship_token])
+                ->post('https://api.biteship.com/v1/orders', $biteshipPayload);
+            $response = json_decode($response);
+
+            $order->update([
+                'status'                => 'PROCESS',
+                'biteship_order_id'     => $response->id
+            ]);
+ 
             session()->flash('success','Berhasil mengonfirmasi pesanan');
+
         }catch(\Throwable $th){
             session()->flash('error', $th->getMessage());
         }

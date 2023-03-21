@@ -1,5 +1,5 @@
 @if ($disableHero > 0)
-<nav class="navbar navbar-fixed navbar-expand-lg navbar-light py-3 bg-white" style="width: 100%; z-index: 999">
+<nav class="navbar navbar-fixed navbar-expand-lg navbar-light py-3 bg-white" style="width: 100%; z-index: 999; transition: all 500ms">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
@@ -16,7 +16,7 @@
                 <li class="nav-item {{ request()->routeIs('landing') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('landing') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
-
+            
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('fe.about.index') }}">About Us</a>
                 </li>

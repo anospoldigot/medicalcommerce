@@ -14,7 +14,7 @@ class CreateOrderItemsTable extends Migration
     public function up()
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->string('name');
             $table->string('sku');
             $table->uuid('order_id')->constrained('orders')->onDelete('cascade');
