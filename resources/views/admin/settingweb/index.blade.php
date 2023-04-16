@@ -18,41 +18,80 @@
 @endsection
 
 @section('content')
-<form action="{{ route('setting.web.update') }}" method="post">
+<form action="{{ route('setting.web.update') }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('PATCH')
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Pengaturan Checkout</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-between mb-2 ">
-                <div class="flex-grow">
-                    <h6>Whatsapp Checkout</h6>
-                    <small class="text-muted">Memungkinan user untuk bisa checkout langsung via whatsapp ( Order tidak
-                        tersimpan di database )</small>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Pengaturan Logo Website</h4>
                 </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="is_whatsapp_checkout"
-                        name="is_whatsapp_checkout" value="1" {{ $config->is_whatsapp_checkout > 0 ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="is_whatsapp_checkout"></label>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="">Logo</label>
+                        <input type="file" class="form-control-file" name="logo" id="logo" onchange="loadFile(event)">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Preview </label>
+                        <img src="{{ asset('upload/images/' . $config->logo) }}" id="logo-output" alt=""
+                            onerror="this.onerror=null;this.src='{{ asset('source/image_not_load.jpg') }}';" class="img-fluid">
+                    </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between">
-                <div class="flex-grow">
-                    <h6>Guest Checkout</h6>
-                    <small class="text-muted">Memunginkan checkout tanpa harus login / register</small>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Pengaturan Checkout</h4>
                 </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="is_guest_checkout" name="is_guest_checkout"
-                        value="1" {{ $config->is_guest_checkout > 0 ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="is_guest_checkout"></label>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between mb-1">
+                            <div class="flex-grow">
+                                <h6>PPN</h6>
+                                <small class="text-muted">Memungkinan user untuk bisa checkout langsung via whatsapp ( Order tidak
+                                    tersimpan di database )</small>
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="is_ppn" name="is_ppn" value="1" {{ $config->ppn > 0 ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="is_ppn"></label>
+                            </div>
+                        </div>
+                        <div class="form-group x" id="ppn-wrapper">
+                            <input type="number" name="ppn" id="ppn" class="form-control" placeholder="Percentage" value="{{ $config->ppn }}">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 ">
+                        <div class="flex-grow">
+                            <h6>Whatsapp Checkout</h6>
+                            <small class="text-muted">Memungkinan user untuk bisa checkout langsung via whatsapp ( Order tidak
+                                tersimpan di database )</small>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_whatsapp_checkout"
+                                name="is_whatsapp_checkout" value="1" {{ $config->is_whatsapp_checkout > 0 ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="is_whatsapp_checkout"></label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="flex-grow">
+                            <h6>Guest Checkout</h6>
+                            <small class="text-muted">Memunginkan checkout tanpa harus login / register</small>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_guest_checkout" name="is_guest_checkout"
+                                value="1" {{ $config->is_guest_checkout > 0 ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="is_guest_checkout"></label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="row">
-    <div class="col-lg-6">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Ekspedisi</h4>
@@ -65,9 +104,9 @@
                         <label for="rajaongkir_type">Raja Ongkir Type</label>
                         <select class="form-control" id="rajaongkir_type" name="rajaongkir_type">
                             <option value="">==PILIH==</option>
-                            <option value="basic" @selected('basic' == $config->rajaongkir_type)>Basic</option>
-                            <option value="starter" @selected('starter' == $config->rajaongkir_type)>Starter</option>
-                            <option value="pro" @selected('pro' == $config->rajaongkir_type)>Pro</option>
+                            <option value="basic" @selected('basic'==$config->rajaongkir_type)>Basic</option>
+                            <option value="starter" @selected('starter'==$config->rajaongkir_type)>Starter</option>
+                            <option value="pro" @selected('pro'==$config->rajaongkir_type)>Pro</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -162,7 +201,43 @@
 @push('scripts')
 <script>
     const params = { headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } }
+        Dropzone.autoDiscover = false;
 
+        // $(function() {
+        //     var myDropzone = new Dropzone("#my-dropzone", {
+        //         url: "{{ route('upload') }}",
+        //         maxFilesize: 2,
+        //         addRemoveLinks: true,
+        //         acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        //         headers: {
+        //             'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        //         },
+        //         init: function () {
+        //             var dzClosure = this;
+
+        //             this.on("success", function (file, response) {
+        //                 console.log(response);
+        //             });
+
+        //             this.on("removedfile", function (file) {
+        //                 $.ajax({
+        //                     type: 'POST',
+        //                     url: '{{ route('deleteUpload') }}',
+        //                     data: {
+        //                         filename: file.name,
+        //                         _token: "{{ csrf_token() }}"
+        //                     },
+        //                     success: function (data) {
+        //                         console.log(data);
+        //                     },
+        //                     error: function (e) {
+        //                         console.log(e);
+        //                     }
+        //                 });
+        //             });
+        //         }
+        //     });
+        // });
         $('#warehouseprovince').select2({
             ajax: {
                 url: '{{ route("getProvince") }}',
@@ -239,5 +314,25 @@
                 }
             }
         });
+
+        var loadFile = function(event) {
+            var output = document.getElementById('logo-output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+        
+        @empty($config->ppn)
+            $('#ppn-wrapper').hide();
+        @endif
+
+        $('#is_ppn').change(function(){
+            if($(this).is(':checked')){
+                $('#ppn-wrapper').show();
+            }else{
+                $('#ppn-wrapper').hide();
+            }
+        })
 </script>
 @endpush

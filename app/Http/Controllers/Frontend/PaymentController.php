@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Helpers\ReferralHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Cart;
@@ -178,6 +179,9 @@ class PaymentController extends Controller
             ];
         });
 
+
+        
+
         if(request()->filled('code_coupon')){
             $itemDetails[]  = array(
                 'name'      => 'Potongan Voucher',
@@ -185,6 +189,7 @@ class PaymentController extends Controller
                 'quantity'  => 1
             );
         }
+        
 
         $itemDetails[]  = array(
             'name'      => 'Pengiriman',
@@ -195,6 +200,12 @@ class PaymentController extends Controller
         $itemDetails[]  = array(
             'name'      => 'Biaya Admin',
             'price'     => request('fee_amt'),
+            'quantity'  => 1
+        );
+
+        $itemDetails[]  = array(
+            'name'      => 'PPN ',
+            'price'     => request('ppn_amt'),
             'quantity'  => 1
         );
 
@@ -276,6 +287,18 @@ class PaymentController extends Controller
                 'user_id'                       => $user->id,
                 'address_id'                    => $address->id,
                 'note'                          => request('note'),
+                'invoice_number'                => generateInvoiceCode('orders', 'invoice_number'),
+                'reference'                     => $responseDuitkuApi->reference,
+                'merchant_order_id'             => $merchantOrderId,
+                'payment_name'                  => request('payment_name'),
+                'payment_method'                => $paymentMethod,
+                'payment_code'                  => $responseDuitkuApi->vaNumber,
+                'payment_request'               => json_encode($params),
+                'payment_response'              => json_encode($responseDuitkuApi),
+                'amount_after_disc'             => $paymentAmount,
+                'voucher_amount'                => request('voucher_amt'),
+                'ppn_amount'                    => request('ppn_amt'),
+                'shipping_amount'               => request('shipping_amt'),
                 'shipping_courier_name'         => request('courier'),
                 'shipping_courier_service'      => request('courier_servive'),
                 'shipping_type'                 => request('shipping_type'),
@@ -286,31 +309,26 @@ class PaymentController extends Controller
                 $address->detail . ', ' . 
                 $address->postal_code
             ];
+
+            if (request()->has('referral_token')) {
+                $dataOrder['referrer_id'] = request()->has('referral_token');
+            }
             
             $order = Order::create($dataOrder);
 
             $transaction = $order->transaction()->create([
-                'invoice_number'            => generateInvoiceCode('transactions', 'invoice_number'),
-                'reference'                 => $responseDuitkuApi->reference,
-                'merchant_order_id'         => $merchantOrderId,
-                'payment_name'              => request('payment_name'),
-                'payment_method'            => $paymentMethod,
-                'payment_code'              => $responseDuitkuApi->vaNumber,
-                'payment_request'           => json_encode($params),
-                'payment_response'          => json_encode($responseDuitkuApi),
                 'amount'                    => $paymentAmount,
-                'amount_after_disc'         => $paymentAmount,
-                'voucher_amount'            => request('voucher_amt'),
-                'shipping_amount'           => request('shipping_amt'),
                 'expired_time'              => $expiryPeriod,
             ]);
-
+            
             $products->each(function ($value, $key) use ($order) {
                 $product = Product::find($value);
+                $qty = request('quantity')[$key];
+                $product->decrement('stock', $qty);
                 $price_after_discount = 0;
-                $discount = 0;
+                $discount = $product->price;
+
                 if ($product->is_discount > 0) {
-                    $discount = $product->price;
                     if ($product->discount_type == 'persen') {
                         $discount = ($product->price / 100) * $product->discount;
                     } else if ($product->discount_type == 'nominal') {
@@ -326,7 +344,7 @@ class PaymentController extends Controller
                     'name'                  => $product->title,
                     'sku'                   => $product->sku,
                     'product_id'            => $value,
-                    'quantity'              => request('quantity')[$key],
+                    'quantity'              => $qty,
                     'price'                 => $product->price,
                     'price_after_disc'      => $price_after_discount,
                     'discount_amount'       => $discount,
@@ -372,14 +390,21 @@ class PaymentController extends Controller
                     'reference'            => $reference,
                     'merchant_order_id'     => $merchantOrderId,
                 ];
-                $transaction = Transaction::where($where)->first();
-                $transaction->update([
+
+
+                $order = Order::where($where)->first();
+
+                if (!empty($order->referrer_id)) {
+                    ReferralHelper::giveBonus($order->referrer_id);
+                }
+
+                $order->transaction()->update([
                     'status'            => 'PAID',
                     'paid_at'           => date('Y-m-d H:i:s'),
-                    'amount_received'   => $amount
+                    'amount'            => $amount
                 ]);
 
-                $transaction->order()->update([
+                $order->update([
                     'status' => 'ISSUED'
                 ]);
 
@@ -407,7 +432,8 @@ class PaymentController extends Controller
     {
         $order = Order::with('transaction')->findOrFail($id);
 
-        $transactionList = \Duitku\Api::transactionStatus($order->transaction->merchant_order_id, $this->duitkuConfig);
+
+        $transactionList = \Duitku\Api::transactionStatus($order->merchant_order_id, $this->duitkuConfig);
         $transaction = json_decode($transactionList);
         
         return view('frontend.payment.show', compact('order', 'transaction'));

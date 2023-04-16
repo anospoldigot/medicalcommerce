@@ -32,6 +32,14 @@ class AuthController extends Controller
         // } 
 
         $user = User::where('email', request('email'))->first();
+
+
+        if(empty($user)) {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        }
+
         if (Hash::check(request('password'), $user->password)) {
             
             if($user->hasRole(['admin', 'developer'])){
@@ -40,12 +48,14 @@ class AuthController extends Controller
                 return redirect()->intended(route('dashboard'));
             }
 
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+
         }
 
         
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        
     }
 
     public function myAccount()

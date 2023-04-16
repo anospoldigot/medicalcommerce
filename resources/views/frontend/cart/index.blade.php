@@ -117,6 +117,7 @@
                     <input type="hidden" name="voucher_amt" value="0" id="voucher_amt" />
                     <input type="hidden" name="fee_amt" value="0" id="fee_amt" />
                     <input type="hidden" name="shipping_amt" value="0" id="shipping_amt" />
+                    <input type="hidden" name="ppn_amt" value="0" id="ppn_amt" />
                     <input type="hidden" name="shipping_type" value="" id="shipping_type" />
                     <input type="hidden" name="payment_name" id="payment_name">
                     <div class="bs-stepper-content">
@@ -128,9 +129,9 @@
                                     @forelse ($carts as $cart)
                                     <div class="card ecommerce-card"
                                         data-product="{{ json_encode($cart->product->only(['title', 'stock', 'price', 'discount', 'is_discount', 'discount_type', 'weight'])) }}">
-                                        <div class="item-img">
+                                        <div class="item-img" style="object-fit: cover">
                                             <a href="app-ecommerce-details.html">
-                                                <img src="{{ $cart->product->assets->first()->src }}" />
+                                                <img src="{{ $cart->product->assets->first()->src }}" style="object-fit: cover; height: 100%; width: 100%;" />
                                             </a>
                                         </div>
                                         <div class="card-body">
@@ -170,8 +171,6 @@
                                                         value="{{ $cart->quantity ?? 1 }}" />
                                                 </div>
                                             </div>
-                                            <span class="delivery-date text-muted">Delivery by, Wed Apr 30</span>
-                                            <span class="text-success">6% off 3 offers Available</span>
                                         </div>
                                         <div class="item-options text-center">
                                             <div class="item-wrapper">
@@ -203,7 +202,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <label class="section-label mb-1">Options</label>
-                                            <div class="coupons input-group input-group-merge">
+                                            <div class="coupons input-group input-group-merge mb-2">
                                                 <input type="text" class="form-control input-coupons"
                                                     placeholder="Coupons" aria-label="Coupons"
                                                     aria-describedby="input-coupons" name="code_coupon" />
@@ -211,6 +210,16 @@
                                                     <button
                                                         class="btn btn-outline-primary px-3 input-group-text text-primary"
                                                         type="button" id="btn-coupons">Apply</button>
+                                                </div>
+                                            </div>
+                                            <div class="coupons input-group input-group-merge">
+                                                <input type="text" class="form-control input-coupons"
+                                                    placeholder="Referral" aria-label="Referral"
+                                                    aria-describedby="input-Referral" name="referral_token" id="referral_token" />
+                                                <div class="input-group-append">
+                                                    {{-- <button
+                                                        class="btn btn-outline-primary px-3 input-group-text text-primary"
+                                                        type="button" id="btn-coupons">Apply</button> --}}
 
                                                 </div>
                                             </div>
@@ -229,6 +238,13 @@
                                                             <div class="detail-title">Potongan</div>
                                                             <div class="detail-amt text-danger discount">Rp. {{
                                                                 number_format ($discount,2,",",".") }}</div>
+                                                        </li>
+                                                    @endif
+                                                    @if (!empty($ppn))
+                                                        <li class="price-detail">
+                                                            <div class="detail-title">PPN ({{ $ppn }}%)</div>
+                                                            <div class="detail-amt text-success ppn-amount">Rp. {{
+                                                                number_format ($ppn_amount,2,",",".") }}</div>
                                                         </li>
                                                     @endif
                                                 </ul>
@@ -269,7 +285,7 @@
                                         <div class="form-group">
                                             <label for="courier">Kurir</label>
                                             <select class="form-control" id="courier" name="courier">
-                                                <option selected disabled>==Pilih==</< /option>
+                                                <option value="" selected disabled>==Pilih==</< /option>
                                                     @foreach ($couriers as $courier_name => $courier)
                                                 <option value="{{ $courier->first()->courier_code }}" data-courier="{{ json_encode($courier->first()) }}">{{ $courier_name
                                                     }}</option>
@@ -279,7 +295,7 @@
                                         <div class="form-group">
                                             <label for="courier_service">Service</label>
                                             <select class="form-control" id="courier_service" name="courier_service" disabled>
-                                                <option selected disabled>==Pilih==</option>
+                                                <option value="" selected disabled>==Pilih==</option>
                                             </select>
                                         </div>
                                         <hr class="my-3">
@@ -402,6 +418,13 @@
                                                             number_format ($discount,2,",",".") }}</div>
                                                     </li>
                                                 @endif
+                                                @if (!empty($ppn))
+                                                    <li class="price-detail">
+                                                        <div class="detail-title">PPN ({{ $ppn }}%)</div>
+                                                        <div class="detail-amt text-success ppn-amount">Rp. {{
+                                                            number_format ($ppn_amount,2,",",".") }}</div>
+                                                    </li>
+                                                @endif
                                             </ul>
                                             <hr />
                                             <ul class="list-unstyled">
@@ -451,11 +474,33 @@
     $('.customer-card').hide() 
 </script>
 @endif
+
+
+@if (session()->has('ref'))
+    <script>
+        Swal.fire({
+            title: 'Ada kode referral tercantum!',
+            text: "Apakah anda ingin memakai kde referral tersebut?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Pakai',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#referral_token').val('{{ $ref }}');
+                }
+        })
+    </script>
+@endif
+
 <script>
     const options_temp = '<option value="" selected disabled>==Pilih==</option>';
         let ongkir = 0;
         let fee = 0;
-
+        let ppn = '{{ $ppn }}';
+        let ppn_amount = '{{ $ppn_amount }}';
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -526,7 +571,7 @@
                 let discount = product.price;
                 if(product.is_discount > 0){
                     if(product.discount_type =='persen'){
-                        discount = (product.price / 100) * product.discount;
+                        discount = product.price - ((product.price / 100) * product.discount);
                     } else if (product.discount_type == 'nominal'){
                         discount = product.price - product.discount;
                     }
@@ -535,14 +580,20 @@
                 price+= product.price  * $(this).find('.quantity-counter').val();
             }) 
 
-            console.log(discount_amt)
+            if(ppn){
+                ppn_amount = ((price - discount_amt) / 100) * ppn;
+            }
+
             $('.subtotal-product').html(formatRupiah(price, 'Rp. ', ',00'))
             $('.discount').html(formatRupiah(discount_amt, 'Rp. ', ',00'))
-            $('.detail-total').html(formatRupiah((price - (discount_amt + potongan_voucher)) + ongkir + fee, 'Rp. ', ',00'))
-            $('#amt').val(price - (discount_amt + potongan_voucher) + ongkir);
-            $('#discount_amt').val(potongan_voucher);
+            $('.ppn-amount').html(formatRupiah(ppn_amount, 'Rp. ', ',00'))
+            $('#ppn_amt').val(ppn_amount);
             $('#shipping_amt').val(ongkir);
             $('#fee_amt').val(fee);
+            $('#discount_amt').val(potongan_voucher);
+            $('#amt').val(price - (discount_amt + potongan_voucher) + ongkir + ppn_amount + fee);
+            $('.detail-total').html(formatRupiah((price - (discount_amt + potongan_voucher)) + ongkir + ppn_amount + fee, 'Rp. ', ',00'))
+            
         })
 
             var map = L.map('map').setView([-6.405975, 106.994896], 13);
@@ -742,10 +793,6 @@
         }
 
 
-        $(document).on('change', '.payment-option', function(){
-            $('#payment_name').val($(this).data('payment_name'))
-        })
-
         $('#btn-coupons').click(function(){
 
             $.ajax({
@@ -762,7 +809,7 @@
                             let discount = product.price;
                             if(product.is_discount > 0){
                                 if(product.discount_type =='persen'){
-                                    discount = (product.price / 100) * product.discount;
+                                    discount = product.price - ((product.price / 100) * product.discount);
                                 } else if (product.discount_type == 'nominal'){
                                     discount = product.price - product.discount;
                                 }
@@ -794,15 +841,23 @@
 
                         $('.input-coupons').prop('readonly', true)
                         $('#btn-coupons').prop('disabled', true)
+                        
                         PNotify.success({
                             title: 'Success!',
-                            text: 'Berhasil memasang voucher!'
+                            text: res.message
                         });
-                        
+                    }else{
+                        PNotify.error({
+                            title: 'Failed!',
+                            text: res.message
+                        });
                     }
                 },
                 error:function(err){
-
+                    PNotify.error({
+                        title: 'Error!',
+                        text: err.responseJSON.message
+                    });
                 }
                 
             })
@@ -826,7 +881,7 @@
                 let discount = product.price;
                 if(product.is_discount > 0){
                     if(product.discount_type =='persen'){
-                        discount = (product.price / 100) * product.discount;
+                        discount = product.price - ((product.price / 100) * product.discount);
                     } else if (product.discount_type == 'nominal'){
                         discount = product.price - product.discount;
                     }
@@ -889,8 +944,9 @@
         })
 
 
-        $(document).on('change', '.form-check-input', function(){
+        $(document).on('change', '.payment-option', function(){
             fee = $(this).data('fee');
+            $('#payment_name').val($(this).data('payment_name'))
             if($('.admin-tax').length){
                 $('.admin-tax').find('.detail-amt').html(formatRupiah(fee, 'Rp. ', ',00'))
             }else{
@@ -906,9 +962,51 @@
             
         })
 
+        $('.address_id').change(function(){
+            resetOngkir(); 
+        })
+
         function resetOngkir ()
         {
-            
+            $('.pengiriman-tax').remove();   
+            $('#shipping_amt').val(0);
+            $('#courier').val('');
+            $('#courier_service').val('');
+        }
+
+        function refetchOngkir ()
+        {
+
+            const data = {
+                address_id: $('input[name="address_id"]:checked').val(),
+                courier: $('#courier').val(),
+                items: []
+            }
+
+            $('.ecommerce-card').each(function(){
+                const product = $(this).data('product');
+                let discount = product.price;
+                if(product.is_discount > 0){
+                    if(product.discount_type =='persen'){
+                        discount = product.price - ((product.price / 100) * product.discount);
+                    } else if (product.discount_type == 'nominal'){
+                        discount = product.price - product.discount;
+                    }
+                    discount_amt += (product.price - discount) * $(this).find('.quantity-counter').val();
+                }
+
+                data.items.push({
+                    name        : product.title,
+                    value       : product.price,
+                    quantity    : $(this).find('.quantity-counter').val(),
+                    weight      : product.weight
+                });
+            }) 
+
+
+            $.ajax({
+                url: '{{ route("fe.shipping.check") }}'
+            })
         }
 
 </script>

@@ -15,12 +15,22 @@ use App\Http\Controllers\Admin\{
     StoreController,
     TransactionController,
     CouponController,
+    DistrictController,
     MessageFormController,
     TagController,
     PermissionController,
     UserController,
-    RoleController
+    RoleController,
+    ProductReviewController,
+    ProvinceController,
+    RegencyController,
+    SliderController,
+    TransactionReportController,
+    VillageController,
+    WarehouseController
 };
+use App\Http\Controllers\Setting\APIController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,24 +58,27 @@ Route::middleware(['auth'])->group(function () {
         Route::get('web', 'index')->name('setting.web');
         Route::patch('web', 'update')->name('setting.web.update');
     });
+    Route::controller(APIController::class)->prefix('setting')->group(function () {
+        Route::get('api', 'index')->name('setting.api.index');
+        Route::patch('api', 'update')->name('setting.api.update');
+    });
     Route::controller(StoreController::class)->prefix('setting')->group(function () {
         Route::get('store', 'index')->name('setting.store');
         Route::patch('store', 'update')->name('setting.store.update');
     });
-    Route::controller(TransactionController::class)->group(function () {
-        Route::get('transactions', 'index')->name('transaction.index');
+    Route::controller(UploadController::class)->group(function () {
+        Route::post('uploads', 'upload')->name('upload');
+        Route::delete('uploads', 'index')->name('deleteUpload');
     });
-    
+
     Route::delete('orders/{id}', [OrderController::class, 'destroy']);
     Route::get('orders', [OrderController::class, 'index']);
     Route::post('searchAdminOrder', [OrderController::class, 'searchAdminOrder']);
     Route::put('orders', [OrderController::class, 'update']);
     Route::post('filterOrder', [OrderController::class, 'filterOrder']);
     Route::post('updateStatusOrder', [OrderController::class, 'updateStatusOrder']);
-
     Route::post('paymentAccepted/{id}', [OrderController::class, 'paymentAccepted']);
     Route::post('inputResi', [OrderController::class, 'inputResi']);
-
 
     
     Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
@@ -78,6 +91,16 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('roles/{role}/updatePermission', [RoleController::class, 'updatePermission'])->name('roles.updatePermission');
 
 
+    Route::delete('sliders/{link}/image/{filename}', [ImageSliderController::class, 'destroy']);
+
+
+    // Report
+    Route::get('transactions/report', [TransactionReportController::class, 'index'])->name('transactions.report');
+    Route::get('transactions/report/pdf', [TransactionReportController::class, 'pdf'])->name('transactions.report.pdf');
+    Route::get('transactions/report/pdf/generate', [TransactionReportController::class, 'pdfGenerate'])->name('transactions.report.pdf.generate');
+    Route::get('transactions/report/excel', [TransactionReportController::class, 'excel'])->name('transactions.report.excel');
+    Route::get('transactions/report/excel/generate', [TransactionReportController::class, 'excelGenerate'])->name('transactions.report.excel.generate');
+
 
     // Ajax CRUD
     Route::apiResources([
@@ -87,16 +110,24 @@ Route::middleware(['auth'])->group(function () {
         'tags'          => TagController::class,
         'roles'         => RoleController::class,
         'permissions'   => PermissionController::class,
+        'provinces'     => ProvinceController::class,
+        'regencies'     => RegencyController::class,
+        'districts'     => DistrictController::class,
+        'villages'      => VillageController::class
     ]);
 
     //CRUD
     Route::resources([
-        'post'          => PostController::class,
-        'product'       => ProductController::class,
-        'coupons'       => CouponController::class,
-        'message_forms' => MessageFormController::class,
-        'orders'        => OrderController::class,
-        'users'         => UserController::class,
+        'post'              => PostController::class,
+        'product'           => ProductController::class,
+        'products.reviews'  => ProductReviewController::class,
+        'coupons'           => CouponController::class,
+        'message_forms'     => MessageFormController::class,
+        'orders'            => OrderController::class,
+        'transactions'      => TransactionController::class,
+        'warehouses'        => WarehouseController::class,
+        'users'             => UserController::class,
+        'sliders'           => SliderController::class
     ]);
 });
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 function getCartCount()
 {
@@ -23,7 +24,35 @@ function getCartCount()
     return $invoiceCode;
 }
 
+function generateReferralCode()
+{
 
+    $code = Str::random(6);
+    $existingCode = DB::table('users')->where('referral_token', $code)->first();
+
+    if ($existingCode) {
+        return generateReferralCode();
+    }else{
+        return $code;
+    }
+
+}
+
+function shortNumber($n)
+{
+    if ($n < 1000000) {
+        // Anything less than a million
+        $n_format = number_format($n);
+    } else if ($n < 1000000000) {
+        // Anything less than a billion
+        $n_format = number_format($n / 1000000, 3) . 'JT';
+    } else {
+        // At least a billion
+        $n_format = number_format($n / 1000000000, 3) . 'M';
+    }
+
+    return $n_format;
+}
 
 
 

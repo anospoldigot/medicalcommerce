@@ -2,7 +2,7 @@
 <nav class="navbar navbar-fixed navbar-expand-lg navbar-light py-3 bg-white" style="width: 100%; z-index: 999; transition: all 500ms">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
+            <img src="{{ asset('upload/images/' . $config->logo) }}" alt="" width="50">
             <span class="font-weight-bold text-uppercase text-secondary">Per<span
                     class="text-primary">medik</span></span>
         </a>
@@ -84,7 +84,7 @@
     style="position: fixed; width: 100%; z-index: 999">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
+            <img src="{{ asset('upload/images/' . $config->logo) }}" alt="" width="50">
             <span class="font-weight-bold text-uppercase text-secondary">Per<span
                     class="text-primary">medik</span></span>
         </a>
@@ -164,7 +164,7 @@
     style="position: fixed; width: 100%; z-index: 999">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="{{ asset('frontend/img/logo.png') }}" alt="" width="50">
+            <img src="{{ asset('upload/images/' . $config->logo) }}" alt="" width="50">
             <span class="font-weight-bold text-uppercase text-secondary">Per<span
                     class="text-primary">medik</span></span>
         </a>

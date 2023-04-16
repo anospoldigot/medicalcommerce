@@ -15,13 +15,19 @@
 <script src="/app-assets/vendors/js/tables/datatable/buttons.print.min.js"></script>
 <script src="/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js"></script>
 <script src="/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
+
 <script src="/app-assets/vendors/js/file-uploaders/dropzone.min.js"></script>
 <script src="/js/image-uploader.js"></script>
 <script src="/js/numeral.min.js"></script>
 <script src="/app-assets/js/scripts/ui/ui-feather.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="/app-assets/vendors/js/pickers/pickadate/picker.js"></script>
+<script src="/app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
+<script src="/app-assets/vendors/js/pickers/pickadate/picker.time.js"></script>
+<script src="/app-assets/vendors/js/pickers/pickadate/legacy.js"></script>
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
@@ -32,6 +38,9 @@
 <script src="/app-assets/js/core/app.js"></script>
 <script src="/app-assets/js/scripts/extensions/ext-component-toastr.js"></script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
+"></script>
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
@@ -51,6 +60,7 @@
     });
 
     var channel = pusher.subscribe('presence-chat.1');
+    
     channel.bind("pusher:subscription_succeeded", function (members) {
         members.each(function(member) {
             // alert(JSON.stringify(member));
@@ -83,6 +93,21 @@
         var userInfo = member.info;
 
         console.log(userInfo)
+    });
+
+
+    // Subscribe to notification channel
+    var notification_channel = pusher.subscribe('private-notification.{{ auth()->id() }}');
+    
+    // Bind a function to handle incoming notifications
+    notification_channel.bind('Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', function(data) {
+        if(data.type == 'App\\Notifications\\ExportReady'){
+            toastr['success'](data.message, 'Success!', {
+                closeButton: true,
+                tapToDismiss: false,
+                rtl: isRtl
+            });
+        }
     });
 
     

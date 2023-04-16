@@ -16,7 +16,7 @@ class CreateOrderItemsTable extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('name');
-            $table->string('sku');
+            $table->string('sku') ;
             $table->uuid('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('product_id');
             $table->integer('quantity');
@@ -24,6 +24,7 @@ class CreateOrderItemsTable extends Migration
             $table->integer('price_after_disc');
             $table->integer('discount_amount');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

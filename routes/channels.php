@@ -29,3 +29,13 @@ Broadcast::channel('chat.{userId}', function ($user, $userId) {
     // }
     return $user;
 });
+
+Broadcast::channel('private-App.Models.User.{userId}', function ($user, $userId) {
+    return true;
+    return $user->id == $userId;
+    
+});
+
+Broadcast::channel('notification.{userId}', function ($user, $userId) {
+    return $user->id == $userId;
+});

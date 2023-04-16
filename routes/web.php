@@ -14,7 +14,9 @@ use App\Http\Controllers\Frontend\{
     ChatController,
     ContactController,
     CouponController,
+    InvoiceController,
     OrderController,
+    OrderRatingController,
     OrderTrackingController,
     PaymentController,
     ProfileController,
@@ -84,6 +86,7 @@ Route::controller(FrontendController::class)->group(function(){
 });
  
 Route::name('fe.')->group(function () {
+    Route::get('products/{product:slug}/review', [ProductController::class, 'review'])->name('products.review');
     Route::resource('products', ProductController::class);
     Route::resource('categories.products', CategoryProductController::class);
     Route::get('carts/count', [CartController::class, 'count'])->name('carts.count')->middleware('auth');
@@ -100,6 +103,10 @@ Route::name('fe.')->group(function () {
     Route::resource('profile', ProfileController::class)->only(['index']);
     Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('orders', OrderController::class);
+    Route::post('orders/{order:id}/rating', [OrderRatingController::class, 'store'])->name('orders.rating.store');
+    Route::patch('orders/{order:id}/finish', [OrderController::class, 'finishOrder'])->name('orders.finish');
+    Route::get('orders/{order:id}/invoice/pdf', [InvoiceController::class, 'pdf'])->name('orders.invoice.pdf');
+    Route::get('orders/{order:id}/invoice/excel', [InvoiceController::class, 'excel'])->name('orders.invoice.excel');
     Route::resource('orders.tracking', OrderTrackingController::class);
     Route::resource('articles', ArticleController::class);
     Route::post('coupons/check', [CouponController::class, 'check'])->name('coupons.check');

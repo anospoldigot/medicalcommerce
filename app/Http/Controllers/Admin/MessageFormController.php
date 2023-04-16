@@ -12,7 +12,7 @@ class MessageFormController extends Controller
     public function index ()
     {
         if (request()->ajax()) {
-            return DataTables::of(ContactForm::latest()->get())
+            return DataTables::of(ContactForm::latest())
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.message_form._action')
                 ->toJson();

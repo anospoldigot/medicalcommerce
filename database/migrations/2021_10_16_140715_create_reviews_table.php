@@ -16,10 +16,13 @@ class CreateReviewsTable extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignUuid('order_id')->nullable();
             $table->string('name')->nullable();
             $table->mediumText('comment')->nullable();
             $table->tinyInteger('rating')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

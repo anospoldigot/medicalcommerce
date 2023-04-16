@@ -115,9 +115,7 @@
                                             </div>
                                             @if ($product->discount_type == 'persen')
                                             <div>
-                                                <span class="text-primary  mb-0">Rp. {{ number_format (($product->price /
-                                                    100) *
-                                                    $product->discount,2,",",".") }}
+                                                <span class="text-primary  mb-0">Rp. {{ number_format ($product->price - (($product->price / 100) * $product->discount),2,",",".") }}
                                                 </span>
 
                                             </div>
@@ -170,9 +168,7 @@
                             </div>
                             @if ($product->discount_type == 'persen')
                             <div>
-                                <span class="text-primary  mb-0">Rp. {{ number_format (($product->price /
-                                    100) *
-                                    $product->discount,2,",",".") }}
+                                <span class="text-primary  mb-0">Rp. {{ number_format ($product->price - (($product->price / 100) * $product->discount),2,",",".") }}
                                 </span>
             
                             </div>

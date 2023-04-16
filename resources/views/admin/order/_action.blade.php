@@ -19,6 +19,10 @@
             <i data-feather="eye" class="mr-50"></i>
             <span>Lihat</span>
         </a>
+        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#confirmModal{{$model->id}}">
+            <i data-feather="check" class="mr-50"></i>
+            <span>Confirm</span>
+        </a>
         @if ($model->status == 'ISSUED')
             <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#confirmModal{{$model->id}}">
                 <i data-feather="check" class="mr-50"></i>
@@ -39,10 +43,6 @@
                 <span>Kirim</span>
             </a>
         @endif
-        <a class="dropdown-item" href="javascript:void(0)" onclick="return $('form#send{{$model->id}}').submit()">
-            <i data-feather="truck" class="mr-50"></i>
-            <span>Confirm & Kirim </span>
-        </a>
     </div>
 </div>
 
@@ -53,7 +53,7 @@
             <form onsubmit="return confirm('Are you sure?');" action="{{ route('orders.process', $model->id) }}"
                 method="POST" id="process{{$model->id}}" class="confirm-form">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModal{{$model->id}}Label">Order - {{ $model->transaction->invoice_number }}</h5>
+                    <h5 class="modal-title" id="confirmModal{{$model->id}}Label">Order - {{ $model->invoice_number }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

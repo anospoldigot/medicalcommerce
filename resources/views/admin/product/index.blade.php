@@ -21,9 +21,6 @@
 </a>
 
 <div class="card">
-    <div class="card-header border-bottom">
-        <h4 class="card-title">Data Product</h4>
-    </div>
     <table class="datatables-basic table">
         <thead>
             <tr>
@@ -89,6 +86,11 @@
                         name: 'action'
                     },
                 ],
+                dom: `<"card-header border-bottom p-1"<"head-label">
+                    <"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12
+                            col-md-6"l>
+                            <"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i>
+                                    <"col-sm-12 col-md-6"p>>`,
                 drawCallback: function( settings ) {
                     feather.replace({
                         width: 14,
@@ -96,6 +98,7 @@
                     });
                 }
         });
+        $('div.head-label').html('<h6 class="mb-0">Data Product</h6>');
     })
 </script>
 @endpush

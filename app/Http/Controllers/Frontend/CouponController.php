@@ -11,11 +11,30 @@ class CouponController extends Controller
     public function check ()
     {
 
-        $coupon = Coupon::firstWhere('code', request('code'));
-        
-        return response()->json([
-            'success'   => true,
-            'data'      => $coupon
-        ]);
+        try {
+            $coupon = Coupon::where('code', request('code'))->first();
+
+            $message = [
+                'success'   => true,
+                'message'   => 'Coupon berhasil digunakan',
+                'data'      => $coupon
+            ];
+
+            if (empty($coupon)) {
+                $message = [
+                    'success'   => false,
+                    'message'   => 'Coupon tidak tersedia',
+                ];
+            }
+
+            return response()->json($message);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'success'   => false,
+                'message'   => 'Coupon Error'
+            ]);
+        }
     }
 }

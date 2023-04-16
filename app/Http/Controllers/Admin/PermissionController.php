@@ -13,7 +13,7 @@ class PermissionController extends Controller
     {
         if (request()->ajax()) {
 
-            return DataTables::of(Permission::latest()->get())
+            return DataTables::of(Permission::latest())
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.permission._action')
                 ->toJson();

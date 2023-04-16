@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'id_ID',
+    'faker_locale' => 'en_EN',
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -180,15 +180,21 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        
+        /*
+         * Package Service Providers...
+         */
+        AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        Shetabit\Visitor\Provider\VisitorServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\ConfigApiProvider::class,
         Silehage\Rajaongkir\RajaongkirServiceProvider::class,
         Silehage\Tripay\TripayServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-        /*
-         * Package Service Providers...
-         */
-
+        
         /*
          * Application Service Providers...
          */
@@ -197,12 +203,9 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
-        Spatie\Permission\PermissionServiceProvider::class,
-        Shetabit\Visitor\Provider\VisitorServiceProvider::class,
-        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        App\Providers\FrontendViewComposerProvider::class,
     ],
 
     /*
@@ -217,13 +220,14 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
-        'Image' => Intervention\Image\Facades\Image::class,
-        'Tripay' => Silehage\Tripay\TripayFacade::class,
-        'Rajaongkir' => Silehage\Rajaongkir\RajaongkirFacade::class,
-        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
-        'Visitor' => Shetabit\Visitor\Facade\Visitor::class,
-        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'ReferralHelper'    => App\Helpers\ReferralHelper::class,
+        'Image'             => Intervention\Image\Facades\Image::class,
+        'Tripay'            => Silehage\Tripay\TripayFacade::class,
+        'Rajaongkir'        => Silehage\Rajaongkir\RajaongkirFacade::class,
+        'Debugbar'          => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'Visitor'           => Shetabit\Visitor\Facade\Visitor::class,
+        'NoCaptcha'         => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'Excel'             => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

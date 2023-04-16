@@ -37,7 +37,10 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class, 
             ChatSeeder::class,
             CouponSeeder::class,
-            ConfigSeeder::class
+            ConfigSeeder::class,
+            UserOrderTransactionSeeder::class,
+            TransactionSeeder::class,
+            WarehouseSeeder::class
         ]); 
     }
 }

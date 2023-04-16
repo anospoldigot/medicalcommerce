@@ -6,7 +6,8 @@ use App\Models\Address;
 use App\Models\Config;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 class ConfigSeeder extends Seeder
 {
     /**
@@ -16,6 +17,9 @@ class ConfigSeeder extends Seeder
      */
     public function run()
     {
+        $path = public_path('upload/images/');
+        $source_path = public_path('source/');
+
         $address = Address::create([
             'province_id'       => 35,
             'regency_id'        => 3507,
@@ -66,7 +70,13 @@ class ConfigSeeder extends Seeder
         ];
 
         $data['contact'] = json_encode($contact);
-        
+
+        $filename = time() . '_' . Str::random(10) . '.webp';
+        Image::make($source_path . 'logo.png')
+            ->encode('webp', 80)
+            ->save($path . $filename);
+
+        $data['logo']    = $filename;
 
         Config::create($data);
     }

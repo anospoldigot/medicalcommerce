@@ -15,6 +15,7 @@ class CreateConfigsTable extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->id();
+            $table->string('logo')->nullable();
             $table->integer('ppn')->nullable()->default(11)->comment('percentage');
             $table->foreignId('address_id');
             $table->json('contact')->nullable();
@@ -22,6 +23,7 @@ class CreateConfigsTable extends Migration
             $table->string('merchant_code')->comment('Duitku Payment Gateway');
             $table->string('return_url')->comment('Duitku Payment Gateway')->nullable();
             $table->string('callback_url')->comment('Duitku Payment Gateway')->nullable();
+            $table->string('payment_mode')->comment('Duitku Payment Gateway')->default('dev');
             $table->string('biteship_token');
             // $table->string('theme')->nullable()->default('default');
             // $table->string('theme_color')->nullable()->default('#1bb90d');

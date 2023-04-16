@@ -11,9 +11,12 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Shetabit\Visitor\Traits\Visitor;
 use Shetabit\Visitor\Traits\Visitable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, Visitor, Visitable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, Visitor, Visitable, LogsActivity;
     
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'referrer_id',
+        'referral_token',
         'name',
         'email',
         'password',
@@ -30,7 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'credit',
         'is_credit_active'
     ];
-
+    protected $appends = ['referral_link'];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -50,9 +55,41 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    protected static $logAttributes = ['name', 'email', 'password'];
+    
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnly(['name', 'email']);
+    }
+
+    public function referrer()
+    {
+        return $this->belongsTo(User::class, 'referrer_id', 'id');
+    }
+
+
+    public function getReferralLinkAttribute()
+    {
+        return $this->referral_link = route('register', ['ref' => $this->referral_token]);
+    }
+
+
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'referrer_id', 'id');
+    }
+
+
     public function addresses()
     {
         return $this->hasMany(Address::class);
+    }
+
+    public function default_address()
+    {
+        return $this->hasOne(Address::class)->where('is_priority', 1);
     }
 
 

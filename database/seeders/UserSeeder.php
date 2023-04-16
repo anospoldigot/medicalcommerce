@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -17,6 +18,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
+
+        // Generate data user palsu
+
+        // Hilangkan observer setelah selesai
 
         $path = public_path('upload/images/');
         $source_path = public_path('source/');
@@ -98,6 +104,169 @@ class UserSeeder extends Seeder
         ]);
 
         $user->assignRole('customer');
+
+        $data = [
+            'province_id'       => 32,
+            'regency_id'        => 3201,
+            'district_id'       => 3201170,
+            'village_id'        => 3201170001,
+            'postal_code'       => 11240,
+            'detail'            => 'Jl. Pejagalan Raya',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 1
+        ];
+
+        $data['rawdata'] =json_encode($data);
+
+        $user->addresses()->create($data);
+
+        $data = [
+            'province_id'       => 35,
+            'regency_id'        => 3507,
+            'district_id'       => 3507040,
+            'village_id'        => 3507040005,
+            'postal_code'       => 65179,
+            'detail'            => 'Jl. Kenari 2 blok i1',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 0
+        ];
+
+        $data['rawdata'] =json_encode($data);
+
+        $user->addresses()->create($data);
+        $data = [
+            'province_id'       => 32,
+            'regency_id'        => 3201,
+            'district_id'       => 3201170,
+            'village_id'        => 3201170001,
+            'postal_code'       => 11240,
+            'detail'            => 'Jl. Pejagalan Raya',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 1
+        ];
+
+        $data['rawdata'] = json_encode($data);
+
+        $user->addresses()->create($data);
+
+        $data = [
+            'province_id'       => 35,
+            'regency_id'        => 3507,
+            'district_id'       => 3507040,
+            'village_id'        => 3507040005,
+            'postal_code'       => 65179,
+            'detail'            => 'Jl. Kenari 2 blok i1',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 0
+        ];
+
+        $data['rawdata'] = json_encode($data);
+
+        $user->addresses()->create($data);
+        $user = User::create([
+            'name'      => 'jaki',
+            'email'     => 'jaki@gmail.com',
+            'password'  => bcrypt('password'),
+            'phone'     => '081293692142',
+        ]);
+
+        $user->assignRole('customer');
+
+        $data = [
+            'province_id'       => 32,
+            'regency_id'        => 3201,
+            'district_id'       => 3201170,
+            'village_id'        => 3201170001,
+            'postal_code'       => 11240,
+            'detail'            => 'Jl. Pejagalan Raya',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 1
+        ];
+
+        $data['rawdata'] =json_encode($data);
+
+        $user->addresses()->create($data);
+
+        $data = [
+            'province_id'       => 35,
+            'regency_id'        => 3507,
+            'district_id'       => 3507040,
+            'village_id'        => 3507040005,
+            'postal_code'       => 65179,
+            'detail'            => 'Jl. Kenari 2 blok i1',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 0
+        ];
+
+        $data['rawdata'] =json_encode($data);
+
+        $user->addresses()->create($data);
+        $data = [
+            'province_id'       => 32,
+            'regency_id'        => 3201,
+            'district_id'       => 3201170,
+            'village_id'        => 3201170001,
+            'postal_code'       => 11240,
+            'detail'            => 'Jl. Pejagalan Raya',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 1
+        ];
+
+        $data['rawdata'] = json_encode($data);
+
+        $user->addresses()->create($data);
+
+        $data = [
+            'province_id'       => 35,
+            'regency_id'        => 3507,
+            'district_id'       => 3507040,
+            'village_id'        => 3507040005,
+            'postal_code'       => 65179,
+            'detail'            => 'Jl. Kenari 2 blok i1',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 0
+        ];
+
+        $data['rawdata'] = json_encode($data);
+
+        $user->addresses()->create($data);
+
+
+
+        $user = User::create([
+            'name'      => 'salescabangjakbar',
+            'email'     => 'salescabangjakbar@example.com',
+            'password'  => bcrypt('password'),
+            'phone'     => '081293692142',
+        ]);
+
+        $user->assignRole('sales');
+
+        $data = [
+            'province_id'       => 32,
+            'regency_id'        => 3201,
+            'district_id'       => 3201170,
+            'village_id'        => 3201170001,
+            'postal_code'       => 11240,
+            'detail'            => 'Jl. Pejagalan Raya',
+            'latitude'          => '-6.407595511848003',
+            'longitude'         => '106.99576377868654',
+            'is_priority'       => 1
+        ];
+
+        $data['rawdata'] =json_encode($data);
+
+        $user->addresses()->create($data);
+
+
 
     }
 }

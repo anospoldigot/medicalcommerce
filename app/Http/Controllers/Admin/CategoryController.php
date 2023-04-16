@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return DataTables::of(Category::get())
+            return DataTables::of(Category::query())
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.category._action')
                 ->toJson();

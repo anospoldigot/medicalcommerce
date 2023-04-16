@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ProductController extends Controller
 {
     public function index()
     {
-
+        $sliders = Slider::whereLink(request()->url())->get();
+        
         if(request()->ajax()){
 
             $per_page = request('per_page') ?? 6;
@@ -27,18 +30,30 @@ class ProductController extends Controller
 
         $products = Product::with(['assets', 'category'])
             ->latest()
-            ->paginate(6);
+            ->take(6)
+            ->get();
 
         $categories = Category::all();
         
-        return view('frontend.product.index',  compact('products', 'categories'));
+        return view('frontend.product.index',  compact('products', 'categories', 'sliders'));
     }
 
     public function show($slug)
     {
+
+        if(request()->has('ref')){
+            session()->put('ref', request()->query('ref'), Carbon::now()->addHours(2));
+        }
+
         $product = Product::where('slug', $slug)->firstOrFail();
+
         $relatedProducts = Product::where('category_id', $product->category_id)->get();
 
         return view('frontend.product.show', compact('product', 'relatedProducts'));
+    }
+
+    public function review (Product $product)
+    {
+        return view('frontend.product.review', compact('product'));
     }
 }

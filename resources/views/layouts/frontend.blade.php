@@ -29,7 +29,6 @@
     @if (!isset($disableFooter))
         @include('partials.frontend.footer')
     @endif
-    <!-- Optional JavaScript; choose one of the two! -->
 
 
     <script>

@@ -53,7 +53,7 @@
             @canany(['dashboard.index'])
                 <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center"
                         href="{{ route('dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate"
-                            data-i18n="Home">Home</span></a>
+                            data-i18n="Home">Dashboard</span></a>
                 </li>
             @endcanany
             @canany(['product.index'])
@@ -83,13 +83,47 @@
                     </ul>
                 </li>
             @endcanany
+            @canany(['order.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='credit-card'></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Transaction</span></a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('transactions.*') && !request()->has('type') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('transactions.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">List</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('transactions.*') && request()->query('type') == 'in' ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('transactions.index', ['type' => 'in']) }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">In</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('transactions.*') && request()->query('type') == 'out' ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('transactions.index', ['type' => 'out']) }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Out</span></a>
+                        </li>
+                    </ul>
+                </li>
+            @endcanany
+            @canany(['order.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='credit-card'></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Warehouses</span></a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('warehouses.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('warehouses.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">List</span></a>
+                        </li>
+                    </ul>
+                </li>
+            @endcanany
             @canany(['chat.index'])
                 <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
                             class="menu-title text-truncate" data-i18n="Page Layouts">Message</span></a>
                     <ul class="menu-content">
                         <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
                                 href="{{ route('chats.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
-                                    data-i18n="Collapsed Menu">Chat</span></a>
+                                    data-i18n="Collapsed Menu">Chat Guest</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('chats.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('chats.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Chat Users</span></a>
                         </li>
                         <li class="{{ request()->routeIs('message_forms.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
                                 href="{{ route('message_forms.index') }}"><i data-feather="circle"></i><span
@@ -118,6 +152,19 @@
                             <li class="{{ request()->routeIs('tags.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
                                     href="{{ route('tags.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                         data-i18n="Collapsed Menu">Tag</span></a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+            @canany(['slider.index'])
+                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span
+                            class="menu-title text-truncate" data-i18n="Page Layouts">Slider</span></a>
+                    <ul class="menu-content">
+                        @can('slider.index')
+                            <li class="{{ request()->routeIs('sliders.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                    href="{{ route('sliders.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                        data-i18n="Collapsed Menu">List</span></a>
                             </li>
                         @endcan
                     </ul>
@@ -179,6 +226,10 @@
             <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span
                         class="menu-title text-truncate" data-i18n="Page Layouts">Setting</span></a>
                 <ul class="menu-content">
+                    <li class="{{ request()->routeIs('setting.api.index') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('setting.api.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Collapsed Menu">API</span></a>
+                    </li>
                     <li class="{{ request()->routeIs('setting.web') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('setting.web') }}"><i
                                 data-feather="circle"></i><span class="menu-item text-truncate"
                                 data-i18n="Collapsed Menu">Web</span></a>

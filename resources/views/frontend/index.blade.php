@@ -189,8 +189,7 @@
                                     </div>
                                     @if ($product->discount_type == 'persen')
                                     <div>
-                                        <span class="text-primary  mb-0">Rp. {{ number_format (($product->price / 100) *
-                                            $product->discount,2,",",".") }}
+                                        <span class="text-primary  mb-0">Rp. {{ number_format ($product->price - (($product->price / 100) * $product->discount),2,",",".") }}
                                         </span>
     
                                     </div>
@@ -210,8 +209,17 @@
                                 </div>
                                 <div class="d-flex justify-content-between mb-2"><small>Stock : {{ $product->stock
                                         }}</small><small>Terjual : 10</small></div>
-                                <button class="btn btn-block btn-sm btn-primary text-capitalize"><i
-                                        class="fa-solid fa-cart-shopping mr-2"></i> add to cart</button>
+                                
+                                    @auth
+                                        <button onclick="addToCart({{ $product->id }})" class="btn btn-block btn-sm btn-primary text-capitalize">
+                                            <i class="fa-solid fa-cart-shopping mr-2"></i> Add to cart
+                                        </button>
+                                    @else
+                                        <button onclick="return window.location.href='{{ route('login') }}'" class="btn btn-block btn-sm btn-primary text-capitalize">
+                                            <i class="fa-solid fa-cart-shopping mr-2"></i> 
+                                            add to cart
+                                        </button>
+                                    @endauth
                             </div>
                         </div>
                     </div>
@@ -315,6 +323,27 @@
                    <li class="glide__slide">
                         <img src="{{ asset('source/jnt.png') }}" alt="" class="img-fluid">
                     </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/jne.png') }}" alt="" class="img-fluid">
+                    </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/pos.png') }}" alt="" class="img-fluid">
+                    </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/grab.png') }}" alt="" class="img-fluid">
+                    </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/gojek.png') }}" alt="" class="img-fluid">
+                    </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/anteraja.png') }}" alt="" class="img-fluid">
+                    </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/deliveree.png') }}" alt="" class="img-fluid">
+                    </li>
+                   <li class="glide__slide">
+                        <img src="{{ asset('source/sicepat.png') }}" alt="" class="img-fluid">
+                    </li>
                 </ul>
             </div>
         </div>
@@ -398,7 +427,8 @@
                 600: {
                     perView: 2
                 }
-            }
+            }, 
+            gap: 20
         }).mount()
 
         const payment = new Glide('#payment-slider', {

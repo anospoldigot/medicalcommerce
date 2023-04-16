@@ -10,30 +10,7 @@ class Config extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $fillable = [
-        'theme', 
-        'theme_color', 
-        'home_view_mode', 
-        'product_view_mode', 
-        'rajaongkir_type', 
-        'rajaongkir_apikey', 
-        'rajaongkir_couriers', 
-        'warehouse_id', 
-        'warehouse_address', 
-        'tripay_api_key', 
-        'tripay_private_key', 
-        'tripay_mode', 
-        'tripay_merchant_code', 
-        'telegram_bot_token', 
-        'telegram_user_id', 
-        'is_notifypro',
-        'is_payment_gateway',
-        'is_guest_checkout',
-        'is_whatsapp_checkout',
-        'notifypro_interval', 
-        'notifypro_timeout', 
-        'cod_list', 
-    ];
+    protected $guarded = [];
     
     public $appends = [
         'is_shippable', 

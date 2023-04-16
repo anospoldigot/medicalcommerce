@@ -15,7 +15,7 @@ class CreateSlidersTable extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('weight')->default(1);
+            $table->string('link');
             $table->string('filename')->nullable();
         });
     }

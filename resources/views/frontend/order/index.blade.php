@@ -16,7 +16,9 @@
                                     <img src="{{ $order->items->first()->product->assets->first()->src }}" alt="" class="img-fluid">
                                 </div>
                                 <div class="col-8">
-                                    <div><small>{{ $order->items->first()->product->title }}</small></div>
+                                    @foreach ($order->items as $item)
+                                        <div><small>{{ $item->name }}</small></div>
+                                    @endforeach
                                     <div class="badge alert-{{ $order->order_status_color }}"><small>{{ $order->status_label }}</small></div>
                                 </div>
                                 <div class="col-2 text-right"><a href="{{ route('fe.orders.show', $order->id) }}" class="btn btn-sm btn-primary">Detail</a></div>

@@ -20,6 +20,13 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function review ()
+    {
+        return $this->hasOne(Review::class, 'order_id', 'order_id')->where('product_id', $this->product_id);
+    }
+
+
     public function order()
     {
         return $this->belongsTo(Order::class);

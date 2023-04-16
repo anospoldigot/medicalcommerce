@@ -4,7 +4,17 @@
 
 @push('styles')
 <style>
+    .br-theme-fontawesome-stars .br-widget a {
+        font-size: 16px !important;
+    }
     
+    /* .br-theme-fontawesome-stars .br-widget a::after {
+    color: #000 !important;
+    }
+    
+    .br-theme-fontawesome-stars .br-widget a.br-selected::after {
+    color: blue !important;
+    } */
 </style>
     
 @endpush
@@ -44,7 +54,7 @@
                 <div class="row my-2">
                     <div class="col-12 col-md-5">
                         <div class="d-flex align-items-center justify-content-center mb-3">
-                            <img src="{{ $product->assets->first()->src }}" class="img-fluid product-img"
+                            <img src="{{ $product->assets->first()->src }}" class="img-fluid product-img" style="border-radius: 10px;"
                                 alt="product image" />
                         </div>
                         {{-- <div class="swiper" id="product">
@@ -65,7 +75,7 @@
                                 <ul class="glide__slides">
                                     @foreach ($product->assets as $asset)
                                         <li class="glide__slide">
-                                            <a target="_blank" href="{{ $asset->src }}"><img src="{{ $asset->src }}" alt="" class="img-fluid"></a>
+                                            <a target="_blank" href="{{ $asset->src }}"><img src="{{ $asset->src }}" alt="" class="img-fluid" style="border-radius: 10px;"></a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -80,7 +90,7 @@
                     </div>
                     <div class="col-12 col-md-7">
                         <h4 class="text-capitalize">{{ $product->title }}</h4>
-                        <span class="card-text item-company">Category : <a href="javascript:void(0)"
+                        <span class="card-text item-company">Category : <a href="{{ route('fe.categories.products.index', $product->category->slug) }}"
                                 class="company-name text-capitalize">({{ $product->category->title ?? '-' }})</a></span>
                         <div class="ecommerce-details-price  mt-1">
                             @if ($product->is_discount)
@@ -93,8 +103,7 @@
                             </div>
                             @if ($product->discount_type == 'persen')
                             <div>
-                                <h4 class="item-price text-primary mr-1">Rp. {{ number_format (($product->price / 100) *
-                                    $product->discount,2,",",".") }}
+                                <h4 class="item-price text-primary mr-1">Rp. {{ number_format ($product->price - (($product->price / 100) * $product->discount),2,",",".") }}
                                 </h4>
 
                             </div>
@@ -170,7 +179,7 @@
                                         </svg>
                                         Bagikan Ke Twitter
                                     </a>
-                                    <a class="dropdown-item" href="https://wa.me/?text=Halo,%20saya%20tertarik%20dengan%20Produk%20123%20di%20toko%20online%20Anda.%20Bisakah%20Anda%20membantu%20saya%20dengan%20informasi%20lebih%20lanjut?"
+                                    <a class="dropdown-item" href="https://wa.me/?text={{ $product->title }}%0A{{ request()->url() }}"
                                         target="_blank">
                                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
                                             <path fill="#fff"
@@ -204,6 +213,38 @@
             
             
         </div>
+    </div>
+    <div class="container py-5">
+        <div class="bg-white p-4">
+            <div class="text-center mb-5">
+                <h4 class="mb-2">Review</h4>
+                <h6 class="text-muted">People Review For this product</h6>
+            </div>
+            
+            @forelse ($product->latest_reviews as $review)
+            <div class="mb-5">
+                <div class="d-flex mb-1">
+                    <img src="{{ asset('upload/images/' . $review->user->profile) }}"
+                        onerror="this.onerror=null;this.src='{{ $review->user->profile }}';" width="40" height="40"
+                        alt="profile-user" class="rounded-circle mx-1">
+                    <h6 class="mx-1">{{ $review->user->name }}</h6>
+                </div>
+            
+                <select class="rating" id="example">
+                    <option value="1" @selected($review->rating == 1)>1</option>
+                    <option value="2" @selected($review->rating == 2)>2</option>
+                    <option value="3" @selected($review->rating == 3)>3</option>
+                    <option value="4" @selected($review->rating == 4)>4</option>
+                    <option value="5" @selected($review->rating == 5)>5</option>
+                </select>
+                <p>{{ $review->comment }}</p>
+            </div>
+            @empty
+            <div class="text-center text-muted">Belum ada review</div>
+            @endforelse
+            <a href="{{ route('fe.products.review', $product->slug) }}">Lihat Detail</a>
+        </div>
+        
     </div>
     <div class="container py-5">
         <div class="text-center mb-5">
@@ -281,6 +322,10 @@
         })
         .mount()
 
+    $('.rating').barrating({
+        theme: 'fontawesome-stars',
+        readonly: true
+    });
     
 </script>
 @endpush

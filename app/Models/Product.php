@@ -25,10 +25,17 @@ class Product extends Model
     {
         return $this->morphMany(Asset::class, 'assetable');
     }
+
     public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function latest_reviews()
     {
         return $this->hasMany(Review::class)->latest()->take(4);
     }
+
     public function getRatingAttribute()
     {
         return number_format($this->reviews()->avg('rating'), 1) ?? 0;
@@ -52,8 +59,8 @@ class Product extends Model
         return $this->hasMany(ProductVariantValue::class);
     }
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+    // public function getRouteKeyName()
+    // {
+    //     return 'slug';
+    // }
 }

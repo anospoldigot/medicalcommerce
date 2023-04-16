@@ -20,7 +20,7 @@ class CategoryPostController extends Controller
     {
         if (request()->ajax()) {
 
-            return DataTables::of(CategoryPost::latest()->get())
+            return DataTables::of(CategoryPost::latest())
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.category_post._action')
                 ->toJson();

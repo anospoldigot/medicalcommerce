@@ -41,7 +41,7 @@ class PostController extends Controller
                 });
             }
 
-            return DataTables::of(Post::with('category')->latest()->get())
+            return DataTables::of(Post::with('category')->latest())
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.post._action')
                 ->toJson();

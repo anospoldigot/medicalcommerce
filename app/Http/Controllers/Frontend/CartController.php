@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Config;
 use App\Models\District;
 use App\Models\Product;
 use App\Models\Province;
@@ -24,8 +25,8 @@ class CartController extends Controller
     private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
     private $callbackUrl    = 'https://medicalcommerce.test/callback';
     private $returnUrl      = 'https://medicalcommerce.test/callback';
-    private $authorization = 'biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUGVtZWRpayIsInVzZXJJZCI6IjYzZDMwMzMyOWFiOTQ1MTIyYjY3NWE0NyIsImlhdCI6MTY3NDc3MzQ0M30.IAjCyQMVlIzLWFkKnKbDKFc8AFVwVLYFkeFy-ncT_eg';
-    
+    private $config;
+
     public function __construct()
     {
         $this->duitkuConfig = new \Duitku\Config($this->merchantKey, $this->merchantCode);
@@ -36,23 +37,27 @@ class CartController extends Controller
         $this->duitkuConfig->setSanitizedMode(false);
         // set log parameter (default : true)
         $this->duitkuConfig->setDuitkuLogs(true);
+
+
+        $this->config = Config::first();
     }
 
     public function index()
     {
+        $ref = session()->get('ref');
 
+        $ppn = $this->config->ppn;
         $paymentAmount = "10000"; //"YOUR_AMOUNT";
         $paymentMethodList = \Duitku\Api::getPaymentMethod($paymentAmount, $this->duitkuConfig);
         $paymentMethodList = json_decode($paymentMethodList);
 
         $carts = Cart::with('product.assets', 'product.category')->where('user_id', auth()->id())->get();
         $couriers = Http::withHeaders([
-            'authorization' => $this->authorization
+            'authorization' => $this->config->biteship_token
         ])
         ->get('https://api.biteship.com/v1/couriers');
 
         $couriers = collect(json_decode($couriers)->couriers)->groupBy('courier_name');
-
 
         $discount = $carts->sum(function ($cart) {
             $price = 0;
@@ -65,7 +70,6 @@ class CartController extends Controller
                     $price = $cart->product->price - $cart->product->discount;
                 }
 
-                $price = $cart->product->price - $price;
             }
 
             return $cart->quantity * $price;
@@ -74,14 +78,15 @@ class CartController extends Controller
         $order_subtotal = $carts->sum(function ($cart) {
             return $cart->quantity * $cart->product->price;
         });
-
-
-        $addresses = Address::with(['province', 'regency', 'village', 'district'])->where('user_id', auth()->id())->get();
+        $ppn_amount = $ppn ? (($order_subtotal - $discount) / 100) * $ppn : 0;
+        $addresses = Address::with(['province', 'regency', 'village', 'district'])
+            ->where('user_id', auth()->id())
+            ->get();
         $provinces = Province::all();
 
         return view('frontend.cart.index', compact(
             'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList', 'discount',
-            'couriers'
+            'couriers', 'ppn', 'ppn_amount', 'ref'
         ));
     }
 

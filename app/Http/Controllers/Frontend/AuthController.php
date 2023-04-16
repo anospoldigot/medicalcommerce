@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\ReferrerBonus;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -76,23 +78,33 @@ class AuthController extends Controller
 
     public function register()
     {
+        if (request()->has('ref')) {
+            session()->put(['referrer' => request()->query('ref')]);
+        }
 
         return view('auth.register');
     }
 
     public function registerPost()
     {
+
+        
         $data = request()->validate([
             'name'      => 'required',
             'email'     => 'required|email',
             'phone'     => 'required|numeric',
             'password'  => 'required|min:8'
         ]);
-
-        $data['role'] = 'user';
-        $data['password'] = bcrypt(request('password'));
+        $referrer = User::whereReferralToken(session()->pull('referrer'))->first();
+        $data['role']           = 'user';
+        $data['password']       = bcrypt(request('password'));
+        $data['referrer_id']    = $referrer ? $referrer->id : null;
+        $data['referral_token'] = generateReferralCode();
         $user = User::create($data);
         $user->assignRole('customer');
+        if ($user->referrer !== null) {
+            // Notification::send($user->referrer, new ReferrerBonus($user));
+        }
         Auth::login($user);
 
         return redirect()->route('verification.notice');

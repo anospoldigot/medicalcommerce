@@ -16,29 +16,17 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('invoice_number');
-            $table->uuid('order_id')->constrained('orders')->onDelete('cascade');
-            $table->string('reference')->comment('Reference (Response from duitku)');
-            $table->integer('merchant_order_id')->comment('Merchant Order Id (Response from duitku)');
-            $table->string('payment_type')->nullable();
-            $table->string('payment_method')->nullable();
-            $table->string('payment_name')->nullable();
-            $table->string('payment_code')->nullable();
-            $table->string('payment_proof')->nullable();
-            $table->json('payment_request')->nullable();
-            $table->json('payment_response')->nullable();
+            $table->enum('type', ['in', 'out'])->comment('type transaction');
+            $table->uuid('order_id')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->integer('amount')->default(0);
-            $table->integer('amount_after_disc')->default(0);
-            $table->integer('voucher_amount')->default(0);
-            $table->integer('shipping_amount')->default(0);
             $table->integer('amount_received')->default(0);
-            $table->integer('total_fee')->default(0);
             $table->integer('expired_time')->nullable();
             $table->string('status')->default('UNPAID');
             $table->mediumText('note')->nullable();
             $table->string('qr_url')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

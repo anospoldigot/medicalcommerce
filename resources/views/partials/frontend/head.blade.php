@@ -26,6 +26,8 @@
     " rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/BrightTheme.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/forms/wizard/bs-stepper.min.css">
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/jquery-bar-rating@1.2.2/dist/themes/fontawesome-stars.min.css">
 <style>
     #preloader {
         position: fixed;

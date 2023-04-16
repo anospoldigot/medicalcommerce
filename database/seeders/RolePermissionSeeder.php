@@ -47,6 +47,15 @@ class RolePermissionSeeder extends Seeder
             'permission' => [
                 'permission.index', 'permission.create', 'permission.edit', 'permission.delete'
             ],
+            'order' => [
+                'order.index', 'order.create', 'order.edit', 'order.delete'
+            ],
+            'transaction' => [
+                'transaction.index', 'transaction.create', 'transaction.edit', 'transaction.delete'
+            ],
+            'warehouse' => [
+                'warehouse.index', 'warehouse.create', 'warehouse.edit', 'warehouse.delete'
+            ],
 
         ];
 
@@ -90,5 +99,26 @@ class RolePermissionSeeder extends Seeder
             'name'          => 'customer',
             'guard_name'    => 'web'
         ]);
+        
+        
+        $role = Role::create([
+            'name'          => 'sales',
+            'guard_name'    => 'web'
+        ]);
+
+        $role->givePermissionTo(collect($permission)->except(['user', 'role', 'permission'])->map(function ($v, $k) {
+            unset($v[$k]);
+            return $v;
+        }));
+        
+        $role = Role::create([
+            'name'          => 'management cabang',
+            'guard_name'    => 'web'
+        ]);
+
+        $role->givePermissionTo(collect($permission)->except(['user', 'role', 'permission'])->map(function ($v, $k) {
+            unset($v[$k]);
+            return $v;
+        }));
     }
 }

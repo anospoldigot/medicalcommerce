@@ -14,7 +14,7 @@ class CouponController extends Controller
     public function index ()
     {
         if(request()->ajax()){
-            return DataTables::of(Coupon::withCount('orders')->get())
+            return DataTables::of(Coupon::withCount('orders'))
                 ->addIndexColumn()
                 ->addColumn('action', 'admin.coupon._action')
                 ->toJson();
@@ -45,7 +45,7 @@ class CouponController extends Controller
 
         try{
             Coupon::create($attr);
-
+            
             return redirect()->route('coupons.index')->with('success', 'Berhasil menyimpan data kupon');
         }catch(\Throwable $th){
             return redirect()->route('coupons.index')->with('error', $th->getMessage());

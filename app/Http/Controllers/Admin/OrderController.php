@@ -33,8 +33,15 @@ class OrderController extends Controller
     {
         if (request()->ajax()) {
     
-            return DataTables::of(Order::with(['items', 'transaction'])->latest()->get())
-                ->addIndexColumn()
+            $query = Order::latest()
+                ->when(request()->filled('start_date') && request()->filled('end_date'), function($q){
+                        $q->whereBetween('created_at', [request('start_date'), request('end_date')]);
+                })
+                ->when(request()->filled('status'), function($q){
+                        $q->whereStatus(request('status'));
+                });
+
+            return DataTables::of($query)
                 ->addColumn('action', 'admin.order._action')
                 ->toJson();
         }
@@ -57,7 +64,7 @@ class OrderController extends Controller
             "origin_address"            => $this->config->address->detail,
             "origin_note"               => "Deket pintu masuk STC",
             "origin_postal_code"        => 12440,
-            "origin_coordinate"          => [
+            "origin_coordinate"         => [
                 'latitude'          => $this->config->address->latitude,
                 'longitude'         => $this->config->address->longitude
             ],
@@ -71,9 +78,9 @@ class OrderController extends Controller
                 'longitude'         => $order->address->longitude
             ],
             "destination_note"          => "Near the gas station",
-            "destination_cash_on_delivery"=>500000, 
-            "destination_cash_on_delivery_type"=>"7_days",
-            "destination_cash_proof_of_delivery"=>true,
+            // "destination_cash_on_delivery"=>500000, 
+            // "destination_cash_on_delivery_type"=>"7_days",
+            // "destination_cash_proof_of_delivery"=>true,
             "courier_company"           => $order->shipping_courier_name,
             "courier_type"              => $order->shipping_type,
             "courier_insurance"         => 500000, 
