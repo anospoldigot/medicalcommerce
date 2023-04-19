@@ -12,7 +12,7 @@ class Slider extends Model
 
     protected $guarded = ['id'];
     public $appends = ['encrypt_link'];
-
+    public $timestamps = false;
     public function getEncryptLinkAttribute()
     {
         return Crypt::encryptString($this->link);

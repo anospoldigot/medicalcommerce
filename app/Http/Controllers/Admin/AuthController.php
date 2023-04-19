@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         if (Hash::check(request('password'), $user->password)) {
             
-            if($user->hasRole(['admin', 'developer'])){
+            if($user->hasRole(['admin', 'developer', 'sales', 'management cabang'])){
                 Auth::login($user);
                 request()->session()->regenerate();
                 return redirect()->intended(route('dashboard'));

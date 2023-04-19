@@ -50,7 +50,7 @@ class SliderController extends Controller
 
         }catch(Exception $e){
             return back()
-                ->with('error', 'Gagal menambahkan slider');
+                ->with('error',$e->getMessage());
         }
     }
 

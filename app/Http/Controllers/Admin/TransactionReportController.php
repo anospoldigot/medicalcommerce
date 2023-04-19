@@ -42,8 +42,13 @@ class TransactionReportController extends Controller
         $fileName = 'transactions.xlsx';
         $user = User::find(auth()->id());
 
+        $startDate  = request('start_date');
+        $endDate    = request('end_date');
+        $minAmount  = request('min_amount');
+        $maxAmount  = request('maxAmount');
+
         try{
-            (new TransactionsExport)->queue('transaction-' . date('Ymd')  .'.xlsx')->chain([
+            (new TransactionsExport($startDate, $endDate, $minAmount, $maxAmount))->queue('transaction-' . date('Ymd')  .'.xlsx')->chain([
                 new NotifyUserOfCompletedExport(request()->user()),
             ]);
 
@@ -51,6 +56,8 @@ class TransactionReportController extends Controller
                 'success'       => true,
                 'message'       => 'Berhasil menjalankan proses export silahkan tunggu!'
             ];
+
+            
 
         }catch(Exception $e){
             $message = [

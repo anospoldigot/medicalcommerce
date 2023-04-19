@@ -291,7 +291,8 @@
 
             $('#reset-filter').click(function () {
                 picker.clear();
-                $('#status').prop('selectedIndex', 0);
+                $('#min_amount').val('');
+                $('#max_amount').val('');
                 table.draw();
             })
 

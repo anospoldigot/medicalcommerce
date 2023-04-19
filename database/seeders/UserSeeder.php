@@ -241,30 +241,15 @@ class UserSeeder extends Seeder
 
 
 
-        $user = User::create([
-            'name'      => 'salescabangjakbar',
-            'email'     => 'salescabangjakbar@example.com',
-            'password'  => bcrypt('password'),
-            'phone'     => '081293692142',
-        ]);
+        // $user = User::create([
+        //     'name'      => 'salescabangjakbar',
+        //     'email'     => 'salescabangjakbar@example.com',
+        //     'password'  => bcrypt('password'),
+        //     'phone'     => '081293692142',
+        // ]);
 
-        $user->assignRole('sales');
+        // $user->assignRole('sales');
 
-        $data = [
-            'province_id'       => 32,
-            'regency_id'        => 3201,
-            'district_id'       => 3201170,
-            'village_id'        => 3201170001,
-            'postal_code'       => 11240,
-            'detail'            => 'Jl. Pejagalan Raya',
-            'latitude'          => '-6.407595511848003',
-            'longitude'         => '106.99576377868654',
-            'is_priority'       => 1
-        ];
-
-        $data['rawdata'] =json_encode($data);
-
-        $user->addresses()->create($data);
 
 
 

@@ -8,8 +8,10 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Warehouse;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 
 class UserOrderTransactionSeeder extends Seeder
 {
@@ -20,7 +22,7 @@ class UserOrderTransactionSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(100)->create()->each(function($user){
+        User::factory()->count(300)->create()->each(function($user){
             $user->assignRole('customer');
             $data = [
                 'province_id'       => 32,
@@ -42,19 +44,28 @@ class UserOrderTransactionSeeder extends Seeder
                 ->take(2)
                 ->get();
 
+            
 
             $product_amount     = $products->sum('price');
             $shipping_amount    = 18000;
             $ppn_amount         = ($product_amount  / 100) * 11;
             $grand_total        = $product_amount + $shipping_amount + $ppn_amount;
 
-            Order::factory()->count(20)->create([
-                'user_id'  => $user->id,
-                'address_id' => $user->default_address->id,
+            $warehouse = Warehouse::inRandomOrder()->first(); 
+            $referrer_id = null;
+
+            foreach ($warehouse->users as $key => $value) {
+               if($value->hasRole('sales')) $referrer_id = $value->referral_token;
+            }
+
+            Order::factory()->count(30)->create([
+                'user_id'           => $user->id,
+                'address_id'        => $user->default_address->id,
                 // 'amount'            => $grand_total,
                 'amount_after_disc' => $grand_total,
                 'ppn_amount'        => $ppn_amount,
                 'shipping_amount'   => $shipping_amount,
+                'referrer_id'       => $referrer_id
             ])->each(function($order) use ($products, $grand_total){
                 $products->each(function($product) use($order){
                     OrderItem::factory()->create([
