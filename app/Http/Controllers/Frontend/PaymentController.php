@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\ReferralHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\NotifyUserWhenRefSuccess;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Config;
@@ -11,6 +12,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Transaction;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,6 +110,8 @@ class PaymentController extends Controller
      */
     public function store ()
     {
+
+        Debugbar::enable();
         $products = collect(request('product'));
         $count = $products->count() + 1;
         $user = auth()->user();
@@ -282,10 +286,12 @@ class PaymentController extends Controller
             // createInvoice Request
             $responseDuitkuApi = \Duitku\Api::createInvoice($params, $this->duitkuConfig);
             $responseDuitkuApi = json_decode($responseDuitkuApi);
-            Cart::where('user_id', $user->id)->whereIn('product_id', request('product'))->delete();
+
+
             $dataOrder = [
                 'user_id'                       => $user->id,
                 'address_id'                    => $address->id,
+                'referrer_type'                 => $this->config->referral_type,
                 'note'                          => request('note'),
                 'invoice_number'                => generateInvoiceCode('orders', 'invoice_number'),
                 'reference'                     => $responseDuitkuApi->reference,
@@ -311,7 +317,7 @@ class PaymentController extends Controller
             ];
 
             if (request()->has('referral_token')) {
-                $dataOrder['referrer_id'] = request()->has('referral_token');
+                $dataOrder['referrer_id'] = request('referral_token');
             }
             
             $order = Order::create($dataOrder);
@@ -321,11 +327,12 @@ class PaymentController extends Controller
                 'expired_time'              => $expiryPeriod,
             ]);
             
-            $products->each(function ($value, $key) use ($order) {
-                $product = Product::find($value);
-                $qty = request('quantity')[$key];
+            $products->each(function ($value, $key) use ($order, $user) {
+                $product                = Product::find($value);
+                $cart                   = Cart::where('user_id', $user->id)->where('product_id', $value)->first();
+                $qty                    = request('quantity')[$key];
+                $price_after_discount   = 0;
                 $product->decrement('stock', $qty);
-                $price_after_discount = 0;
                 $discount = $product->price;
 
                 if ($product->is_discount > 0) {
@@ -338,19 +345,22 @@ class PaymentController extends Controller
                 }
 
                 $item_id = Uuid::uuid4();
-
-                $order->items()->create([
+                $item = [
                     'id'                    => $item_id,
                     'name'                  => $product->title,
+                    'referrer_id'           => $cart->referrer_id,
                     'sku'                   => $product->sku,
                     'product_id'            => $value,
                     'quantity'              => $qty,
                     'price'                 => $product->price,
                     'price_after_disc'      => $price_after_discount,
                     'discount_amount'       => $discount,
-                ]);
-            });
+                ];
 
+                $order->items()->create($item);
+                
+            });
+            Cart::where('user_id', $user->id)->whereIn('product_id', request('product'))->delete();
             DB::commit();
             return redirect()->route('fe.payment.show', $order->id);
         } catch (Exception $e) {
@@ -394,9 +404,14 @@ class PaymentController extends Controller
 
                 $order = Order::where($where)->first();
 
-                if (!empty($order->referrer_id)) {
-                    ReferralHelper::giveBonus($order->referrer_id);
+                if ($this->config->referral_type == 'user') {
+                    if (!empty($order->referrer_id))  ReferralHelper::giveBonus($order->referrer_id);
+                }else if($this->config->referral_type == 'item'){
+                    $order->items->each(function($item){
+                        ReferralHelper::giveBonus($item->referral);
+                    });
                 }
+
 
                 $order->transaction()->update([
                     'status'            => 'PAID',

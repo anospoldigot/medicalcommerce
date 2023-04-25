@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('from_id');
-            $table->string('from_type');
-            $table->foreignId('to_id')->nullable();
-            $table->text('content');
-            $table->boolean('is_read')->default(false);
+        Schema::create('suppliers', function (Blueprint $table) {
+            $table->uuid('id');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('address');
+            $table->string('photo')->nullable();
+            $table->string('shopName')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('suppliers');
     }
 };

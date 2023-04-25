@@ -36,6 +36,7 @@ class ChatController extends Controller
     {
         Message::create([
             'from_id'       => auth()->id(),
+            'to_id'         => 1,
             'from_type'     => 'user',
             'content'       => request('content'),
         ]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Config;
 use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\Http\Request;
@@ -40,12 +41,14 @@ class ProductController extends Controller
 
     public function show($slug)
     {
+        $product = Product::where('slug', $slug)->firstOrFail();
 
         if(request()->has('ref')){
-            session()->put('ref', request()->query('ref'), Carbon::now()->addHours(2));
+            $config = Config::first();
+            $product->ref = request()->query('ref');
+            session()->put('ref', $product, Carbon::now()->addHours($config->session_ref));
         }
 
-        $product = Product::where('slug', $slug)->firstOrFail();
 
         $relatedProducts = Product::where('category_id', $product->category_id)->get();
 

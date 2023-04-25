@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             WarehouseSeeder::class,
             UserOrderTransactionSeeder::class,
             TransactionSeeder::class,
+            SupplierSeeder::class
         ]); 
     }
 }

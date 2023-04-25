@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\{
     TransactionController,
     CouponController,
     DistrictController,
+    ItemController,
     MessageFormController,
     TagController,
     PermissionController,
@@ -25,6 +26,7 @@ use App\Http\Controllers\Admin\{
     ProvinceController,
     RegencyController,
     SliderController,
+    SupplierController,
     TransactionReportController,
     VillageController,
     WarehouseController
@@ -107,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
         'category'      => CategoryController::class,
         'chats'         => ChatController::class,
         'category_post' => CategoryPostController::class,
+        'suppliers'     => SupplierController::class,
         'tags'          => TagController::class,
         'roles'         => RoleController::class,
         'permissions'   => PermissionController::class,
@@ -120,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resources([
         'post'              => PostController::class,
         'product'           => ProductController::class,
+        'products.items'    => ItemController::class,
         'products.reviews'  => ProductReviewController::class,
         'coupons'           => CouponController::class,
         'message_forms'     => MessageFormController::class,

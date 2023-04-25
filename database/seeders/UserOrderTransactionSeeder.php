@@ -22,7 +22,7 @@ class UserOrderTransactionSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(300)->create()->each(function($user){
+        User::factory()->count(100)->create()->each(function($user){
             $user->assignRole('customer');
             $data = [
                 'province_id'       => 32,

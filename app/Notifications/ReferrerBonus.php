@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ReferrerBonus extends Notification
+class ReferrerBonus extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -30,7 +30,7 @@ class ReferrerBonus extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -42,7 +42,7 @@ class ReferrerBonus extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
+                    ->line('Referral Success, Silahkan cek di notifikasi')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
@@ -53,10 +53,13 @@ class ReferrerBonus extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+
+    public function toDatabase($notifiable)
     {
         return [
-            //
+            'subject'       => 'Referrer Bonus',
+            'content'       => 'Selamat anda mendapatkan bonus referral dari salah satu transaksi',
+            'user_id'       => $notifiable->id
         ];
     }
 }

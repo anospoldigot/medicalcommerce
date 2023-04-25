@@ -15,6 +15,8 @@ class MessageObserver
      */
     public function created(Message $message)
     {
+        $message->load('from.unreadChat');
+
         MessageEvent::dispatch($message);
     }
 

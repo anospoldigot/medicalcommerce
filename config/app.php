@@ -228,6 +228,7 @@ return [
         'Visitor'           => Shetabit\Visitor\Facade\Visitor::class,
         'NoCaptcha'         => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Excel'             => Maatwebsite\Excel\Facades\Excel::class,
+        'Redis'             => Illuminate\Support\Facades\Redis::class,
     ])->toArray(),
 
 ];

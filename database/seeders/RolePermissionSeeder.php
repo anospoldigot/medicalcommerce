@@ -56,6 +56,9 @@ class RolePermissionSeeder extends Seeder
             'warehouse' => [
                 'warehouse.index', 'warehouse.create', 'warehouse.edit', 'warehouse.delete'
             ],
+            'supplier' => [
+                'supplier.index', 'supplier.create', 'supplier.edit', 'supplier.delete'
+            ],
 
         ];
 

@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->string('invoice_number');
             $table->foreignUuid('coupon_id')->nullable();
             $table->string('referrer_id')->nullable();
+            $table->string('referrer_type')->nullable();
             $table->string('reference')->comment('Reference (Response from duitku)');
             $table->integer('merchant_order_id')->comment('Merchant Order Id (Response from duitku)');
             $table->string('biteship_order_id')->nullable();

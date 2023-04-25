@@ -212,17 +212,19 @@
                                                         type="button" id="btn-coupons">Apply</button>
                                                 </div>
                                             </div>
-                                            <div class="coupons input-group input-group-merge">
-                                                <input type="text" class="form-control input-coupons"
-                                                    placeholder="Referral" aria-label="Referral"
-                                                    aria-describedby="input-Referral" name="referral_token" id="referral_token" />
-                                                <div class="input-group-append">
-                                                    {{-- <button
-                                                        class="btn btn-outline-primary px-3 input-group-text text-primary"
-                                                        type="button" id="btn-coupons">Apply</button> --}}
+                                            @if ($config->referral_type == 'user')
+                                                <div class="coupons input-group input-group-merge">
+                                                    <input type="text" class="form-control input-coupons"
+                                                        placeholder="Referral" aria-label="Referral"
+                                                        aria-describedby="input-Referral" name="referral_token" id="referral_token" />
+                                                    <div class="input-group-append">
+                                                        {{-- <button
+                                                            class="btn btn-outline-primary px-3 input-group-text text-primary"
+                                                            type="button" id="btn-coupons">Apply</button> --}}
 
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                             <hr />
                                             <div class="price-details">
                                                 <h6 class="price-title">Price Details</h6>
@@ -476,7 +478,7 @@
 @endif
 
 
-@if (session()->has('ref'))
+@if (session()->has('ref') && $config->referral_type == 'user')
     <script>
         Swal.fire({
             title: 'Ada kode referral tercantum!',

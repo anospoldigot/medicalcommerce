@@ -112,6 +112,29 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Message::class, 'to_id', 'id')->latestOfMany();
     }
 
+
+    public function unreadSender()
+    {
+        return $this->hasMany(Message::class, 'from_id', 'id')->where('is_read', 0);
+    }
+    public function unreadReceiver()
+    {
+        return $this->hasMany(Message::class, 'to_id', 'id')->where('is_read', 0);
+    }
+
+
+    public function getUnreadChatAttribute ()
+    {
+
+        $unreadSender = $this->unreadSender;
+        $unreadReceiver = $this->unreadReceiver;
+
+        return $unreadSender->merge($unreadReceiver);
+    }
+
+
+    
+
     public function isCustomer()
     {
         return $this->roles()->where('name', 'customer');

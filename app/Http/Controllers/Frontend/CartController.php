@@ -44,7 +44,10 @@ class CartController extends Controller
 
     public function index()
     {
-        $ref = session()->get('ref');
+
+
+        $ref = session()->get('ref')->ref;
+        $config = $this->config;
 
         $ppn = $this->config->ppn;
         $paymentAmount = "10000"; //"YOUR_AMOUNT";
@@ -86,7 +89,7 @@ class CartController extends Controller
 
         return view('frontend.cart.index', compact(
             'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList', 'discount',
-            'couriers', 'ppn', 'ppn_amount', 'ref'
+            'couriers', 'ppn', 'ppn_amount', 'ref', 'config'
         ));
     }
 
@@ -98,13 +101,16 @@ class CartController extends Controller
                     ->first();
 
         if ($cart) {
+            if(session()->has('ref')) $cart->update(['referral_id' => session()->get('ref')->ref]);
             $cart->increment('quantity');
         } else {
+             
             $cart = Cart::create([
                 'user_id'               => auth()->id(),
                 'product_id'            => request('product_id'),
                 'product_history'       => Product::where('id', request('product_id'))->first(),
-                'quantity'              => 1
+                'quantity'              => 1,
+                'referrer_id'        => session()->has('ref') ? session()->get('ref')->ref : null
             ]);
         }
 

@@ -26,6 +26,10 @@ class ChatController extends Controller
                     ->orWhere('to_id', $id)
                     ->get();
 
+        Message::where('from_id', $id)
+            ->orWhere('to_id', $id)
+            ->update(['is_read' => 1]);
+
         return response()->json([
             'status_code' => 200,
             'success'     => true,

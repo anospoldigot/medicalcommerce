@@ -179,7 +179,7 @@ $(function () {
 
   // Add class active on click of Chat users list
   if (chatUsersListWrapper.find('ul li').length) {
-    chatUsersListWrapper.find('ul li').on('click', function () {
+    chatUsersListWrapper.on('click', 'ul li', function () {
       var $this = $(this),
         startArea = $('.start-chat-area'),
         activeChat = $('.active-chat'),

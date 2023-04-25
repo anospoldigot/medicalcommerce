@@ -267,7 +267,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
 
                         <!-- Sidebar Users start -->
                         <div id="users-list" class="chat-user-list-wrapper list-group">
-                            <h4 class="chat-list-title">Permintaan Chat</h4>
+                            {{-- <h4 class="chat-list-title">Permintaan Chat</h4>
                             <ul class="chat-users-list chat-list media-list">
                                 <li>
                                     <span class="avatar"><img
@@ -282,10 +282,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                             lemon drops icing
                                         </p>
                                     </div>
-                                    <div class="chat-meta text-nowrap">
-                                        <small class="float-right mb-25 chat-time">4:14 PM</small>
-                                        <span class="badge badge-danger badge-pill float-right">3</span>
-                                    </div>
+                                    
                                 </li>
                                 <li>
                                     <span class="avatar"><img
@@ -324,14 +321,14 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                 <li class="no-results">
                                     <h6 class="mb-0">No Chats Found</h6>
                                 </li>
-                            </ul>
+                            </ul> --}}
                             <h4 class="chat-list-title">Chats</h4>
                             <ul class="chat-users-list contact-list media-list">
                                 @foreach ($users as $user)
                                     @if (!empty($user->sender_latest->created_at) || !empty($user->receiver_latest->created_at))
                                         @php
                                             $chat = $user->sender_latest?->created_at > $user->receiver_latest?->created_at ? 
-                                                    $user->sender_latest->content : $user->receiver_latest->content
+                                                    $user->sender_latest : $user->receiver_latest
                                         @endphp
                                         <li id="userchat-{{$user->id}}" data-id="{{$user->id}}">
                                             <span class="avatar"><img src="{{ asset('upload/images/' . $user->profile) }}" height="42" width="42"
@@ -340,9 +337,15 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                             <div class="chat-info">
                                                 <h5 class="mb-0">{{$user->name}}</h5>
                                                 <p class="card-text text-truncate">
-                                                    {{$chat}}
+                                                    {{$chat->content}}
                                                 </p>
                                             </div>
+                                            <div class="chat-meta text-nowrap">
+                                                <small class="float-right mb-25 chat-time">{{ \Carbon\Carbon::create($chat->created_at)->format('H:i') }}</small>
+                                                @if ($user->unreadChat->isNotEmpty())
+                                                <span class="badge badge-danger badge-pill float-right">{{ $user->unreadChat->count() }}</span>
+                                                @endif
+                                            </div> 
                                         </li>
                                     @endif
                                 @endforeach

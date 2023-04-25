@@ -13,6 +13,8 @@ class ReferralHelper
         $dataUpdate = ['credit_active' => '1000'];
         if(!empty($user->is_credit_active)) $dataUpdate['is_credit_active'] = 1;
         $user->update($dataUpdate);
-        new ReferrerBonus($user);
+        $user->notify(new ReferrerBonus($user));
     }
+    
+
 }

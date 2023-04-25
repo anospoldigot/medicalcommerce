@@ -69,6 +69,29 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
     
     channel.bind('my-event', function(data) {
         $(`#userchat-${data.message.from_id}, #userchat-${data.message.from_id}`).prependTo('.chat-users-list');
+        $('#userchat-'+data.message.from_id).find('p').html(data.message.content)
+
+        if($('.chat-users-list').find(`#userchat-${data.message.from_id}`).length == 0){
+            let html = `<li id="userchat-${data.message.from_id}" data-id="${data.message.from_id}">
+                <span class="avatar"><img src="/upload/images/${data.message.from.profile}" height="42" width="42"
+                        alt="Generic placeholder image" />
+                </span>
+                <div class="chat-info">
+                    <h5 class="mb-0">${data.message.from.name}</h5>
+                    <p class="card-text text-truncate">
+                        ${data.message.content}
+                    </p>
+                </div>
+                <div class="chat-meta text-nowrap">
+                    <small class="float-right mb-25 chat-time">${moment(data.message.created_at).format('HH:mm')}</small>
+                    <span class="badge badge-danger badge-pill float-right">1</span>
+                </div>
+            </li>`;
+
+            $('.chat-users-list').prepend(html);
+            
+        }
+
         if(chatTabId == data.message.from_id){
             var html = `
             <div class="chat chat-left">
@@ -85,7 +108,6 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
             </div>`;
             $('.chats').append(html);
         }
-        $('#userchat-'+data.message.from_id).find('p').html(data.message.content)
     });
 
     channel.members.each(function (member) {

@@ -16,6 +16,7 @@ class CreateOrderItemsTable extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('name');
+            $table->string('referrer_id')->nullable();
             $table->string('sku') ;
             $table->uuid('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('product_id');
