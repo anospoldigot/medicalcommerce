@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Mail\ExceptionOccured;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -63,7 +64,7 @@ class Handler extends ExceptionHandler
             $content['url'] = request()->url();
             $content['body'] = request()->all();
             $content['ip'] = request()->ip();
-            
+
             Mail::to('ramaramarama009@gmail.com')->send(new ExceptionOccured($content));
         } catch (Throwable $exception) {
             Log::error($exception);

@@ -375,7 +375,7 @@
 <div class="py-5" style="background: #7158e226">
     <div class="container py-5">
         <h1 class="text-center text-secondary mb-5">Latest Article</h1>
-        <div class="row">
+        <div class="row">  
             @foreach ($posts as $post )
             <div class="col-lg-6">
                 <div class="bg-white shadow card border-0 mb-3">

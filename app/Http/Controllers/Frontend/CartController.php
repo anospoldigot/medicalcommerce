@@ -46,7 +46,8 @@ class CartController extends Controller
     {
 
 
-        $ref = session()->get('ref')->ref;
+        $ref = session()->get('ref')->ref ?? null;
+
         $config = $this->config;
 
         $ppn = $this->config->ppn;

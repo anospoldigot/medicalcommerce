@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('roles/{role}/updatePermission', [RoleController::class, 'updatePermission'])->name('roles.updatePermission');
 
 
-    Route::delete('sliders/{link}/image/{filename}', [ImageSliderController::class, 'destroy']);
+    // Route::delete('sliders/{link}/image/{filename}', [ImageSliderController::class, 'destroy']);
 
 
     // Report

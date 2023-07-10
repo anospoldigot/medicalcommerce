@@ -10,7 +10,8 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public $appends = ['rating', 'real_stock'];
+    protected $with = ['assets'];
+    public $appends = ['rating', 'real_stock', 'real_price'];
 
     protected $casts = [
         'status' => 'boolean',
@@ -54,6 +55,22 @@ class Product extends Model
             return $this->stock;
         }
     }
+
+    public function getRealPriceAttribute()
+    {
+
+        if($this->is_discount > 0){
+            if($this->discount_type == 'persen'){
+                return ($this->price / 100) * $this->discount;
+            }else{
+                return $this->price - $this->discount;
+            }
+        }
+
+        return $this->price;
+    }
+
+
     public function variantItems()
     {
         return $this->hasMany(ProductVariantValue::class);

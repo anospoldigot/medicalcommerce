@@ -309,8 +309,7 @@
                                                         <option selected disabled>==Pilih==</< /option>
 
                                                             @foreach ($provinces as $province)
-                                                        <option value="{{ $province->id }}">{{ $province->name }}</<
-                                                                /option>
+                                                        <option value="{{ $province->id }}">{{ $province->name }}</option>
                                                             @endforeach
                                                     </select>
                                                 </div>

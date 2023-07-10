@@ -110,7 +110,8 @@ class PaymentController extends Controller
      */
     public function store ()
     {
-
+        return request()->all();
+        
         Debugbar::enable();
         $products = collect(request('product'));
         $count = $products->count() + 1;
