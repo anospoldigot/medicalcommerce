@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\{
     AddressController,
-    AuthController, CartController, CourierController, OrderController, PaymentController as APIPaymentController, ProductController, WilayahController,
+    AuthController, CartController, CourierController, OrderController, PaymentController as APIPaymentController, ProductController, ProfileController, WilayahController,
     WishlistController
 };
 use App\Http\Controllers\Frontend\PaymentController;
@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('couriers', CourierController::class);
     Route::resource('address', AddressController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('profile', ProfileController::class);
 });
 
 

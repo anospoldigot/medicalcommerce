@@ -12,7 +12,7 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public $appends = ['status_label', 'order_status_color', 'created'];
+    public $appends = ['status_label', 'order_status_color', 'created', 'total_amount'];
     public $keyType = 'string';
     public $incrementing = false;
 
@@ -107,9 +107,14 @@ class Order extends Model
             return 'Belum Bayar';
                 break;
         }
-
-        
     }
+
+    public function getTotalAmountAttribute()
+    {
+        return $this->amount_after_disc;
+    }
+
+
     public function address()
     {
         return $this->belongsTo(Address::class);

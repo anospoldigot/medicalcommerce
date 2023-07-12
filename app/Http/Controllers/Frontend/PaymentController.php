@@ -28,7 +28,7 @@ class PaymentController extends Controller
     private $config;
     private $merchantCode   = 'DS12776';
     private $merchantKey    = '14e82f3fd51b5518b435ee4970fc7534';
-    private $callbackUrl    = 'https://permedik.inttekno.com/api/payment/callback';
+    private $callbackUrl    = 'https://71e9-116-206-9-25.ngrok-free.app/api/payment/callback';
     private $returnUrl;
 
     public function __construct()
@@ -110,9 +110,7 @@ class PaymentController extends Controller
      */
     public function store ()
     {
-        return request()->all();
-        
-        Debugbar::enable();
+
         $products = collect(request('product'));
         $count = $products->count() + 1;
         $user = auth()->user();
@@ -424,7 +422,7 @@ class PaymentController extends Controller
                     'status' => 'ISSUED'
                 ]);
 
-                $fileContent = "SUCCESS";
+                $fileContent = "SUCCESS - " + $amount;
                 file_put_contents($location, $fileContent);
                 return response('OK', 200);
 

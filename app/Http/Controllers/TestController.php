@@ -8,6 +8,10 @@ use App\Models\Config;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Jobs\NotifyUserOfCompletedExport;
+use App\Models\Order;
+use App\Notifications\OrderConfirmAndSend;
+use App\Notifications\OrderCreated;
+use App\Notifications\ReferrerBonus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redis;
@@ -24,8 +28,10 @@ class TestController extends Controller
     public function __invoke(Request $request)
     {
 
-        ReferralHelper::giveBonus('jaj86R');
+        $user = User::find(3);
 
-        return 'success';
+        $user->notify(new OrderConfirmAndSend(Order::latest()->first()));
+
+        return 'sukses';
     }
 }

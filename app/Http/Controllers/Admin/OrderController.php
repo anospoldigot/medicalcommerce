@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductVariantValue;
 use App\Http\Controllers\Controller;
+use App\Notifications\OrderConfirmAndSend;
 use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\DataTables;
 
@@ -93,8 +94,7 @@ class OrderController extends Controller
                     'id'            => $item->id,
                     'name'          => $item->name,
                     'value'         => $item->price,
-                    'image'         => "",
-                    // 'image'         => "$item->product->assets->first()->image",
+                    'image'         => $item->product->assets->first()->image,
                     'quantity'      => $item->quantity,
                     "weight"        => $item->product->weight,
                 ];
@@ -105,6 +105,8 @@ class OrderController extends Controller
             $response = Http::withHeaders(['authorization' => $this->config->biteship_token])
                 ->post('https://api.biteship.com/v1/orders', $biteshipPayload);
             $response = json_decode($response);
+
+            $order->user->notify(new OrderConfirmAndSend($order));
 
             $order->update([
                 'status'                => 'SHIPPING',
