@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -55,6 +56,28 @@ class AuthController extends Controller
     {
         return $request->user();
     }
+
+
+    public function googleLogin ()
+    {
+        $user = User::firstOrCreate([
+            'email' => request('email')
+        ], [
+            'email'         => request('email'),
+            'name'          => request('name'),
+            'profile'       => request('profile'),
+            'password'      => bcrypt(Str::random(8))
+        ]);
+
+        $user->syncRoles('customer');
+
+        return response()->json([
+            'message'           => 'Berhasil login dengan akun google',
+            'data'              => $user,
+            'token'             => $user->createToken('authToken')->plainTextToken
+        ]);
+    }
+
 
     public function logout(Request $request)
     {

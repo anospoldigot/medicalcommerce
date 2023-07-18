@@ -55,9 +55,10 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         cluster: 'ap1',
         channelAuthorization: {
             endpoint: "/broadcasting/auth",
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            // headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         },
     });
+    var channel = pusher.subscribe('private-App.Models.User.3');
 
     var channel = pusher.subscribe('presence-chat.1');
     channel.bind('my-event', function(data) {

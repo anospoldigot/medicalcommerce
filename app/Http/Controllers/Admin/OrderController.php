@@ -50,6 +50,11 @@ class OrderController extends Controller
         return view('admin.order.index');
     }
 
+    public function shouldSend()
+    {
+        
+    }
+
     public function confirmWithSend (Order $order)
     {
 

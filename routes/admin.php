@@ -73,16 +73,16 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('uploads', 'index')->name('deleteUpload');
     });
 
-    Route::delete('orders/{id}', [OrderController::class, 'destroy']);
-    Route::get('orders', [OrderController::class, 'index']);
-    Route::post('searchAdminOrder', [OrderController::class, 'searchAdminOrder']);
-    Route::put('orders', [OrderController::class, 'update']);
-    Route::post('filterOrder', [OrderController::class, 'filterOrder']);
-    Route::post('updateStatusOrder', [OrderController::class, 'updateStatusOrder']);
-    Route::post('paymentAccepted/{id}', [OrderController::class, 'paymentAccepted']);
-    Route::post('inputResi', [OrderController::class, 'inputResi']);
+    // Route::get('orders', [OrderController::class, 'index']);
+    // Route::post('searchAdminOrder', [OrderController::class, 'searchAdminOrder']);
+    // Route::put('orders', [OrderController::class, 'update']);
+    // Route::post('filterOrder', [OrderController::class, 'filterOrder']);
+    // Route::post('updateStatusOrder', [OrderController::class, 'updateStatusOrder']);
+    // Route::post('paymentAccepted/{id}', [OrderController::class, 'paymentAccepted']);
+    // Route::post('inputResi', [OrderController::class, 'inputResi']);
 
     
+    Route::get('orders/should-send', [OrderController::class, 'shouldSend'])->name('orders.shouldSend');
     Route::patch('orders/{order}/process', [OrderController::class, 'process'])->name('orders.process');
     Route::patch('orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
     Route::patch('orders/{order}/send', [OrderController::class, 'send'])->name('orders.send');

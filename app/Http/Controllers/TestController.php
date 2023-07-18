@@ -31,6 +31,7 @@ class TestController extends Controller
         $user = User::find(3);
 
         $user->notify(new OrderConfirmAndSend(Order::latest()->first()));
+        // $user->notify(new OrderCreated());
 
         return 'sukses';
     }

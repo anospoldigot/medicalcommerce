@@ -36,7 +36,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('address', AddressController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('profile', ProfileController::class);
+   
 });
+
+
 
 
 Route::controller(WilayahController::class)->name('api.')->group(function(){
@@ -46,6 +49,7 @@ Route::controller(WilayahController::class)->name('api.')->group(function(){
 });
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('google/login', [AuthController::class, 'googleLogin']);
 
 
 Route::post('payment/callback', [PaymentController::class, 'callback']);

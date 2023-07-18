@@ -86,9 +86,13 @@
                 <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="message-square"></i><span
                             class="menu-title text-truncate" data-i18n="Page Layouts">Order</span></a>
                     <ul class="menu-content">
-                        <li class="{{ request()->routeIs('orders.*') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                        <li class="{{ request()->routeIs('orders.*') && !request()->routeIs('orders.shouldSend') ? 'active' : '' }}"><a class="d-flex align-items-center"
                                 href="{{ route('orders.index') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
                                     data-i18n="Collapsed Menu">List</span></a>
+                        </li>
+                        <li class="{{ request()->routeIs('orders.shouldSend') ? 'active' : '' }}"><a class="d-flex align-items-center"
+                                href="{{ route('orders.shouldSend') }}"><i data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Collapsed Menu">Harus dikirim</span></a>
                         </li>
                     </ul>
                 </li>

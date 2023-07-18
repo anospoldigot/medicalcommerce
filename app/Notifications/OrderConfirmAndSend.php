@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,6 +13,8 @@ class OrderConfirmAndSend extends Notification
     use Queueable;
 
     public $order;
+
+
     /**
      * Create a new notification instance.
      *
