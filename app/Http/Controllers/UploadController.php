@@ -12,12 +12,13 @@ class UploadController extends Controller
     {
         $image = request()->file('file');
         $filename = time() . Str::random(40) . '.webp';
-        $path = public_path('/upload/images/');
+        $directory = 'upload/images/';
+        $path = public_path($directory);
 
         Image::make($image->getRealPath())
             ->encode('webp', 80)
             ->save($path . $filename);
 
-        return response()->json(['success' => true, 'filename' => $filename]);
+        return response()->json(['success' => true, 'filename' => $directory . $filename]);
     }
 }

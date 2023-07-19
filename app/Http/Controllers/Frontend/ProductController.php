@@ -14,7 +14,6 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::whereLink(request()->url())->get();
         
         if(request()->ajax()){
 
@@ -28,6 +27,9 @@ class ProductController extends Controller
                 ->take($per_page)
                 ->get();
         }
+
+        // return $sliders = Slider::whereLink(request()->url())->get();
+        $sliders = Slider::get();
 
         $products = Product::with(['assets', 'category'])
             ->latest()

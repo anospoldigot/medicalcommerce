@@ -55,7 +55,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         cluster: 'ap1',
         channelAuthorization: {
             endpoint: "/broadcasting/auth",
-            // headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+
         },
     });
     var channel = pusher.subscribe('private-App.Models.User.3');
@@ -67,10 +67,9 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         }else if(data.message.to_id == id){
             $('#chat-content').append(adminChatTemplate(data.message));
         }
-        // alert(JSON.stringify(data));
+
     });
     
-    // console.log(channel);
     
     channel.bind("pusher:subscription_succeeded", function (members) {
         members.each(function(member) {
@@ -80,7 +79,10 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
 
     $('.chat-tab').hide();
     $('.blantershow-chat').click(function(){
-        $('.chat-tab').fadeToggle();
+        $('.chat-tab').fadeIn();
+        const contentHeight = $('#chat-content').prop('scrollHeight');
+        console.log(contentHeight);
+        $('#chat-content').animate({ scrollTop: contentHeight }, 500);
     });
 </script>
 <script>
@@ -118,10 +120,6 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         return array.map(obj => obj[property]);
     }
 
-    function refetchCart(){
-        
-    }
-
     const LoadingTemplate = `<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
     Loading...`;
 
@@ -136,9 +134,6 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         }
     });
 
-    function pluck(array, property) {
-         return array.map(obj => obj[property]);
-    }
     
     function refetchCart(){
         $.get('{{ route("fe.carts.count") }}', function(res){
