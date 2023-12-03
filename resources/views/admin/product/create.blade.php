@@ -165,7 +165,7 @@
 
 
         $('#description').summernote({
-            placeholder: 'Alamat',
+            placeholder: 'Description',
             tabsize: 2,
             height: 120,
             toolbar: [

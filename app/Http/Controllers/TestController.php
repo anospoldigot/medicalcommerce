@@ -29,6 +29,7 @@ class TestController extends Controller
     public function __invoke(Request $request)
     {
 
+        return User::whereHas('roles', fn($query) => $query->where('name', 'admin'))->first();
         return Role::get();
         $user = User::find(3);
 

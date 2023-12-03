@@ -30,7 +30,7 @@ class LoginTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
 
-            $browser->visit('http://medicalcommerce.test/admin/login')
+            $browser->visit('/admin/login')
                 ->type('email', 'developer@example.com')
                 ->type('password', 'password')
                 ->press('Sign in')

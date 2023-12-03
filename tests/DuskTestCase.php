@@ -14,6 +14,7 @@ abstract class DuskTestCase extends BaseTestCase
 
     protected static $migrationRun = false;
 
+    
     // public function setUp(): void
     // {
     //     parent::setUp();
