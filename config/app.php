@@ -203,6 +203,7 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         App\Providers\FrontendViewComposerProvider::class,

@@ -64,25 +64,16 @@ class CartController extends Controller
         $couriers = collect(json_decode($couriers)->couriers)->groupBy('courier_name');
 
         $discount = $carts->sum(function ($cart) {
-            $price = 0;
-            
-            if($cart->product->is_discount > 0){
-                $price = $cart->product->price;
-                if($cart->product->discount_type == 'persen'){
-                    $price = ($cart->product->price / 100) * $cart->product->discount;
-                }else if($cart->product->discount_type == 'nominal'){
-                    $price = $cart->product->price - $cart->product->discount;
-                }
-
-            }
-
-            return $cart->quantity * $price;
+            return $cart->quantity * $cart->product->discount_amount;
         });
 
         $order_subtotal = $carts->sum(function ($cart) {
             return $cart->quantity * $cart->product->price;
         });
+
         $ppn_amount = $ppn ? (($order_subtotal - $discount) / 100) * $ppn : 0;
+        $total_amount = $order_subtotal - $discount + $ppn_amount;
+
         $addresses = Address::with(['province', 'regency', 'village', 'district'])
             ->where('user_id', auth()->id())
             ->get();
@@ -90,7 +81,7 @@ class CartController extends Controller
 
         return view('frontend.cart.index', compact(
             'carts', 'order_subtotal', 'addresses', 'provinces', 'paymentMethodList', 'discount',
-            'couriers', 'ppn', 'ppn_amount', 'ref', 'config'
+            'couriers', 'ppn', 'ppn_amount', 'ref', 'config', 'total_amount'
         ));
     }
 
@@ -133,6 +124,18 @@ class CartController extends Controller
             'code'          => 200,
             'message'       => 'Berhasil mengambil total cart',
             'data'          => $count
+        ], 200);
+    }
+
+    public function destroy (Cart $cart)
+    {
+        
+        $cart->delete();
+
+        return response()->json([
+            'success'       => true,
+            'code'          => 200,
+            'message'       => 'Berhasil menghapus cart',
         ], 200);
     }
 

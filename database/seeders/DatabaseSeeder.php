@@ -39,8 +39,8 @@ class DatabaseSeeder extends Seeder
             CouponSeeder::class,
             ConfigSeeder::class,
             WarehouseSeeder::class,
-            UserOrderTransactionSeeder::class,
-            TransactionSeeder::class,
+            // UserOrderTransactionSeeder::class,
+            // TransactionSeeder::class,
             SupplierSeeder::class,
             WishlistSeeder::class
         ]); 

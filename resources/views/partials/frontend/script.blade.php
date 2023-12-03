@@ -32,7 +32,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
     <script>
         PNotify.success({
             title: 'Success!',
-            text: '{{  session("success")  }}'
+            text: '{{ session('success') }}'
         });
     </script>
 @endif
@@ -40,7 +40,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
     <script>
         PNotify.error({
             title: 'Error!',
-            text: '{{  session("error")  }}'
+            text: '{{ session('error') }}'
         });
     </script>
 @endif
@@ -55,67 +55,54 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         cluster: 'ap1',
         channelAuthorization: {
             endpoint: "/broadcasting/auth",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
 
         },
     });
-    var channel = pusher.subscribe('private-App.Models.User.3');
 
     var channel = pusher.subscribe('presence-chat.1');
     channel.bind('my-event', function(data) {
-        if(data.message.from_id == id){
+        if (data.message.from_id == id) {
             $('#chat-content').append(myChatTemplate(data.message));
-        }else if(data.message.to_id == id){
+        } else if (data.message.to_id == id) {
             $('#chat-content').append(adminChatTemplate(data.message));
         }
 
     });
-    
-    
-    channel.bind("pusher:subscription_succeeded", function (members) {
+
+
+    channel.bind("pusher:subscription_succeeded", function(members) {
         members.each(function(member) {
             // console.log(JSON.stringify(member));
         });
     });
 
     $('.chat-tab').hide();
-    $('.blantershow-chat').click(function(){
+    $('.blantershow-chat').click(function() {
         $('.chat-tab').fadeIn();
         const contentHeight = $('#chat-content').prop('scrollHeight');
         console.log(contentHeight);
-        $('#chat-content').animate({ scrollTop: contentHeight }, 500);
+        $('#chat-content').animate({
+            scrollTop: contentHeight
+        }, 500);
     });
 </script>
 <script>
-    $(window).scroll(function () {
+    $(window).scroll(function() {
         const screenWidth = window.screen.width;
-        if(screenWidth > 992){
+        if (screenWidth > 992) {
             if ($(this).scrollTop() > 40) {
-                $('.navbar-hero').removeClass('bg-transparent')
-                $('.navbar-hero').addClass('bg-white shadow')
-                $('.navbar-fixed').addClass(' shadow')
-                $('.navbar-hero').removeClass('navbar-dark')
-                $('.navbar-hero').addClass('navbar-light')
-                $('.navbar-hero').find('#navbarSupportedContent').removeClass('font-weight-bold')
-                $('.navbar-hero').find('.btn-light').addClass('btn-primary')
-                $('.navbar-hero').find('.btn-light').removeClass('btn-light')
-                $('.navbar-hero').find('.btn-outline-light').addClass('btn-outline-primary')
-                $('.navbar-hero').find('.btn-outline-light').removeClass('btn-outline-light')
-                $('.navbar-fixed').css("position", "fixed")
+                $('.navbar-fixed').addClass('shadow')
+
             } else {
-                $('.navbar-hero').removeClass('bg-white shadow')
                 $('.navbar-fixed').removeClass('shadow')
-                $('.navbar-hero').addClass('bg-transparent')
-                $('.navbar-hero').removeClass('navbar-light')
-                $('.navbar-hero').addClass('navbar-dark')
-                $('.navbar-hero').find('#navbarSupportedContent').addClass('font-weight-bold')
-                $('.navbar-hero').find('.btn-primary').addClass('btn-light')
-                $('.navbar-hero').find('.btn-primary').removeClass('btn-primary')
-                $('.navbar-hero').find('.btn-outline-primary').addClass('btn-outline-light')
-                $('.navbar-hero').find('.btn-outline-primary').removeClass('btn-outline-primary')
-                $('.navbar-fixed').css("position", "relative")
+
             }
         }
     });
+
     function pluck(array, property) {
         return array.map(obj => obj[property]);
     }
@@ -123,8 +110,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
     const LoadingTemplate = `<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
     Loading...`;
 
-    function logout ()
-    {
+    function logout() {
         $('form#logout').submit()
     }
 
@@ -134,10 +120,10 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         }
     });
 
-    
-    function refetchCart(){
-        $.get('{{ route("fe.carts.count") }}', function(res){
-            if(res.success){
+
+    function refetchCart() {
+        $.get('{{ route('fe.carts.count') }}', function(res) {
+            if (res.success) {
                 $('a.cart').find('.count').html(res.data);
             }
         })
@@ -155,24 +141,26 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
     $(window).on("load", function() {
         // $("#loading-wrapper").fadeOut();
         $("#preloader").delay(350).fadeOut("slow");
-        $('html, body').animate({ scrollTop: 0 }, "fast");
+        $('html, body').animate({
+            scrollTop: 0
+        }, "fast");
     });
-    
-    const addToCart = function(product_id){
-            const target = event.currentTarget;
-            
-            $.ajax({
-                beforeSend: function(){
-                    target.innerHTML = LoadingTemplate;
-                    $(target).addClass('disabled');
-                },
-                url: '{{ route("fe.carts.store") }}',
-                method: 'POST',
-                data: {
-                    product_id
-                },
-                success: function(res){
-                    const html = `
+
+    const addToCart = function(product_id) {
+        const target = event.currentTarget;
+
+        $.ajax({
+            beforeSend: function() {
+                target.innerHTML = LoadingTemplate;
+                $(target).addClass('disabled');
+            },
+            url: '{{ route('fe.carts.store') }}',
+            method: 'POST',
+            data: {
+                product_id
+            },
+            success: function(res) {
+                const html = `
                         <div class="row no-gutters mb-3">
                             <div class="col p-1">
                                 <img src="${res.data.product.assets[0].src}" alt="" width="100">
@@ -184,77 +172,82 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
                         <a href="{{ route('fe.carts.index') }}" class="btn btn-outline-primary btn-block rounded-0">View Cart</a>
                     `
 
-                    if(res.success){
-                        refetchCart();
-                        Swal.fire({
-                            title: '<small>Item telah ditambahkan ke cart</small>',
-                            toast: true,
-                            html,
-                            position: 'bottom-right',
-                            showConfirmButton: false,
-                            timer: 6000,
-                            showCloseButton: true,
-                        })
-                        $(target).removeClass('disabled');
-                        $(target).html(`<i class="fa-solid fa-cart-shopping"></i><span class="add-to-cart">Add to cart</span>`)
-                    }
-                },
-                error: function(err){
-                    alert(JSON.stringify(err))
-                    target.innerHTML = LoadingTemplate;
+                if (res.success) {
+                    refetchCart();
+                    Swal.fire({
+                        title: '<small>Item telah ditambahkan ke cart</small>',
+                        toast: true,
+                        html,
+                        position: 'bottom-right',
+                        showConfirmButton: false,
+                        timer: 6000,
+                        showCloseButton: true,
+                    })
                     $(target).removeClass('disabled');
-                    $(target).html(`<i class="fa-solid fa-cart-shopping"></i><span class="add-to-cart">Add to cart</span>`)
-                    location.reload();
+                    $(target).html(
+                        `<i class="fa-solid fa-cart-shopping"></i><span class="add-to-cart">Add to cart</span>`
+                    )
                 }
-            })
-        }
-    function formatRupiah(angka, prefix, toFixed = ''){
+            },
+            error: function(err) {
+                alert(JSON.stringify(err))
+                target.innerHTML = LoadingTemplate;
+                $(target).removeClass('disabled');
+                $(target).html(
+                    `<i class="fa-solid fa-cart-shopping"></i><span class="add-to-cart">Add to cart</span>`
+                )
+                location.reload();
+            }
+        })
+    }
+
+    function formatRupiah(angka, prefix, toFixed = '') {
         let number_string = angka.toString().replace(/[^,\d]/g, ''),
-        split = number_string.split(','),
-        sisa = split[0].length % 3,
-        rupiah = split[0].substr(0, sisa),
-        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-        
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
         // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if(ribuan){
+        if (ribuan) {
             separator = sisa ? '.' : '';
             rupiah += separator + ribuan.join('.');
         }
-        
+
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '') + toFixed;
     }
 
 
-    $.get('{{ route("fe.chats.index") }}', function(res){
+    $.get('{{ route('fe.chats.index') }}', function(res) {
         let html = '';
         const id = '{{ auth()->id() }}'
-        if(!res.success) console.log('Error');
-        
+        if (!res.success) console.log('Error');
+
         for (const key in res.data) {
-            html+= dateChatTemplate(key);
+            html += dateChatTemplate(key);
             const subhtml = res.data[key].reverse().map((value, key) => {
-                if(value.from_id == id){
+                if (value.from_id == id) {
                     return myChatTemplate(value)
-                }else{
+                } else {
                     return adminChatTemplate(value)
                 }
             })
-            
-            html+=subhtml.join('');
+
+            html += subhtml.join('');
         }
 
-        if(res.data) $('#chat-content').html(html);
-        
+        if (res.data) $('#chat-content').html(html);
+
     })
 
-    const dateChatTemplate = function(date){
+    const dateChatTemplate = function(date) {
         return `<div class="divider d-flex align-items-center mb-4">
             <p class="text-center mx-3 mb-0" style="color: #a2aab7;">${moment(date).fromNow()}</p>
         </div>`
     }
 
-    const adminChatTemplate = function(data){
+    const adminChatTemplate = function(data) {
 
         return `<div class="d-flex flex-row justify-content-start mb-4">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp" alt="avatar 1"
@@ -266,7 +259,7 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         </div>`
 
     }
-    const myChatTemplate = function(data){
+    const myChatTemplate = function(data) {
         return `<div class="d-flex flex-row justify-content-end">
             <div>
                 <p class="small p-2 mr-3 mb-1 text-white rounded-3 bg-primary">${data.content}</p>
@@ -277,34 +270,34 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         </div>`
     }
 
-    function sendChat(){
+    function sendChat() {
         const data = {
             content: $('#chat-input').val()
         }
 
         $.ajax({
-            beforeSend: function(){
+            beforeSend: function() {
                 $('#send-chat-btn').prop('disabled', true)
             },
-            url: '{{ route("fe.chats.store") }}',
+            url: '{{ route('fe.chats.store') }}',
             method: 'POST',
             data,
-            success: function(res){
+            success: function(res) {
                 $('#chat-input').val('');
                 $('#send-chat-btn').prop('disabled', false)
             },
-            error: function(err){
+            error: function(err) {
                 console.log(err);
             }
         })
     }
 
 
-    $('#send-chat-btn').click(function(){
+    $('#send-chat-btn').click(function() {
         sendChat()
     })
 
-    $('#chat-input').on('keydown', function(event){
+    $('#chat-input').on('keydown', function(event) {
         if (event.keyCode === 13) {
             sendChat();
         }
@@ -325,28 +318,74 @@ https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.min.js
         var countdownElement = document.getElementById("countdown");
         var minutes = Math.floor(duration / 60);
         var seconds = duration % 60;
-        
-        if (seconds < 10) { seconds="0" + seconds; } countdownElement.innerHTML= "0" + minutes + ":" + seconds; duration=duration - 1;
-            if (duration>= 0) {
+
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        countdownElement.innerHTML = "0" + minutes + ":" + seconds;
+        duration = duration - 1;
+        if (duration >= 0) {
             setTimeout(displayCountdown, 1000);
-            } else {
-                onCountdownFinished();
-            }
+        } else {
+            onCountdownFinished();
+        }
     }
 
     duration = duration * 60;
-    
+
     function CopyMe(TextToCopy) {
         var TempText = document.createElement("input");
         TempText.value = TextToCopy;
         document.body.appendChild(TempText);
         TempText.select();
-        
+
         document.execCommand("copy");
         document.body.removeChild(TempText);
-        
+
         alert("Copied the text: " + TempText.value);
     }
 
+    let debounce;
 
+    $('input#search-bar').keyup(function() {
+        $('.dropdown').dropdown('show')
+
+        const keyword = $(this).val();
+
+        if (debounce) {
+            clearTimeout(debounce);
+        }
+
+        debounce = setTimeout(() => {
+            $.ajax({
+                url: '{{ route('search.api') }}',
+                method: 'GET',
+                data: {
+                    keyword
+                },
+                success: function(res) {
+                    let html = '';
+                    const url = "{{ route('fe.products.show', ':id') }}"
+                    res.data.forEach(value => {
+                        html += `<a class="dropdown-item" href="" onclick="toURL('${url.replace(':id', value.slug)}')">${value.title}</a>`
+                    })
+
+                    $('#search-dropdown').find('.dropdown-menu').html(html);
+                },
+                error: function(err) {
+
+                }
+            })
+        }, 500)
+
+
+    });
+    function toURL (url){
+        window.location.href = url;
+    }
+
+
+    $('input#search-bar').blur(function() {
+        // $('.dropdown').dropdown('hide')
+    });
 </script>

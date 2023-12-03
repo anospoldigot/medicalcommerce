@@ -20,6 +20,14 @@ $(function () {
   // remove items from wishlist page
   removeItem.on('click', function () {
     $(this).closest('.ecommerce-card').remove();
+    const id = $(this).closest('.ecommerce-card').data('id')
+    const url =  '{{ route("fe.carts.destroy", ":id) }}'
+    $('.price-details').trigger('change')
+    // $.ajax({
+    //     url: url.replace(':id', id),
+    //     method: 
+    // })
+
     toastr['error']('', 'Removed Item 🗑️', {
       closeButton: true,
       tapToDismiss: false,

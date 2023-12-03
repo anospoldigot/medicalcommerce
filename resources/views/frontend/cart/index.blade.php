@@ -112,12 +112,12 @@
                 <!-- Wizard ends -->
                 <form action="{{ url('payment') }}" method="post">
                     @csrf
-                    <input type="hidden" name="amt" value="{{ $order_subtotal - $discount }}" id="amt" />
+                    <input type="hidden" name="amt" value="{{ $total_amount }}" id="amt" />
                     <input type="hidden" name="discount_amt" value="0" id="discount_amt" />
                     <input type="hidden" name="voucher_amt" value="0" id="voucher_amt" />
                     <input type="hidden" name="fee_amt" value="0" id="fee_amt" />
                     <input type="hidden" name="shipping_amt" value="0" id="shipping_amt" />
-                    <input type="hidden" name="ppn_amt" value="0" id="ppn_amt" />
+                    <input type="hidden" name="ppn_amt" value="{{ $ppn_amount }}" id="ppn_amt" />
                     <input type="hidden" name="shipping_type" value="" id="shipping_type" />
                     <input type="hidden" name="payment_name" id="payment_name">
                     <div class="bs-stepper-content">
@@ -128,7 +128,7 @@
                                 <div class="checkout-items">
                                     @forelse ($carts as $cart)
                                     <div class="card ecommerce-card"
-                                        data-product="{{ json_encode($cart->product->only(['title', 'stock', 'price', 'discount', 'is_discount', 'discount_type', 'weight'])) }}">
+                                        data-product="{{ json_encode($cart->product->only(['title', 'stock', 'price', 'discount', 'is_discount', 'discount_type', 'weight', 'discount_amount'])) }}">
                                         <div class="item-img" style="object-fit: cover">
                                             <a href="app-ecommerce-details.html">
                                                 <img src="{{ $cart->product->assets->first()->src }}" style="object-fit: cover; height: 100%; width: 100%;" />
@@ -255,7 +255,7 @@
                                                     <li class="price-detail">
                                                         <div class="detail-title">Total</div>
                                                         <div class="detail-amt detail-total font-weight-bolder">Rp. {{
-                                                            number_format ($order_subtotal - $discount,2,",",".") }}</div>
+                                                            number_format ($total_amount,2,",",".") }}</div>
                                                     </li>
                                                 </ul>
                                                 <button type="button"
@@ -569,14 +569,8 @@
             console.log('potongan_voucher:' + potongan_voucher)
             $('.ecommerce-card').each(function(){
                 const product = $(this).data('product');
-                let discount = product.price;
                 if(product.is_discount > 0){
-                    if(product.discount_type =='persen'){
-                        discount = product.price - ((product.price / 100) * product.discount);
-                    } else if (product.discount_type == 'nominal'){
-                        discount = product.price - product.discount;
-                    }
-                    discount_amt += (product.price - discount) * $(this).find('.quantity-counter').val();;
+                    discount_amt += product.discount_amount * $(this).find('.quantity-counter').val();
                 }
                 price+= product.price  * $(this).find('.quantity-counter').val();
             }) 

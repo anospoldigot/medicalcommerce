@@ -54,7 +54,7 @@ Route::get('test2', [DuitkuController::class, 'test2']);
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:admin|developer'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::controller(SettingWebController::class)->prefix('setting')->group(function () {
         Route::get('web', 'index')->name('setting.web');

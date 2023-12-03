@@ -28,7 +28,6 @@ class ProductController extends Controller
                 ->get();
         }
 
-        // return $sliders = Slider::whereLink(request()->url())->get();
         $sliders = Slider::get();
 
         $products = Product::with(['assets', 'category'])

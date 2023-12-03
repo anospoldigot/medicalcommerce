@@ -17,6 +17,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/socialite": "^5.6",
+        "laravel/telescope": "^4.17",
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^10.0",
@@ -30,7 +31,9 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",
+        "doctrine/dbal": "^3.7",
         "fakerphp/faker": "^1.9.1",
+        "laravel/dusk": "^7.11",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
@@ -74,7 +77,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {

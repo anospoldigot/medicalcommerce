@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $guarded = [];
     protected $with = ['assets'];
-    public $appends = ['rating', 'real_stock', 'real_price'];
+    public $appends = ['rating', 'real_stock', 'real_price', 'discount_amount'];
 
     protected $casts = [
         'status' => 'boolean',
@@ -59,15 +59,31 @@ class Product extends Model
     public function getRealPriceAttribute()
     {
 
-        if($this->is_discount > 0){
-            if($this->discount_type == 'persen'){
+        if ($this->is_discount > 0) {
+            if ($this->discount_type == 'persen') {
                 return ($this->price / 100) * $this->discount;
-            }else{
+            } else {
                 return $this->price - $this->discount;
             }
         }
 
         return $this->price;
+    }
+
+    public function getDiscountAmountAttribute()
+    {
+        $price = 0;
+
+        if ($this->is_discount > 0) {
+            $price = $this->price;
+            if ($this->discount_type == 'persen') {
+                $price = ($this->price / 100) * $this->discount;
+            } else if ($this->discount_type == 'nominal') {
+                $price = $this->price - $this->discount;
+            }
+        }
+
+        return $price;
     }
 
 

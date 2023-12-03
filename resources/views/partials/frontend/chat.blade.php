@@ -2,8 +2,7 @@
     <div class="card" id="chat2">
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h5 class="mb-0">Live Chat</h5>
-            <button type="button" class="btn btn-primary btn-sm" data-mdb-ripple-color="dark">Let's Chat
-                App</button>
+            <button type="button" class="btn btn-primary btn-sm" data-mdb-ripple-color="dark"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="card-body" style="position: relative; height:300px; overflow-y: scroll;" id="chat-content">
     

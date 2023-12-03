@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redis;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Role;
 
 class TestController extends Controller
 {
@@ -28,6 +29,7 @@ class TestController extends Controller
     public function __invoke(Request $request)
     {
 
+        return Role::get();
         $user = User::find(3);
 
         $user->notify(new OrderConfirmAndSend(Order::latest()->first()));

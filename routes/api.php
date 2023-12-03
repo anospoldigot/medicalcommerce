@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\{
     AddressController,
-    AuthController, CartController, CourierController, OrderController, PaymentController as APIPaymentController, ProductController, ProfileController, WilayahController,
+    AuthController, CartController, CourierController, OrderController, PaymentController as APIPaymentController, ProductController, ProfileController, SearchController, WilayahController,
     WishlistController
 };
 use App\Http\Controllers\Frontend\PaymentController;
@@ -50,7 +50,7 @@ Route::controller(WilayahController::class)->name('api.')->group(function(){
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('google/login', [AuthController::class, 'googleLogin']);
-
+Route::get('search', SearchController::class)->name('search.api');
 
 Route::post('payment/callback', [PaymentController::class, 'callback']);
 

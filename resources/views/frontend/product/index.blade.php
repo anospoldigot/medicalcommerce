@@ -337,7 +337,7 @@
                 if (data.is_discount) {
                     priceRender += `<div>
                         <del>
-                            <small class="text-muted text-decoration-line-through mb-0">Rp. {{ number_format($product->price, 2, ',', '.') }}
+                            <small class="text-muted text-decoration-line-through mb-0">${formatRupiah(data.price * data.discount, 'Rp. ', ',00')}
                             </small>
                         </del>
                     </div>`;
@@ -401,6 +401,7 @@
                     }
                 }
             });
+            
             loadContent(page);
         });
     </script>

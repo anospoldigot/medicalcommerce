@@ -111,6 +111,7 @@ class PaymentController extends Controller
     public function store ()
     {
 
+        // return request()->all();
         $products = collect(request('product'));
         $count = $products->count() + 1;
         $user = auth()->user();
@@ -122,8 +123,6 @@ class PaymentController extends Controller
         $phoneNumber        = $user->phone; // your customer phone number (optional)
         $productDetails     = "Test Payment";
         $merchantOrderId    = time(); // from merchant, unique   
-        $additionalParam    = ''; // optional
-        $merchantUserInfo   = ''; // optional
         $customerVaName     = 'John Doe'; // display name on bank confirmation display
         $expiryPeriod       = 60; // set the expired time in minutes
 
@@ -132,52 +131,17 @@ class PaymentController extends Controller
         $city               = "Jakarta";
         $countryCode        = "ID";
 
-        // if(request()->has('code_coupon')) {
-        //     $coupon = Coupon::where('code', request('code_coupon'))->first();
-
-        //     return $coupon;
-        //     $paymentAmount = 
-        // }
 
 
-        $billingAddress = array(
-            'firstName'     => $user->name,
-            'lastName'      => "",
-            'address'       => $alamat,
-            'city'          => $city,
-            'postalCode'    => $address->postal_code,
-            'phone'         => $phoneNumber,
-            'countryCode'   => $countryCode
-        );
-
-        $customerDetail = array(
-            'firstName'         => $user->name,
-            'lastName'          => "",
-            'email'             => $user->email,
-            'phoneNumber'       => $user->phone,
-            'billingAddress'    => $billingAddress,
-            'shippingAddress'   => $address
-        );
 
         
 
         $itemDetails = $products->map(function ($value, $key) {
             $product = Product::find($value);
-            $price = $product->price;
-
-            if ($product->is_discount > 0) {
-                if ($product->discount_type == 'persen') {
-                    $price = ($product->price / 100) * $product->discount;
-                } else if ($product->discount_type == 'nominal') {
-                    $price = $product->discount;
-                }
-
-                $price = $product->price - $price;
-            }
 
             return [
                 'name'          => $product->title,
-                'price'         => $price *  request('quantity')[$key],
+                'price'         => ($product->price - $product->discount_amount)  *  request('quantity')[$key],
                 'quantity'      => request('quantity')[$key]
             ];
         });
@@ -222,62 +186,14 @@ class PaymentController extends Controller
             'paymentMethod'     => $paymentMethod,
             'merchantOrderId'   => $merchantOrderId,
             'productDetails'    => $productDetails,
-            'additionalParam'   => $additionalParam,
-            'merchantUserInfo'  => $merchantUserInfo,
             'customerVaName'    => $customerVaName,
             'email'             => $email,
             'phoneNumber'       => $phoneNumber,
             'itemDetails'       => $itemDetails,
-            'customerDetail'    => $customerDetail,
             'callbackUrl'       => $this->callbackUrl,
             'returnUrl'         => $this->returnUrl,
             'expiryPeriod'      => $expiryPeriod
         );
-
-
-
-        // $biteshipPayload = [
-        //     // "shipper_contact_name" => "Amir",
-        //     // "shipper_contact_phone" => "081277882932",
-        //     // "shipper_contact_email" => "biteship@test.com",
-        //     // "shipper_organization" => "Biteship Org Test",
-        //     "origin_contact_name" => $user->name,
-        //     "origin_contact_phone" => $user->email,
-        //     "origin_address" => "Plaza Senayan, Jalan Asia Afrik...",
-        //     "origin_note" => "Deket pintu masuk STC",
-        //     "origin_postal_code" => 12440,
-        //     "destination_contact_name" => "John Doe",
-        //     "destination_contact_phone" => "08170032123",
-        //     "destination_contact_email" => "jon@test.com",
-        //     "destination_address" => "Lebak Bulus MRT...",
-        //     "destination_postal_code" => 12950,
-        //     "destination_note" => "Near the gas station",
-        //     "destination_cash_on_delivery" => 500000,
-        //     "destination_cash_on_delivery_type" => "7_days",
-        //     "destination_cash_proof_of_delivery" => true,
-        //     "courier_company" => "grab",
-        //     "courier_type" => "instant",
-        //     "courier_insurance" => 500000,
-        //     "delivery_type" => "later",
-        //     "delivery_date" => "2019-09-24",
-        //     "delivery_time" => "12:00",
-        //     "order_note" => "Please be carefull",
-        //     "metadata" => [],
-        //     "items" => [
-        //         [
-        //             "id" => "5db7ee67382e185bd6a14608",
-        //             "name" => "Black L",
-        //             "image" => "",
-        //             "description" => "White Shirt",
-        //             "value" => 165000,
-        //             "quantity" => 1,
-        //             "height" => 10,
-        //             "length" => 10,
-        //             "weight" => 200,
-        //             "width" => 10,
-        //         ],
-        //     ],
-        // ];
 
         try {
             DB::beginTransaction();
@@ -285,7 +201,6 @@ class PaymentController extends Controller
             // createInvoice Request
             $responseDuitkuApi = \Duitku\Api::createInvoice($params, $this->duitkuConfig);
             $responseDuitkuApi = json_decode($responseDuitkuApi);
-
 
             $dataOrder = [
                 'user_id'                       => $user->id,

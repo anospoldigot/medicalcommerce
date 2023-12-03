@@ -36,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'credit',
         'is_credit_active'
     ];
-    protected $appends = ['referral_link'];
+    protected $appends = ['referral_link', 'unread_chat'];
     /**
      * The attributes that should be hidden for serialization.
      *
